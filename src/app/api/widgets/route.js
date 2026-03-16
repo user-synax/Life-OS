@@ -17,8 +17,14 @@ export async function GET(req) {
       const defaults = [
         { widgetType: 'tasks', position: { x: 0, y: 0 }, size: { w: 2, h: 2 }, userId: decoded.userId },
         { widgetType: 'notes', position: { x: 2, y: 0 }, size: { w: 1, h: 2 }, userId: decoded.userId },
+        { widgetType: 'analytics', position: { x: 3, y: 0 }, size: { w: 1, h: 1 }, userId: decoded.userId },
+        { widgetType: 'weather', position: { x: 3, y: 1 }, size: { w: 1, h: 1 }, userId: decoded.userId },
         { widgetType: 'calendar', position: { x: 0, y: 2 }, size: { w: 2, h: 2 }, userId: decoded.userId },
         { widgetType: 'habits', position: { x: 2, y: 2 }, size: { w: 1, h: 1 }, userId: decoded.userId },
+        { widgetType: 'focus', position: { x: 3, y: 2 }, size: { w: 1, h: 1 }, userId: decoded.userId },
+        { widgetType: 'bookmarks', position: { x: 2, y: 3 }, size: { w: 1, h: 1 }, userId: decoded.userId },
+        { widgetType: 'quote', position: { x: 3, y: 3 }, size: { w: 1, h: 1 }, userId: decoded.userId },
+        { widgetType: 'quicklinks', position: { x: 0, y: 4 }, size: { w: 2, h: 1 }, userId: decoded.userId },
       ];
       const created = await Widget.insertMany(defaults);
       return NextResponse.json({ widgets: created });

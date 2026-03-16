@@ -7,6 +7,16 @@ import { GripVertical, X, Settings2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import useWidgetStore from '@/store/useWidgetStore';
+import TaskWidget from './TaskWidget';
+import NotesWidget from './NotesWidget';
+import HabitWidget from './HabitWidget';
+import WeatherWidget from './WeatherWidget';
+import FocusTimerWidget from './FocusTimerWidget';
+import BookmarkWidget from './BookmarkWidget';
+import AnalyticsWidget from './AnalyticsWidget';
+import CalendarWidget from './CalendarWidget';
+import QuoteWidget from './QuoteWidget';
+import QuickLinksWidget from './QuickLinksWidget';
 
 export default function WidgetCard({ widget, isDragging }) {
   const {
@@ -33,6 +43,42 @@ export default function WidgetCard({ widget, isDragging }) {
     if (w === 4) classes += ' xl:col-span-4';
     if (h === 2) classes += ' row-span-2';
     return classes;
+  };
+
+  const renderWidgetContent = () => {
+    switch (widget.widgetType) {
+      case 'tasks':
+        return <TaskWidget />;
+      case 'notes':
+        return <NotesWidget />;
+      case 'habits':
+        return <HabitWidget />;
+      case 'weather':
+        return <WeatherWidget />;
+      case 'focus':
+        return <FocusTimerWidget />;
+      case 'bookmarks':
+        return <BookmarkWidget />;
+      case 'analytics':
+        return <AnalyticsWidget />;
+      case 'calendar':
+        return <CalendarWidget />;
+      case 'quote':
+        return <QuoteWidget />;
+      case 'quicklinks':
+        return <QuickLinksWidget />;
+      default:
+        return (
+          <div className="flex flex-col items-center gap-2 text-center">
+            <div className="text-xs font-mono text-muted-foreground/50 italic">
+              {widget.widgetType.toUpperCase()}
+            </div>
+            <div className="text-[10px] text-muted-foreground/30">
+              Widget implementation pending
+            </div>
+          </div>
+        );
+    }
   };
 
   return (
@@ -70,16 +116,8 @@ export default function WidgetCard({ widget, isDragging }) {
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="p-4 pt-4 flex-1 overflow-hidden flex items-center justify-center">
-        {/* Widget Content will go here */}
-        <div className="flex flex-col items-center gap-2 text-center">
-           <div className="text-xs font-mono text-muted-foreground/50 italic">
-              {widget.widgetType.toUpperCase()}
-           </div>
-           <div className="text-[10px] text-muted-foreground/30">
-              Widget implementation pending
-           </div>
-        </div>
+      <CardContent className="p-4 pt-4 flex-1 overflow-hidden flex flex-col">
+        {renderWidgetContent()}
       </CardContent>
     </Card>
   );
