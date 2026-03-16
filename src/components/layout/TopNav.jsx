@@ -16,6 +16,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import useAuthStore from '@/store/useAuthStore';
 import useNotificationStore from '@/store/useNotificationStore';
 import NotificationPanel from '@/components/notifications/NotificationPanel';
+import { cn } from '@/lib/utils';
 
 export default function TopNav() {
   const [search, setSearch] = useState('');
