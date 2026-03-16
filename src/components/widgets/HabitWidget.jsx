@@ -46,50 +46,61 @@ export default function HabitWidget() {
         </div>
       </form>
 
-      <ScrollArea className="flex-1 -mr-2 pr-2">
+      <ScrollArea className="flex-1 -mr-4 pr-4">
         {loading && habits.length === 0 ? (
-          <div className="space-y-2">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="h-12 bg-muted/20 animate-pulse rounded-[4px]" />
+          <div className="space-y-3">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="h-14 bg-muted/10 animate-pulse rounded-[4px]" />
             ))}
           </div>
         ) : habits.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full gap-2 text-muted-foreground/20 italic text-[10px] uppercase font-bold tracking-widest">
-             <Plus size={16} className="opacity-10" />
-             No habits.
+          <div className="flex flex-col items-center justify-center h-full gap-3 text-muted-foreground/10 py-10">
+             <div className="p-4 rounded-full bg-muted/5 border border-dashed border-border/50">
+                <Flame size={24} className="opacity-20" />
+             </div>
+             <p className="text-[9px] font-black uppercase tracking-[0.3em]">No Rituals Found</p>
           </div>
         ) : (
-          <div className="space-y-1">
+          <div className="space-y-2 pb-4">
             {habits.map((habit) => (
               <div
                 key={habit._id}
                 className={cn(
-                  "flex items-center justify-between p-2 rounded-[4px] hover:bg-muted/30 transition-all duration-200 border border-transparent hover:border-border/50",
-                  isCompletedToday(habit._id) && "bg-primary/5 border-primary/20"
+                  "flex items-center justify-between p-3 rounded-[4px] hover:bg-muted/30 transition-all duration-300 border border-transparent hover:border-border/50 group",
+                  isCompletedToday(habit._id) && "bg-primary/5 border-primary/10"
                 )}
               >
-                <div className="flex items-center gap-3 min-w-0">
+                <div className="flex items-center gap-4 min-w-0">
                   <button 
                     onClick={() => toggleHabit(habit._id, new Date())}
-                    className="text-primary shrink-0 transition-transform hover:scale-110 active:scale-95"
+                    className="shrink-0 transition-all duration-300 transform active:scale-90"
                   >
-                    {isCompletedToday(habit._id) ? <CheckCircle2 size={18} /> : <Circle size={18} className="text-muted-foreground/30 hover:text-primary/50 transition-colors" />}
+                    {isCompletedToday(habit._id) ? (
+                      <CheckCircle2 size={20} className="text-primary drop-shadow-[0_0_8px_rgba(var(--primary),0.4)]" />
+                    ) : (
+                      <Circle size={20} className="text-muted-foreground/20 group-hover:text-primary/40 transition-colors" />
+                    )}
                   </button>
                   <div className="flex flex-col min-w-0">
-                    <span className="text-[11px] font-bold truncate tracking-tight text-foreground/90">{habit.name}</span>
-                    <div className="flex items-center gap-1.5 mt-0.5">
-                       <span className="text-[8px] text-muted-foreground/60 flex items-center gap-1 font-black uppercase tracking-widest">
-                          <Flame size={10} className={cn("transition-colors", habit.streak > 0 ? "text-orange-500" : "text-muted-foreground/30")} />
-                          {habit.streak || 0}d
-                       </span>
+                    <span className="text-[12px] font-black truncate tracking-tight text-foreground/80 group-hover:text-foreground transition-colors">{habit.name}</span>
+                    <div className="flex items-center gap-2 mt-1">
+                       <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-[2px] bg-orange-500/5 border border-orange-500/10">
+                          <Flame size={10} className={cn("transition-colors", habit.streak > 0 ? "text-orange-500 animate-pulse" : "text-muted-foreground/20")} />
+                          <span className="text-[8px] font-black uppercase tracking-widest text-orange-500/80">
+                             {habit.streak || 0} Day Streak
+                          </span>
+                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="h-1 w-10 bg-muted/50 rounded-full overflow-hidden shrink-0 ml-2">
-                   <div 
-                    className="h-full bg-primary transition-all duration-1000" 
-                    style={{ width: `${Math.min((habit.streak / 30) * 100, 100)}%` }} 
-                   />
+                <div className="flex flex-col items-end gap-1.5 shrink-0 ml-3">
+                   <div className="h-1 w-12 bg-muted/20 rounded-full overflow-hidden">
+                      <div 
+                       className="h-full bg-primary transition-all duration-1000 shadow-[0_0_8px_rgba(var(--primary),0.6)]" 
+                       style={{ width: `${Math.min((habit.streak / 30) * 100, 100)}%` }} 
+                      />
+                   </div>
+                   <span className="text-[7px] font-black uppercase tracking-widest text-muted-foreground/30">Progress</span>
                 </div>
               </div>
             ))}

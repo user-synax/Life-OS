@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth/jwt';
 import connectDB from '@/lib/db/mongodb';
-import Task from '@/lib/db/models/Task';
+import Event from '@/lib/db/models/Event';
 
 export async function PATCH(req, { params }) {
   try {
@@ -11,23 +11,16 @@ export async function PATCH(req, { params }) {
 
     const { id } = await params;
     const updates = await req.json();
-    
-    // Set completedAt if task is being marked as completed
-    if (updates.completed === true) {
-      updates.completedAt = new Date();
-    } else if (updates.completed === false) {
-      updates.completedAt = null;
-    }
 
     await connectDB();
-    const task = await Task.findOneAndUpdate(
+    const event = await Event.findOneAndUpdate(
       { _id: id, userId: decoded.userId },
       updates,
       { new: true }
     );
 
-    if (!task) return NextResponse.json({ error: 'Task not found' }, { status: 404 });
-    return NextResponse.json({ task });
+    if (!event) return NextResponse.json({ error: 'Event not found' }, { status: 404 });
+    return NextResponse.json({ event });
   } catch (error) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
@@ -41,10 +34,10 @@ export async function DELETE(req, { params }) {
 
     const { id } = await params;
     await connectDB();
-    const task = await Task.findOneAndDelete({ _id: id, userId: decoded.userId });
+    const event = await Event.findOneAndDelete({ _id: id, userId: decoded.userId });
 
-    if (!task) return NextResponse.json({ error: 'Task not found' }, { status: 404 });
-    return NextResponse.json({ message: 'Task deleted' });
+    if (!event) return NextResponse.json({ error: 'Event not found' }, { status: 404 });
+    return NextResponse.json({ message: 'Event deleted' });
   } catch (error) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }

@@ -32,7 +32,7 @@ export default function WidgetGrid() {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-[220px] grid-flow-dense pb-10">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-[280px] grid-flow-dense pb-10">
       {uniqueWidgets.map((widget) => (
         <WidgetCard key={widget._id} widget={widget} />
       ))}

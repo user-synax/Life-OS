@@ -48,54 +48,56 @@ export default function TaskWidget() {
         </div>
       </form>
 
-      <ScrollArea className="flex-1 -mr-2 pr-2">
+      <ScrollArea className="flex-1 -mr-4 pr-4">
         {loading && tasks.length === 0 ? (
-          <div className="space-y-2">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="h-10 bg-muted/20 animate-pulse rounded-[4px]" />
+          <div className="space-y-3">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="h-11 bg-muted/10 animate-pulse rounded-[4px]" />
             ))}
           </div>
         ) : tasks.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full gap-2 text-muted-foreground/20 italic text-[10px] uppercase font-bold tracking-widest">
-             <Plus size={16} className="opacity-10" />
-             No tasks.
+          <div className="flex flex-col items-center justify-center h-full gap-3 text-muted-foreground/10 py-10">
+             <div className="p-4 rounded-full bg-muted/5 border border-dashed border-border/50">
+                <Plus size={24} className="opacity-20" />
+             </div>
+             <p className="text-[9px] font-black uppercase tracking-[0.3em]">Registry Empty</p>
           </div>
         ) : (
-          <div className="space-y-1">
+          <div className="space-y-1.5 pb-4">
             {tasks.map((task) => (
               <div
                 key={task._id}
                 className={cn(
-                  "group flex items-center justify-between p-2 rounded-[4px] hover:bg-muted/30 transition-all duration-200 border border-transparent hover:border-border/50",
-                  task.completed && "opacity-40"
+                  "group flex items-center justify-between p-3 rounded-[4px] hover:bg-muted/30 transition-all duration-300 border border-transparent hover:border-border/50",
+                  task.completed && "opacity-40 grayscale"
                 )}
               >
-                <div className="flex items-center gap-3 min-w-0">
+                <div className="flex items-center gap-4 min-w-0">
                   <button 
                     onClick={() => toggleTask(task._id)}
                     className={cn(
-                      "shrink-0 transition-all duration-200",
-                      task.completed ? "text-primary" : "text-muted-foreground/30 hover:text-primary/50"
+                      "shrink-0 transition-all duration-300 transform active:scale-90",
+                      task.completed ? "text-primary" : "text-muted-foreground/20 hover:text-primary/40"
                     )}
                   >
-                    {task.completed ? <CheckCircle2 size={16} /> : <Circle size={16} />}
+                    {task.completed ? <CheckCircle2 size={18} className="drop-shadow-[0_0_8px_rgba(var(--primary),0.4)]" /> : <Circle size={18} />}
                   </button>
                   <div className="flex flex-col min-w-0">
                     <span className={cn(
-                      "text-[11px] font-bold truncate tracking-tight text-foreground/90",
-                      task.completed && "line-through"
+                      "text-[12px] font-black truncate tracking-tight text-foreground/80 transition-all",
+                      task.completed && "line-through opacity-50"
                     )}>
                       {task.title}
                     </span>
                     {task.dueDate && (
-                      <span className="text-[8px] text-muted-foreground/60 flex items-center gap-1 mt-0.5 font-medium uppercase tracking-tighter">
-                        <Clock size={8} />
-                        {format(new Date(task.dueDate), 'MMM d')}
+                      <span className="text-[8px] text-muted-foreground/40 flex items-center gap-1.5 mt-1 font-black uppercase tracking-widest">
+                        <Clock size={10} className="opacity-50" />
+                        {format(new Date(task.dueDate), 'MMM d, yyyy')}
                       </span>
                     )}
                   </div>
                 </div>
-                <Badge variant="outline" className={cn("text-[7px] uppercase font-black px-1.5 py-0 rounded-[2px] shrink-0 ml-2 border-transparent", getPriorityColor(task.priority))}>
+                <Badge variant="outline" className={cn("text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-[2px] shrink-0 ml-3 border-transparent bg-muted/5", getPriorityColor(task.priority))}>
                   {task.priority}
                 </Badge>
               </div>

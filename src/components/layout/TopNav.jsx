@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Bell, Search, Plus, User, Menu } from 'lucide-react';
+import { Bell, Search, Plus, User, Menu, CheckSquare, StickyNote, Calendar, Activity, Bookmark, Timer } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -53,10 +53,92 @@ export default function TopNav({ onMenuClick }) {
       </div>
 
       <div className="flex items-center gap-2 md:gap-4">
-        <Button variant="ghost" size="sm" className="hidden sm:flex gap-2 text-muted-foreground/50 hover:text-primary hover:bg-primary/5 rounded-[4px] h-9 px-4 transition-all">
-          <Plus size={14} />
-          <span className="text-[10px] font-black uppercase tracking-[0.2em]">New</span>
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger render={
+            <Button variant="ghost" size="sm" className="hidden sm:flex gap-2 text-muted-foreground/50 hover:text-primary hover:bg-primary/5 rounded-[4px] h-9 px-4 transition-all border border-transparent hover:border-primary/20 outline-none">
+              <Plus size={14} className="group-hover:rotate-90 transition-transform duration-300" />
+              <span className="text-[10px] font-black uppercase tracking-[0.2em]">New Operation</span>
+            </Button>
+          } />
+          <DropdownMenuContent className="w-56 bg-card border-border/50 rounded-[4px] shadow-2xl p-1 animate-in slide-in-from-top-2 duration-300" align="end">
+            <DropdownMenuLabel className="px-3 py-2 text-[8px] font-black uppercase tracking-[0.3em] text-muted-foreground/30">Registry Actions</DropdownMenuLabel>
+            <div className="p-1 space-y-0.5">
+               <DropdownMenuItem 
+                  className="rounded-[2px] text-[10px] font-black uppercase tracking-[0.2em] p-2.5 cursor-pointer focus:bg-primary/10 focus:text-primary group"
+                  onSelect={() => router.push('/dashboard/tasks')}
+               >
+                  <div className="flex items-center justify-between w-full">
+                     <div className="flex items-center gap-3">
+                        <CheckSquare size={14} className="opacity-40 group-focus:opacity-100 transition-opacity" />
+                        <span>Initialize Task</span>
+                     </div>
+                     <span className="text-[8px] opacity-20 group-focus:opacity-40 font-black">T</span>
+                  </div>
+               </DropdownMenuItem>
+               <DropdownMenuItem 
+                  className="rounded-[2px] text-[10px] font-black uppercase tracking-[0.2em] p-2.5 cursor-pointer focus:bg-primary/10 focus:text-primary group"
+                  onSelect={() => router.push('/dashboard/notes')}
+               >
+                  <div className="flex items-center justify-between w-full">
+                     <div className="flex items-center gap-3">
+                        <StickyNote size={14} className="opacity-40 group-focus:opacity-100 transition-opacity" />
+                        <span>Capture Note</span>
+                     </div>
+                     <span className="text-[8px] opacity-20 group-focus:opacity-40 font-black">N</span>
+                  </div>
+               </DropdownMenuItem>
+               <DropdownMenuItem 
+                  className="rounded-[2px] text-[10px] font-black uppercase tracking-[0.2em] p-2.5 cursor-pointer focus:bg-primary/10 focus:text-primary group"
+                  onSelect={() => router.push('/dashboard/calendar')}
+               >
+                  <div className="flex items-center justify-between w-full">
+                     <div className="flex items-center gap-3">
+                        <Calendar size={14} className="opacity-40 group-focus:opacity-100 transition-opacity" />
+                        <span>Schedule Event</span>
+                     </div>
+                     <span className="text-[8px] opacity-20 group-focus:opacity-40 font-black">E</span>
+                  </div>
+               </DropdownMenuItem>
+               <DropdownMenuItem 
+                  className="rounded-[2px] text-[10px] font-black uppercase tracking-[0.2em] p-2.5 cursor-pointer focus:bg-primary/10 focus:text-primary group"
+                  onSelect={() => router.push('/dashboard/habits')}
+               >
+                  <div className="flex items-center justify-between w-full">
+                     <div className="flex items-center gap-3">
+                        <Activity size={14} className="opacity-40 group-focus:opacity-100 transition-opacity" />
+                        <span>Deploy Habit</span>
+                     </div>
+                     <span className="text-[8px] opacity-20 group-focus:opacity-40 font-black">H</span>
+                  </div>
+               </DropdownMenuItem>
+               <DropdownMenuItem 
+                  className="rounded-[2px] text-[10px] font-black uppercase tracking-[0.2em] p-2.5 cursor-pointer focus:bg-primary/10 focus:text-primary group"
+                  onSelect={() => router.push('/dashboard/bookmarks')}
+               >
+                  <div className="flex items-center justify-between w-full">
+                     <div className="flex items-center gap-3">
+                        <Bookmark size={14} className="opacity-40 group-focus:opacity-100 transition-opacity" />
+                        <span>Archive Link</span>
+                     </div>
+                     <span className="text-[8px] opacity-20 group-focus:opacity-40 font-black">B</span>
+                  </div>
+               </DropdownMenuItem>
+               <DropdownMenuSeparator className="bg-border/50 my-1" />
+               <DropdownMenuItem 
+                  className="rounded-[2px] text-[10px] font-black uppercase tracking-[0.2em] p-2.5 cursor-pointer focus:bg-primary/10 focus:text-primary group"
+                  onSelect={() => router.push('/dashboard/focus')}
+               >
+                  <div className="flex items-center justify-between w-full">
+                     <div className="flex items-center gap-3">
+                        <Timer size={14} className="opacity-40 group-focus:opacity-100 transition-opacity" />
+                        <span>Focus Protocol</span>
+                     </div>
+                     <span className="text-[8px] opacity-20 group-focus:opacity-40 font-black">F</span>
+                  </div>
+               </DropdownMenuItem>
+            </div>
+          </DropdownMenuContent>
+        </DropdownMenu>
 
         <div className="relative">
           <Button 

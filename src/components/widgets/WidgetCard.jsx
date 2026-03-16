@@ -71,22 +71,22 @@ export default function WidgetCard({ widget }) {
   return (
     <Card
       className={cn(
-        'group relative flex flex-col overflow-hidden bg-card border-border rounded-[4px] shadow-sm h-full hover:border-primary/20 transition-all duration-300',
+        'group relative flex flex-col overflow-hidden bg-card border-border/50 rounded-[4px] shadow-sm h-full hover:border-primary/20 transition-all duration-300 hover:shadow-2xl hover:shadow-black/5',
         getWidgetSizeClass(widget.size)
       )}
     >
-      <CardHeader className="p-3 py-2 flex flex-row items-center justify-between space-y-0 border-b border-border bg-muted/20">
-        <CardTitle className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/80 flex items-center gap-2">
-          <span className="w-1 h-1 bg-primary rounded-full animate-pulse" />
+      <CardHeader className="p-4 py-2.5 flex flex-row items-center justify-between space-y-0 border-b border-border/30 bg-muted/5">
+        <CardTitle className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground/40 flex items-center gap-2 group-hover:text-primary/60 transition-colors">
+          <div className="h-1.5 w-1.5 rounded-full bg-primary/20 group-hover:bg-primary transition-colors" />
           {widget.widgetType}
         </CardTitle>
-        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-          <Button variant="ghost" size="icon" className="h-5 w-5 text-muted-foreground/50 hover:text-primary rounded-[2px]">
-            <Settings2 size={10} />
+        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0">
+          <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground/30 hover:text-primary hover:bg-primary/5 rounded-[2px] transition-colors">
+            <Settings2 size={12} />
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="p-4 pt-3 flex-1 overflow-hidden flex flex-col">
+      <CardContent className="p-5 pt-4 flex-1 overflow-hidden flex flex-col bg-card/50">
         {renderWidgetContent()}
       </CardContent>
     </Card>

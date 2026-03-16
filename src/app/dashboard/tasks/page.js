@@ -119,17 +119,20 @@ export default function TasksPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">Tasks</h1>
-          <p className="text-muted-foreground mt-1 text-sm">Manage and organize your daily goals.</p>
+          <h1 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-foreground">Tasks</h1>
+          <p className="text-muted-foreground mt-1 text-[10px] sm:text-xs font-medium uppercase tracking-widest opacity-50">Manage and organize your daily goals.</p>
         </div>
-        <div className="flex items-center gap-2 bg-muted/50 p-1 rounded-[4px] border border-border">
+        <div className="flex items-center gap-2 bg-muted/10 p-1 rounded-[4px] border border-border/50">
           <Button 
             variant={filter === 'all' ? 'secondary' : 'ghost'} 
             size="sm" 
-            className="h-7 rounded-[4px] text-[10px] font-bold uppercase tracking-wider px-3"
+            className={cn(
+               "h-8 rounded-[2px] text-[9px] font-black uppercase tracking-widest px-3",
+               filter === 'all' ? "bg-primary/10 text-primary shadow-none" : "text-muted-foreground/40"
+            )}
             onClick={() => setFilter('all')}
           >
             All
@@ -137,7 +140,10 @@ export default function TasksPage() {
           <Button 
             variant={filter === 'pending' ? 'secondary' : 'ghost'} 
             size="sm" 
-            className="h-7 rounded-[4px] text-[10px] font-bold uppercase tracking-wider px-3"
+            className={cn(
+               "h-8 rounded-[2px] text-[9px] font-black uppercase tracking-widest px-3",
+               filter === 'pending' ? "bg-primary/10 text-primary shadow-none" : "text-muted-foreground/40"
+            )}
             onClick={() => setFilter('pending')}
           >
             Pending
@@ -145,7 +151,10 @@ export default function TasksPage() {
           <Button 
             variant={filter === 'completed' ? 'secondary' : 'ghost'} 
             size="sm" 
-            className="h-7 rounded-[4px] text-[10px] font-bold uppercase tracking-wider px-3"
+            className={cn(
+               "h-8 rounded-[2px] text-[9px] font-black uppercase tracking-widest px-3",
+               filter === 'completed' ? "bg-primary/10 text-primary shadow-none" : "text-muted-foreground/40"
+            )}
             onClick={() => setFilter('completed')}
           >
             Done
@@ -153,37 +162,41 @@ export default function TasksPage() {
         </div>
       </div>
 
-      <Card className="bg-card border-border rounded-[4px] overflow-hidden">
-        <CardHeader className="p-4 border-b border-border bg-muted/20">
-           <form onSubmit={handleAddTask} className="flex items-center gap-3">
-              <div className="relative flex-1">
-                 <Plus className="absolute left-3 top-1/2 -translate-y-1/2 text-primary" size={18} />
+      <Card className="bg-card border-border/50 rounded-[4px] overflow-hidden shadow-sm">
+        <CardHeader className="p-0 border-b border-border/30 bg-muted/5">
+           <form onSubmit={handleAddTask} className="flex items-center gap-3 p-4">
+              <div className="relative flex-1 group">
+                 <Plus className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/40 group-focus-within:text-primary transition-colors" size={18} />
                  <Input 
-                    placeholder="Add a new task..." 
-                    className="pl-10 h-10 bg-transparent border-none focus:ring-0 text-base placeholder:text-muted-foreground/50"
+                    placeholder="ENTER NEW TASK IDENTIFIER..." 
+                    className="pl-12 h-12 bg-muted/10 border-border/50 rounded-[4px] text-[11px] font-black uppercase tracking-[0.2em] placeholder:text-muted-foreground/10 focus:bg-muted/20 transition-all border-none focus:ring-0"
                     value={newTaskTitle}
                     onChange={(e) => setNewTaskTitle(e.target.value)}
                  />
               </div>
-              <Button type="submit" size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-[4px] px-4 font-bold uppercase tracking-wider h-8 text-[10px]">
-                 Add
+              <Button type="submit" size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-[4px] px-6 font-black uppercase tracking-[0.2em] h-12 text-[10px] shadow-lg shadow-primary/20 active:scale-[0.98] transition-all">
+                 Initialize
               </Button>
            </form>
         </CardHeader>
         <CardContent className="p-0">
-           <div className="p-3 border-b border-border bg-muted/10">
-              <div className="relative w-full max-w-xs">
-                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={14} />
+           <div className="p-4 border-b border-border/30 bg-muted/5 flex items-center justify-between">
+              <div className="relative w-full max-w-xs group">
+                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/20 group-focus-within:text-primary transition-colors" size={14} />
                  <Input 
-                    placeholder="Search tasks..." 
-                    className="pl-9 h-8 bg-background border-border rounded-[4px] text-xs"
+                    placeholder="FILTER REGISTRY..." 
+                    className="pl-10 h-10 bg-muted/10 border-border/50 rounded-[4px] text-[9px] font-black uppercase tracking-[0.2em] placeholder:text-muted-foreground/10 focus:bg-muted/20 transition-all"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                  />
               </div>
+              <div className="flex items-center gap-2 px-3">
+                 <div className="h-1.5 w-1.5 rounded-full bg-primary/40 animate-pulse" />
+                 <span className="text-[8px] font-black uppercase tracking-[0.3em] text-muted-foreground/30">Live Filter Active</span>
+              </div>
            </div>
            
-           <ScrollArea className="h-[500px]">
+           <ScrollArea className="h-[calc(100vh-400px)] sm:h-[500px]">
               <div className="divide-y divide-border">
                  {loading && tasks.length === 0 ? (
                     [1, 2, 3, 4, 5].map((i) => (

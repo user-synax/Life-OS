@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Cloud, Sun, CloudRain, MapPin, Loader2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export default function WeatherWidget() {
   const [weather, setWeather] = useState(null);
@@ -66,33 +67,41 @@ export default function WeatherWidget() {
   }
 
   return (
-    <div className="flex flex-col h-full justify-between">
+    <div className="flex flex-col h-full py-2">
       <div className="flex items-start justify-between">
         <div className="flex flex-col">
-          <span className="text-4xl font-black tracking-tighter text-foreground/90">{weather.temp}°</span>
-          <span className="text-[10px] font-black text-muted-foreground/60 flex items-center gap-1 uppercase tracking-widest mt-1">
-             <MapPin size={10} className="text-primary/50" />
+          <div className="flex items-baseline gap-1">
+             <span className="text-5xl font-black tracking-tighter text-foreground/90">{weather.temp}°</span>
+             <span className="text-xl font-black text-primary/40 uppercase">C</span>
+          </div>
+          <span className="text-[10px] font-black text-muted-foreground/40 flex items-center gap-2 uppercase tracking-[0.2em] mt-2">
+             <MapPin size={12} className="text-primary/40" />
              {weather.location}
           </span>
         </div>
-        <div className="p-2.5 bg-muted/20 rounded-[4px] border border-border/50 transition-colors group-hover:border-primary/20">
+        <div className="p-4 bg-primary/5 rounded-[4px] border border-primary/10 shadow-lg shadow-primary/5">
            {getWeatherIcon(weather.condition)}
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-2 mt-4">
-         <div className="flex flex-col p-2 bg-muted/10 rounded-[4px] border border-transparent hover:border-border/50 transition-colors">
-            <span className="text-[7px] uppercase font-black text-muted-foreground/40 mb-1 tracking-widest">Humidity</span>
-            <span className="text-[11px] font-bold text-foreground/80">{weather.humidity}%</span>
+      <div className="grid grid-cols-2 gap-3 mt-8">
+         <div className="flex flex-col p-3 bg-muted/5 rounded-[4px] border border-border/50 hover:border-primary/20 transition-all group">
+            <span className="text-[8px] uppercase font-black text-muted-foreground/20 mb-2 tracking-[0.2em] group-hover:text-primary/40 transition-colors">Humidity</span>
+            <span className="text-[13px] font-black text-foreground/70">{weather.humidity}%</span>
          </div>
-         <div className="flex flex-col p-2 bg-muted/10 rounded-[4px] border border-transparent hover:border-border/50 transition-colors">
-            <span className="text-[7px] uppercase font-black text-muted-foreground/40 mb-1 tracking-widest">Wind</span>
-            <span className="text-[11px] font-bold text-foreground/80">{weather.wind} <span className="text-[8px] font-medium opacity-50">km/h</span></span>
+         <div className="flex flex-col p-3 bg-muted/5 rounded-[4px] border border-border/50 hover:border-primary/20 transition-all group">
+            <span className="text-[8px] uppercase font-black text-muted-foreground/20 mb-2 tracking-[0.2em] group-hover:text-primary/40 transition-colors">Wind Velocity</span>
+            <span className="text-[13px] font-black text-foreground/70">{weather.wind} <span className="text-[9px] font-medium opacity-30 tracking-normal uppercase">km/h</span></span>
          </div>
       </div>
 
-      <div className="mt-auto pt-4 flex items-center justify-center">
-         <span className="text-[8px] uppercase font-black tracking-[0.2em] text-primary/80 bg-primary/5 px-3 py-1 rounded-[2px] border border-primary/10">
+      <div className="mt-auto flex items-center justify-between pt-6">
+         <div className="flex gap-1">
+            {[1, 2, 3].map(i => (
+               <div key={i} className={cn("h-1 w-3 rounded-full bg-muted/20", i === 1 && "bg-primary/40")} />
+            ))}
+         </div>
+         <span className="text-[9px] font-black uppercase tracking-[0.3em] text-primary bg-primary/10 px-4 py-1.5 rounded-[2px] border border-primary/20 shadow-sm shadow-primary/10">
             {weather.condition}
          </span>
       </div>

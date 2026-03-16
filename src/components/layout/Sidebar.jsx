@@ -14,7 +14,9 @@ import {
   Settings, 
   Menu,
   X,
-  LogOut
+  LogOut,
+  Search,
+  Command as CommandIcon
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -68,7 +70,32 @@ export default function Sidebar({ isOpen, setIsOpen }) {
           </Button>
         </div>
 
-        <nav className="flex-1 space-y-0.5 px-3 py-6 overflow-y-auto">
+        <div className="px-4 pt-6 pb-2">
+          <button 
+            onClick={() => {
+              const event = new KeyboardEvent('keydown', {
+                key: 'k',
+                ctrlKey: true,
+                bubbles: true,
+                metaKey: true
+              });
+              window.dispatchEvent(event);
+              setIsOpen(false);
+            }}
+            className="w-full flex items-center justify-between px-4 py-3 rounded-[4px] bg-muted/10 border border-border/50 hover:bg-muted/20 hover:border-primary/20 transition-all duration-300 group"
+          >
+            <div className="flex items-center gap-3">
+              <Search size={16} className="text-muted-foreground/30 group-hover:text-primary transition-colors" />
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/40 group-hover:text-foreground transition-colors">Registry Search</span>
+            </div>
+            <div className="flex items-center gap-1 bg-muted/20 px-1.5 py-0.5 rounded-[2px] border border-border/50 group-hover:border-primary/10">
+               <CommandIcon size={8} className="text-muted-foreground/20 group-hover:text-primary/40" />
+               <span className="text-[8px] font-black text-muted-foreground/20 group-hover:text-primary/40">K</span>
+            </div>
+          </button>
+        </div>
+
+        <nav className="flex-1 space-y-0.5 px-3 py-4 overflow-y-auto">
           {menuItems.map((item) => {
             const isActive = pathname === item.href;
             return (

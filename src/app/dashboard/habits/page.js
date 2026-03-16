@@ -112,21 +112,21 @@ export default function HabitsPage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6">
+    <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">Habits</h1>
-          <p className="text-muted-foreground mt-1 text-sm">Build consistency and track your progress.</p>
+          <h1 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-foreground">Habits</h1>
+          <p className="text-muted-foreground mt-1 text-[10px] sm:text-xs font-medium uppercase tracking-widest opacity-50">Build consistency and track your progress.</p>
         </div>
-        <div className="flex items-center gap-2 bg-card border border-border p-2 rounded-[4px] shadow-sm">
-           <div className="flex flex-col items-center px-3">
-              <span className="text-[9px] uppercase font-bold text-muted-foreground/60">Active</span>
-              <span className="text-base font-bold text-primary">{habits.length}</span>
+        <div className="flex items-center gap-2 bg-muted/10 p-1 rounded-[4px] border border-border/50 shadow-sm">
+           <div className="flex flex-col items-center px-4">
+              <span className="text-[8px] uppercase font-black text-muted-foreground/30 tracking-[0.2em]">Active</span>
+              <span className="text-sm font-black text-primary uppercase tracking-widest">{habits.length}</span>
            </div>
-           <div className="h-6 w-px bg-border" />
-           <div className="flex flex-col items-center px-3">
-              <span className="text-[9px] uppercase font-bold text-muted-foreground/60">Avg Streak</span>
-              <span className="text-base font-bold text-orange-500">
+           <div className="h-6 w-px bg-border/50" />
+           <div className="flex flex-col items-center px-4">
+              <span className="text-[8px] uppercase font-black text-muted-foreground/30 tracking-[0.2em]">Avg Streak</span>
+              <span className="text-sm font-black text-orange-500 uppercase tracking-widest">
                  {habits.length > 0 ? Math.round(habits.reduce((acc, h) => acc + (h.streak || 0), 0) / habits.length) : 0}
               </span>
            </div>
@@ -134,20 +134,20 @@ export default function HabitsPage() {
       </div>
 
       <div className="grid grid-cols-1 gap-6">
-        <Card className="bg-card border-border shadow-sm rounded-[4px] overflow-hidden">
-          <CardHeader className="p-4 border-b border-border bg-muted/20">
-             <form onSubmit={handleAddHabit} className="flex items-center gap-3">
-                <div className="relative flex-1">
-                   <Activity className="absolute left-3 top-1/2 -translate-y-1/2 text-primary" size={18} />
+        <Card className="bg-card border-border/50 shadow-sm rounded-[4px] overflow-hidden">
+          <CardHeader className="p-0 border-b border-border/30 bg-muted/5">
+             <form onSubmit={handleAddHabit} className="flex items-center gap-3 p-4">
+                <div className="relative flex-1 group">
+                   <Activity className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/40 group-focus-within:text-primary transition-colors" size={18} />
                    <Input 
-                      placeholder="Add a new habit..." 
-                      className="pl-10 h-10 bg-transparent border-none focus:ring-0 text-base font-medium placeholder:text-muted-foreground/30"
+                      placeholder="INITIALIZE NEW HABIT PROTOCOL..." 
+                      className="pl-12 h-12 bg-muted/10 border-border/50 rounded-[4px] text-[11px] font-black uppercase tracking-[0.2em] placeholder:text-muted-foreground/10 focus:bg-muted/20 transition-all border-none focus:ring-0"
                       value={newHabitName}
                       onChange={(e) => setNewHabitName(e.target.value)}
                    />
                 </div>
-                <Button type="submit" size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-[4px] px-6 font-bold uppercase tracking-wider h-8 text-[10px]">
-                   Create
+                <Button type="submit" size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-[4px] px-8 font-black uppercase tracking-[0.2em] h-12 text-[10px] shadow-lg shadow-primary/20 active:scale-[0.98] transition-all">
+                   Deploy
                 </Button>
              </form>
           </CardHeader>

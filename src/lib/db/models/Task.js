@@ -6,9 +6,9 @@ const TaskSchema = new mongoose.Schema({
   dueDate: { type: Date },
   priority: { type: String, enum: ['low', 'medium', 'high'], default: 'medium' },
   completed: { type: Boolean, default: false },
+  completedAt: { type: Date },
   tags: [{ type: String }],
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  createdAt: { type: Date, default: Date.now },
-});
+}, { timestamps: true });
 
 export default mongoose.models.Task || mongoose.model('Task', TaskSchema);

@@ -11,29 +11,23 @@ import {
   isSameMonth, 
   isSameDay, 
   addMonths, 
-  subMonths
+  subMonths,
+  isAfter,
 } from 'date-fns';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import useEventStore from '@/store/useEventStore';
 
 export default function CalendarWidget() {
-  const [currentMonth, setCurrentMonth] = useState(null);
-  const [today, setToday] = useState(null);
+  const { events, fetchEvents } = useEventStore();
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [today, setToday] = useState(new Date());
 
   useEffect(() => {
-    const now = new Date();
-    if (currentMonth === null) {
-      queueMicrotask(() => setCurrentMonth(now));
-    }
-    if (today === null) {
-      queueMicrotask(() => setToday(now));
-    }
-  }, [currentMonth, today]);
+    fetchEvents();
+  }, [fetchEvents]);
 
   const calendarData = useMemo(() => {
-    if (!currentMonth) return null;
-
     const monthStart = startOfMonth(currentMonth);
     const monthEnd = endOfMonth(monthStart);
     const startDate = startOfWeek(monthStart);
@@ -45,12 +39,15 @@ export default function CalendarWidget() {
     };
   }, [currentMonth]);
 
-  const nextMonth = () => setCurrentMonth(prev => prev ? addMonths(prev, 1) : null);
-  const prevMonth = () => setCurrentMonth(prev => prev ? subMonths(prev, 1) : null);
+  const nextMonth = () => setCurrentMonth(prev => addMonths(prev, 1));
+  const prevMonth = () => setCurrentMonth(prev => subMonths(prev, 1));
 
-  if (!currentMonth || !calendarData) {
-    return <div className="h-full w-full animate-pulse bg-muted/20 rounded-[4px]" />;
-  }
+  const nextEvent = useMemo(() => {
+    const now = new Date();
+    return events
+      .filter(e => isAfter(new Date(e.date), now) || isSameDay(new Date(e.date), now))
+      .sort((a, b) => new Date(a.date) - new Date(b.date))[0];
+  }, [events]);
 
   const { monthStart, days } = calendarData;
 
@@ -83,8 +80,9 @@ export default function CalendarWidget() {
           </div>
         ))}
         {days.map((day, idx) => {
-          const isToday = today && isSameDay(day, today);
+          const isToday = isSameDay(day, today);
           const isCurrentMonth = isSameMonth(day, monthStart);
+          const dayEvents = events.filter(e => isSameDay(new Date(e.date), day));
           
           return (
             <div
@@ -99,7 +97,7 @@ export default function CalendarWidget() {
             >
               {format(day, 'd')}
               {isToday && <div className="absolute bottom-1 h-0.5 w-0.5 bg-primary-foreground/40 rounded-full" />}
-              {idx % 11 === 0 && isCurrentMonth && !isToday && (
+              {dayEvents.length > 0 && !isToday && (
                 <div className="absolute top-1 right-1 h-1 w-1 bg-primary/30 rounded-full" />
               )}
             </div>
@@ -113,20 +111,32 @@ export default function CalendarWidget() {
             <span className="text-[7px] uppercase font-black text-muted-foreground/30 tracking-[0.2em]">Live Calendar</span>
          </div>
          <span className="text-[7px] font-black text-primary/40 uppercase tracking-widest">
-            {format(today || new Date(), 'EEE, MMM d')}
+            {format(today, 'EEE, MMM d')}
          </span>
       </div>
 
       <div className="mt-4 pt-3 border-t border-border/10">
-         <div className="flex items-center justify-between text-[9px] font-bold text-muted-foreground uppercase tracking-wider">
-            <span>Next Event</span>
-            <span className="text-primary hover:underline cursor-pointer">View</span>
+         <div className="flex items-center justify-between text-[9px] font-black text-muted-foreground/20 uppercase tracking-[0.2em]">
+            <span>Next Operation</span>
+            <span className="text-primary/40 hover:text-primary cursor-pointer transition-colors">Registry</span>
          </div>
-         <div className="mt-2 flex items-center gap-2 p-2 bg-muted/20 rounded-[4px] border border-border">
-            <div className="h-1.5 w-1.5 rounded-full bg-primary" />
-            <span className="text-[10px] font-bold truncate tracking-tight text-foreground/80">Strategy Sync</span>
-            <span className="text-[9px] text-muted-foreground/50 ml-auto font-medium">10:00 AM</span>
-         </div>
+         {nextEvent ? (
+            <div className="mt-2 flex items-center gap-3 p-2.5 bg-muted/10 rounded-[4px] border border-border/50 group hover:border-primary/20 transition-all">
+               <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse shadow-[0_0_8px_rgba(var(--primary),0.6)]" />
+               <div className="flex-1 min-w-0">
+                  <p className="text-[10px] font-black truncate tracking-tight text-foreground/80 uppercase">{nextEvent.title}</p>
+                  <div className="flex items-center gap-2 mt-0.5 opacity-40">
+                     <MapPin size={8} />
+                     <span className="text-[8px] font-black uppercase tracking-widest truncate">{nextEvent.location || "Sector Unknown"}</span>
+                  </div>
+               </div>
+               <span className="text-[9px] font-black text-primary/60 ml-auto tabular-nums">{nextEvent.startTime || "00:00"}</span>
+            </div>
+         ) : (
+            <div className="mt-2 p-2.5 bg-muted/5 rounded-[4px] border border-dashed border-border/50 text-center">
+               <span className="text-[8px] font-black uppercase tracking-[0.3em] text-muted-foreground/20">No Operations Scheduled</span>
+            </div>
+         )}
       </div>
     </div>
   );
