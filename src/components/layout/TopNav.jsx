@@ -62,15 +62,13 @@ export default function TopNav() {
         </div>
 
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-              <Avatar className="h-9 w-9 border border-border">
-                <AvatarImage src={user?.avatar} alt={user?.name} />
-                <AvatarFallback className="bg-primary text-primary-foreground">
-                  {user?.name?.charAt(0) || <User size={16} />}
-                </AvatarFallback>
-              </Avatar>
-            </Button>
+          <DropdownMenuTrigger className="relative flex h-9 w-9 items-center justify-center rounded-full border border-border bg-transparent hover:bg-muted transition-all outline-none focus-visible:ring-2 focus-visible:ring-primary">
+            <Avatar className="h-8 w-8">
+              <AvatarImage src={user?.avatar} alt={user?.name} />
+              <AvatarFallback className="bg-primary text-primary-foreground text-xs font-bold">
+                {user?.name?.charAt(0) || <User size={14} />}
+              </AvatarFallback>
+            </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56 bg-card border-border" align="end" forceMount>
             <DropdownMenuLabel className="font-normal">

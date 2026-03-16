@@ -80,10 +80,8 @@ export default function NotesWidget() {
                       {note.pinned ? <Pin size={12} /> : <PinOff size={12} />}
                     </Button>
                     <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground">
-                          <MoreVertical size={12} />
-                        </Button>
+                      <DropdownMenuTrigger className="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition-all outline-none">
+                        <MoreVertical size={12} />
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="bg-card border-border">
                         <DropdownMenuItem 
