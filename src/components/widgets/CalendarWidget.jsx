@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { 
   format, 
   startOfMonth, 
@@ -18,22 +18,40 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 export default function CalendarWidget() {
-  const [currentMonth, setCurrentMonth] = useState(new Date());
+  // Use null as initial state to ensure server and client match for the first render
+  const [currentMonth, setCurrentMonth] = useState(null);
   const [today, setToday] = useState(null);
 
   useEffect(() => {
-    setToday(new Date());
+    const now = new Date();
+    setCurrentMonth(now);
+    setToday(now);
   }, []);
 
-  const monthStart = startOfMonth(currentMonth);
-  const monthEnd = endOfMonth(monthStart);
-  const startDate = startOfWeek(monthStart);
-  const endDate = endOfWeek(monthEnd);
+  // Memoize calculations to prevent unnecessary re-runs on every render
+  const calendarData = useMemo(() => {
+    if (!currentMonth) return null;
 
-  const days = eachDayOfInterval({ start: startDate, end: endDate });
+    const monthStart = startOfMonth(currentMonth);
+    const monthEnd = endOfMonth(monthStart);
+    const startDate = startOfWeek(monthStart);
+    const endDate = endOfWeek(monthEnd);
 
-  const nextMonth = () => setCurrentMonth(addMonths(currentMonth, 1));
-  const prevMonth = () => setCurrentMonth(subMonths(currentMonth, 1));
+    return {
+      monthStart,
+      days: eachDayOfInterval({ start: startDate, end: endDate })
+    };
+  }, [currentMonth]);
+
+  const nextMonth = () => setCurrentMonth(prev => prev ? addMonths(prev, 1) : null);
+  const prevMonth = () => setCurrentMonth(prev => prev ? subMonths(prev, 1) : null);
+
+  // Show a skeleton or empty state while hydrating
+  if (!currentMonth || !calendarData) {
+    return <div className="h-full w-full animate-pulse bg-sidebar/20 rounded-xl" />;
+  }
+
+  const { monthStart, days } = calendarData;
 
   return (
     <div className="flex flex-col h-full w-full">
@@ -63,7 +81,7 @@ export default function CalendarWidget() {
           
           return (
             <div
-              key={idx}
+              key={day.toString()}
               className={cn(
                 "aspect-square flex flex-col items-center justify-center rounded-lg text-[10px] transition-all duration-300 relative group cursor-pointer",
                 !isCurrentMonth && "text-muted-foreground/20",
