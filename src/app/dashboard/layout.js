@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import Sidebar from '@/components/layout/Sidebar';
 import TopNav from '@/components/layout/TopNav';
+import CommandPalette from '@/components/layout/CommandPalette';
 import useAuthStore from '@/store/useAuthStore';
 import { useRouter } from 'next/navigation';
 
@@ -34,6 +35,7 @@ export default function DashboardLayout({ children }) {
           {children}
         </main>
       </div>
+      <CommandPalette />
       <style jsx global>{`
         #main-content {
           margin-left: var(--sidebar-width, 240px);
