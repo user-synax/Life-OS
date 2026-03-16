@@ -14,11 +14,15 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import useAuthStore from '@/store/useAuthStore';
+import useNotificationStore from '@/store/useNotificationStore';
+import NotificationPanel from '@/components/notifications/NotificationPanel';
 
 export default function TopNav() {
   const [search, setSearch] = useState('');
+  const [showNotifications, setShowNotifications] = useState(false);
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
+  const unreadCount = useNotificationStore((state) => state.unreadCount);
 
   return (
     <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-border bg-background px-6">
@@ -28,7 +32,7 @@ export default function TopNav() {
           <Input
             type="search"
             placeholder="Search notes, tasks, bookmarks..."
-            className="pl-10 bg-sidebar border-border focus:ring-primary h-9"
+            className="pl-10 bg-sidebar border-border focus:ring-primary h-9 text-sm"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -36,16 +40,24 @@ export default function TopNav() {
       </div>
 
       <div className="flex items-center gap-4">
-        <Button variant="outline" size="sm" className="hidden gap-2 md:flex border-primary/20 hover:bg-primary/10 hover:text-primary">
+        <Button variant="outline" size="sm" className="hidden gap-2 md:flex border-primary/20 hover:bg-primary/10 hover:text-primary transition-all duration-300">
           <Plus size={16} />
-          <span>Add Widget</span>
+          <span className="text-xs font-bold uppercase tracking-widest">Add Widget</span>
         </Button>
 
         <div className="relative">
-          <Button variant="ghost" size="icon" className="relative text-muted-foreground hover:text-foreground">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className={cn("relative text-muted-foreground hover:text-foreground transition-all duration-300", showNotifications && "text-primary")}
+            onClick={() => setShowNotifications(!showNotifications)}
+          >
             <Bell size={20} />
-            <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-primary" />
+            {unreadCount > 0 && (
+              <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-primary animate-pulse shadow-lg shadow-primary/50" />
+            )}
           </Button>
+          <NotificationPanel open={showNotifications} setOpen={setShowNotifications} />
         </div>
 
         <DropdownMenu>
