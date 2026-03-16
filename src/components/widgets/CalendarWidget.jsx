@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   format, 
   startOfMonth, 
@@ -19,6 +19,11 @@ import { cn } from '@/lib/utils';
 
 export default function CalendarWidget() {
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [today, setToday] = useState(null);
+
+  useEffect(() => {
+    setToday(new Date());
+  }, []);
 
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(monthStart);
@@ -53,7 +58,7 @@ export default function CalendarWidget() {
           </div>
         ))}
         {days.map((day, idx) => {
-          const isToday = isSameDay(day, new Date());
+          const isToday = today && isSameDay(day, today);
           const isCurrentMonth = isSameMonth(day, monthStart);
           
           return (
