@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { verifyToken } from './src/lib/auth/jwt';
 
 export async function middleware(req) {
   const token = req.cookies.get('token')?.value;
@@ -9,7 +8,7 @@ export async function middleware(req) {
   const isPublicPath = pathname === '/login' || pathname === '/register';
 
   // If path is protected and no token, redirect to login
-  if (!isPublicPath && !token && pathname.startsWith('/dashboard')) {
+  if (!isPublicPath && !token && (pathname.startsWith('/dashboard') || pathname === '/')) {
     return NextResponse.redirect(new URL('/login', req.url));
   }
 
@@ -22,5 +21,5 @@ export async function middleware(req) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/login', '/register'],
+  matcher: ['/dashboard/:path*', '/login', '/register', '/'],
 };
