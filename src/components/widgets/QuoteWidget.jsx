@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Quote, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -25,32 +25,33 @@ export default function QuoteWidget() {
       const randomIndex = Math.floor(Math.random() * quotes.length);
       setQuote(quotes[randomIndex]);
       setLoading(false);
-    }, 500);
+    }, 400);
   };
 
   return (
-    <div className="flex flex-col h-full justify-between p-2">
-      <div className="flex items-center justify-between mb-4">
-        <Quote size={20} className="text-primary/20" />
-        <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground" onClick={getRandomQuote}>
+    <div className="flex flex-col h-full justify-between">
+      <div className="flex items-center justify-between mb-2">
+        <Quote size={16} className="text-primary/20" />
+        <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground rounded-[4px]" onClick={getRandomQuote}>
           <RefreshCw size={12} className={cn(loading && "animate-spin")} />
         </Button>
       </div>
 
-      <div className="flex-1 flex flex-col justify-center">
-         <p className="text-sm font-medium italic leading-relaxed text-foreground/90">
+      <div className="flex-1 flex flex-col justify-center px-2">
+         <p className="text-sm font-bold italic leading-relaxed text-foreground/80 tracking-tight">
             &ldquo;{quote.text}&rdquo;
          </p>
          <div className="flex items-center gap-2 mt-4">
             <div className="h-px w-4 bg-primary/30" />
-            <span className="text-[10px] uppercase font-bold tracking-widest text-muted-foreground/50">
+            <span className="text-[9px] uppercase font-bold tracking-wider text-muted-foreground/60">
                {quote.author}
             </span>
          </div>
       </div>
       
-      <div className="mt-4 flex justify-end">
-         <span className="text-[8px] uppercase font-bold text-primary/30 tracking-tighter">Daily Inspiration</span>
+      <div className="mt-4 pt-2 border-t border-border/30 flex justify-between items-center">
+         <span className="text-[8px] uppercase font-bold text-muted-foreground/30 tracking-wider">Inspiration</span>
+         <span className="text-[8px] uppercase font-bold text-primary/40 tracking-wider">Daily Quote</span>
       </div>
     </div>
   );

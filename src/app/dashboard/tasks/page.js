@@ -143,13 +143,14 @@ export default function TasksPage() {
                         )}
                       >
                          <div className="flex items-center gap-4 flex-1">
-                            <button 
-                              onClick={() => toggleTask(task._id)}
-                              className="text-primary transition-transform"
-                            >
-                               {task.completed ? <CheckCircle2 size={20} /> : <Circle size={20} />}
-                            </button>
-                            <div className="flex flex-col gap-1">
+                               <div 
+                                 role="button"
+                                 onClick={() => toggleTask(task._id)}
+                                 className="text-primary transition-transform cursor-pointer"
+                               >
+                                  {task.completed ? <CheckCircle2 size={20} /> : <Circle size={20} />}
+                               </div>
+                               <div className="flex flex-col gap-1">
                                <span className={cn(
                                   "text-sm font-bold tracking-tight",
                                   task.completed && "line-through text-muted-foreground"

@@ -5,13 +5,10 @@ import {
   Twitter, 
   Linkedin, 
   Mail, 
-  Globe, 
   Slack, 
   Figma, 
-  Youtube,
   Plus
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 
 const quickLinks = [
   { icon: Github, label: 'GitHub', href: 'https://github.com' },
@@ -25,24 +22,24 @@ const quickLinks = [
 export default function QuickLinksWidget() {
   return (
     <div className="flex flex-col h-full w-full">
-      <div className="grid grid-cols-3 gap-3 flex-1">
+      <div className="grid grid-cols-3 gap-2 flex-1">
         {quickLinks.map((link) => (
           <a
             key={link.label}
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex flex-col items-center justify-center gap-2 p-3 rounded-2xl bg-sidebar/30 border border-border/50 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 group"
+            className="flex flex-col items-center justify-center gap-1.5 p-2 rounded-[4px] bg-muted/20 border border-border hover:border-primary/50 hover:bg-primary/5 transition-colors group"
           >
-            <link.icon size={20} className="text-muted-foreground group-hover:text-primary transition-colors" />
-            <span className="text-[10px] font-bold text-muted-foreground/50 group-hover:text-foreground transition-colors uppercase tracking-widest">
+            <link.icon size={16} className="text-muted-foreground group-hover:text-primary transition-colors" />
+            <span className="text-[8px] font-bold text-muted-foreground/60 group-hover:text-foreground transition-colors uppercase tracking-wider">
               {link.label}
             </span>
           </a>
         ))}
-        <button className="flex flex-col items-center justify-center gap-2 p-3 rounded-2xl border border-dashed border-border/50 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 group">
-          <Plus size={20} className="text-muted-foreground/30 group-hover:text-primary transition-colors" />
-          <span className="text-[10px] font-bold text-muted-foreground/30 group-hover:text-foreground transition-colors uppercase tracking-widest">
+        <button className="flex flex-col items-center justify-center gap-1.5 p-2 rounded-[4px] border border-dashed border-border hover:border-primary/50 hover:bg-primary/5 transition-colors group">
+          <Plus size={16} className="text-muted-foreground/30 group-hover:text-primary transition-colors" />
+          <span className="text-[8px] font-bold text-muted-foreground/30 group-hover:text-foreground transition-colors uppercase tracking-wider">
             Add
           </span>
         </button>

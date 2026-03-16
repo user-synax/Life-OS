@@ -23,14 +23,11 @@ export default function DashboardPage() {
           <Button 
             variant="outline" 
             size="sm" 
-            className="gap-2 border-border hover:bg-muted rounded-[4px] h-9"
+            className="gap-2 border-border hover:bg-muted rounded-[4px] h-9 text-[10px] font-bold uppercase tracking-wider px-4"
             onClick={() => addWidget('tasks')}
           >
-            <Plus size={16} />
-            <span className="text-xs font-bold uppercase tracking-wider">Add Widget</span>
-          </Button>
-          <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground rounded-[4px] h-9 w-9">
-            <Settings2 size={18} />
+            <Plus size={14} />
+            <span>Manage Widgets</span>
           </Button>
         </div>
       </div>

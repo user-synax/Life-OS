@@ -7,10 +7,9 @@ import {
   YAxis, 
   CartesianGrid, 
   Tooltip, 
-  ResponsiveContainer,
-  Cell
+  ResponsiveContainer
 } from 'recharts';
-import { TrendingUp, CheckCircle, Clock, Zap } from 'lucide-react';
+import { TrendingUp, CheckCircle, Zap } from 'lucide-react';
 import useTaskStore from '@/store/useTaskStore';
 import useHabitStore from '@/store/useHabitStore';
 
@@ -34,50 +33,56 @@ export default function AnalyticsWidget() {
   return (
     <div className="flex flex-col h-full w-full">
       <div className="grid grid-cols-3 gap-2 mb-4">
-        <div className="flex flex-col p-2 bg-sidebar/50 rounded-xl border border-border/30">
-          <span className="text-[8px] uppercase font-bold text-muted-foreground/50 mb-1">Tasks</span>
+        <div className="flex flex-col p-2 bg-muted/30 rounded-[4px] border border-border">
+          <span className="text-[8px] uppercase font-bold text-muted-foreground/60 mb-1">Tasks</span>
           <div className="flex items-center gap-1">
              <CheckCircle size={10} className="text-primary" />
-             <span className="text-sm font-bold">{completedTasks}</span>
+             <span className="text-xs font-bold">{completedTasks}</span>
           </div>
         </div>
-        <div className="flex flex-col p-2 bg-sidebar/50 rounded-xl border border-border/30">
-          <span className="text-[8px] uppercase font-bold text-muted-foreground/50 mb-1">Habits</span>
+        <div className="flex flex-col p-2 bg-muted/30 rounded-[4px] border border-border">
+          <span className="text-[8px] uppercase font-bold text-muted-foreground/60 mb-1">Habits</span>
           <div className="flex items-center gap-1">
-             <Zap size={10} className="text-yellow-500" />
-             <span className="text-sm font-bold">{activeHabits}</span>
+             <Zap size={10} className="text-orange-500" />
+             <span className="text-xs font-bold">{activeHabits}</span>
           </div>
         </div>
-        <div className="flex flex-col p-2 bg-sidebar/50 rounded-xl border border-border/30">
-          <span className="text-[8px] uppercase font-bold text-muted-foreground/50 mb-1">Score</span>
+        <div className="flex flex-col p-2 bg-muted/30 rounded-[4px] border border-border">
+          <span className="text-[8px] uppercase font-bold text-muted-foreground/60 mb-1">Score</span>
           <div className="flex items-center gap-1">
-             <TrendingUp size={10} className="text-lime-500" />
-             <span className="text-sm font-bold">85%</span>
+             <TrendingUp size={10} className="text-primary" />
+             <span className="text-xs font-bold">85%</span>
           </div>
         </div>
       </div>
 
-      <div className="flex-1 min-h-[120px] w-full mt-2">
+      <div className="flex-1 min-h-[120px] w-full">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data} margin={{ top: 5, right: 5, left: -30, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#262626" vertical={false} />
+          <BarChart data={data} margin={{ top: 5, right: 5, left: -35, bottom: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
             <XAxis 
               dataKey="name" 
               axisLine={false} 
               tickLine={false} 
-              tick={{ fill: '#737373', fontSize: 10 }} 
+              tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 9, fontWeight: 600 }} 
             />
             <YAxis 
               axisLine={false} 
               tickLine={false} 
-              tick={{ fill: '#737373', fontSize: 10 }} 
+              tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 9, fontWeight: 600 }} 
             />
             <Tooltip 
-              cursor={{ fill: '#1a1a1a' }}
-              contentStyle={{ backgroundColor: '#161616', border: '1px solid #262626', borderRadius: '8px', fontSize: '10px' }}
+              cursor={{ fill: 'hsl(var(--muted)/0.5)' }}
+              contentStyle={{ 
+                backgroundColor: 'hsl(var(--card))', 
+                border: '1px solid hsl(var(--border))', 
+                borderRadius: '4px', 
+                fontSize: '10px',
+                fontWeight: 'bold'
+              }}
             />
-            <Bar dataKey="tasks" fill="#A3FF12" radius={[4, 4, 0, 0]} barSize={12} />
-            <Bar dataKey="habits" fill="#262626" radius={[4, 4, 0, 0]} barSize={12} />
+            <Bar dataKey="tasks" fill="hsl(var(--primary))" radius={[2, 2, 0, 0]} barSize={10} />
+            <Bar dataKey="habits" fill="hsl(var(--primary)/0.3)" radius={[2, 2, 0, 0]} barSize={10} />
           </BarChart>
         </ResponsiveContainer>
       </div>
