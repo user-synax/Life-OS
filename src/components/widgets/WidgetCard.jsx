@@ -17,11 +17,8 @@ import AnalyticsWidget from './AnalyticsWidget';
 import CalendarWidget from './CalendarWidget';
 import QuoteWidget from './QuoteWidget';
 import QuickLinksWidget from './QuickLinksWidget';
-import { useRef, useEffect } from 'react';
-import gsap from 'gsap';
 
 export default function WidgetCard({ widget, isDragging }) {
-  const cardRef = useRef(null);
   const {
     attributes,
     listeners,
@@ -32,28 +29,6 @@ export default function WidgetCard({ widget, isDragging }) {
   } = useSortable({ id: widget._id });
 
   const { removeWidget } = useWidgetStore();
-
-  const handleMouseEnter = () => {
-    if (cardRef.current && !isDragging && !isSortableDragging) {
-      gsap.to(cardRef.current, {
-        y: -4,
-        boxShadow: '0 20px 25px -5px rgba(163, 255, 18, 0.05), 0 8px 10px -6px rgba(163, 255, 18, 0.05)',
-        duration: 0.3,
-        ease: 'power2.out'
-      });
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (cardRef.current) {
-      gsap.to(cardRef.current, {
-        y: 0,
-        boxShadow: 'none',
-        duration: 0.3,
-        ease: 'power2.inOut'
-      });
-    }
-  };
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -108,38 +83,33 @@ export default function WidgetCard({ widget, isDragging }) {
 
   return (
     <Card
-      ref={(node) => {
-        setNodeRef(node);
-        cardRef.current = node;
-      }}
+      ref={setNodeRef}
       style={style}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
       className={cn(
-        'group relative flex flex-col overflow-hidden bg-card border-border transition-shadow duration-300',
+        'group relative flex flex-col overflow-hidden bg-card border-border rounded-[4px]',
         getWidgetSizeClass(widget.size),
-        (isDragging || isSortableDragging) && 'opacity-50 z-50 ring-2 ring-primary border-primary',
+        (isDragging || isSortableDragging) && 'opacity-50 z-50 ring-1 ring-primary border-primary',
       )}
     >
-      <CardHeader className="p-3 flex flex-row items-center justify-between space-y-0 border-b border-border/30 bg-sidebar/50 backdrop-blur-sm">
-        <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+      <CardHeader className="p-3 flex flex-row items-center justify-between space-y-0 border-b border-border bg-muted/30">
+        <CardTitle className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
           <div
             {...attributes}
             {...listeners}
-            className="cursor-grab active:cursor-grabbing text-muted-foreground/30 hover:text-primary transition-colors p-1 rounded hover:bg-sidebar"
+            className="cursor-grab active:cursor-grabbing text-muted-foreground/30 hover:text-primary transition-colors p-1 rounded-[4px]"
           >
-            <GripVertical size={14} />
+            <GripVertical size={12} />
           </div>
           {widget.widgetType}
         </CardTitle>
         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-          <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground hover:text-foreground">
+          <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground hover:text-foreground rounded-[4px]">
             <Settings2 size={12} />
           </Button>
           <Button 
             variant="ghost" 
             size="icon" 
-            className="h-6 w-6 text-muted-foreground hover:text-destructive"
+            className="h-6 w-6 text-muted-foreground hover:text-destructive rounded-[4px]"
             onClick={() => removeWidget(widget._id)}
           >
             <X size={12} />

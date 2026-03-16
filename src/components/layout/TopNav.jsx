@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Bell, Search, Plus, User } from 'lucide-react';
+import { Bell, Search, Plus, User, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -17,73 +17,103 @@ import useAuthStore from '@/store/useAuthStore';
 import useNotificationStore from '@/store/useNotificationStore';
 import NotificationPanel from '@/components/notifications/NotificationPanel';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
-export default function TopNav() {
+export default function TopNav({ onMenuClick }) {
   const [search, setSearch] = useState('');
   const [showNotifications, setShowNotifications] = useState(false);
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
   const unreadCount = useNotificationStore((state) => state.unreadCount);
+  const router = useRouter();
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-border bg-background px-6">
-      <div className="flex w-1/3 items-center gap-4">
-        <div className="relative w-full max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
+    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 md:px-8">
+      <div className="flex items-center gap-4 flex-1">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="lg:hidden h-9 w-9"
+          onClick={onMenuClick}
+        >
+          <Menu size={20} />
+        </Button>
+
+        <div className="relative w-full max-w-md group hidden md:block">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" size={16} />
           <Input
             type="search"
-            placeholder="Search notes, tasks, bookmarks..."
-            className="pl-10 bg-sidebar border-border focus:ring-primary h-9 text-sm"
+            placeholder="Search... (Cmd+K)"
+            className="pl-10 bg-muted/50 border-border focus:bg-background h-9 text-sm rounded-[4px] transition-all"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
       </div>
 
-      <div className="flex items-center gap-4">
-        <Button variant="outline" size="sm" className="hidden gap-2 md:flex border-primary/20 hover:bg-primary/10 hover:text-primary transition-all duration-300">
+      <div className="flex items-center gap-2 md:gap-4">
+        <Button variant="outline" size="sm" className="hidden sm:flex gap-2 border-border hover:bg-muted rounded-[4px] h-9 px-3">
           <Plus size={16} />
-          <span className="text-xs font-bold uppercase tracking-widest">Add Widget</span>
+          <span className="text-xs font-bold uppercase tracking-wider">New</span>
         </Button>
 
         <div className="relative">
           <Button 
             variant="ghost" 
             size="icon" 
-            className={cn("relative text-muted-foreground hover:text-foreground transition-all duration-300", showNotifications && "text-primary")}
+            className={cn(
+               "h-9 w-9 rounded-[4px] text-muted-foreground hover:text-foreground hover:bg-muted transition-colors", 
+               showNotifications && "text-primary bg-primary/10"
+            )}
             onClick={() => setShowNotifications(!showNotifications)}
           >
             <Bell size={20} />
             {unreadCount > 0 && (
-              <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-primary animate-pulse shadow-lg shadow-primary/50" />
+              <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-primary border-2 border-background" />
             )}
           </Button>
           <NotificationPanel open={showNotifications} setOpen={setShowNotifications} />
         </div>
 
         <DropdownMenu>
-          <DropdownMenuTrigger className="relative flex h-9 w-9 items-center justify-center rounded-full border border-border bg-transparent hover:bg-muted transition-all outline-none focus-visible:ring-2 focus-visible:ring-primary">
-            <Avatar className="h-8 w-8">
+          <DropdownMenuTrigger className="flex items-center gap-2 p-1 rounded-[4px] hover:bg-muted transition-colors outline-none group cursor-pointer">
+            <Avatar className="h-8 w-8 rounded-[4px] border border-border">
               <AvatarImage src={user?.avatar} alt={user?.name} />
               <AvatarFallback className="bg-primary text-primary-foreground text-xs font-bold">
                 {user?.name?.charAt(0) || <User size={14} />}
               </AvatarFallback>
             </Avatar>
+            <span className="text-sm font-bold hidden sm:inline-block">{user?.name || 'User'}</span>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56 bg-card border-border" align="end" forceMount>
-            <DropdownMenuLabel className="font-normal">
+          <DropdownMenuContent className="w-56 bg-card border-border rounded-[4px] shadow-md" align="end">
+            <DropdownMenuLabel className="font-normal p-3">
               <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium leading-none text-foreground">{user?.name}</p>
-                <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
+                <p className="text-sm font-bold leading-none">{user?.name || 'User'}</p>
+                <p className="text-xs leading-none text-muted-foreground">{user?.email || 'user@example.com'}</p>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator className="bg-border" />
-            <DropdownMenuItem className="focus:bg-primary focus:text-primary-foreground">Profile</DropdownMenuItem>
-            <DropdownMenuItem className="focus:bg-primary focus:text-primary-foreground">Settings</DropdownMenuItem>
-            <DropdownMenuSeparator className="bg-border" />
-            <DropdownMenuItem className="text-destructive focus:bg-destructive focus:text-destructive-foreground" onClick={logout}>
-              Log out
-            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <div className="p-1">
+               <DropdownMenuItem 
+                  className="rounded-[4px] text-xs font-bold uppercase tracking-wider p-2 cursor-pointer"
+                  onSelect={() => router.push('/dashboard/settings')}
+               >
+                  Settings
+               </DropdownMenuItem>
+               <DropdownMenuItem className="rounded-[4px] text-xs font-bold uppercase tracking-wider p-2 cursor-pointer">
+                  Billing
+               </DropdownMenuItem>
+            </div>
+            <DropdownMenuSeparator />
+            <div className="p-1">
+               <DropdownMenuItem 
+                  className="text-destructive focus:bg-destructive/10 focus:text-destructive rounded-[4px] text-xs font-bold uppercase tracking-wider p-2 cursor-pointer" 
+                  onSelect={logout}
+               >
+                  Sign Out
+               </DropdownMenuItem>
+            </div>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

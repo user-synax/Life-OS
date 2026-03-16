@@ -24,8 +24,14 @@ export default function CalendarWidget() {
 
   useEffect(() => {
     const now = new Date();
-    setCurrentMonth(now);
-    setToday(now);
+    // Skip the initial render to avoid cascading updates
+    if (currentMonth === null) {
+// Defer state update to next tick to avoid cascading renders
+queueMicrotask(() => setCurrentMonth(now));
+    }
+    if (today === null) {
+      queueMicrotask(() => setToday(now));
+    }
   }, []);
 
   // Memoize calculations to prevent unnecessary re-runs on every render

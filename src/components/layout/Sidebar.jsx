@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { 
@@ -12,14 +12,13 @@ import {
   Bookmark, 
   Timer, 
   Settings, 
-  ChevronLeft, 
-  ChevronRight,
+  Menu,
+  X,
   LogOut
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import useAuthStore from '@/store/useAuthStore';
-import gsap from 'gsap';
 
 const menuItems = [
   { icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard' },
@@ -32,83 +31,79 @@ const menuItems = [
   { icon: Settings, label: 'Settings', href: '/dashboard/settings' },
 ];
 
-export default function Sidebar() {
-  const [collapsed, setCollapsed] = useState(false);
+export default function Sidebar({ isOpen, setIsOpen }) {
   const pathname = usePathname();
   const logout = useAuthStore((state) => state.logout);
-  const sidebarRef = useRef(null);
-
-  useEffect(() => {
-    if (sidebarRef.current) {
-      gsap.to(sidebarRef.current, {
-        width: collapsed ? '80px' : '240px',
-        duration: 0.3,
-        ease: 'power2.inOut',
-      });
-      document.documentElement.style.setProperty('--sidebar-width', collapsed ? '80px' : '240px');
-    }
-  }, [collapsed]);
 
   return (
-    <aside
-      ref={sidebarRef}
-      className="fixed left-0 top-0 z-40 flex h-screen flex-col border-r border-border bg-sidebar text-sidebar-foreground transition-all duration-300"
-      style={{ width: '240px' }}
-    >
-      <div className="flex h-16 items-center justify-between px-4">
-        {!collapsed && (
-          <div className="flex items-center gap-2 font-bold text-primary">
-            <div className="h-8 w-8 rounded-lg bg-primary" />
-            <span className="text-xl tracking-tight">Life OS</span>
+    <>
+      {/* Mobile Backdrop */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm lg:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      <aside
+        className={cn(
+          "fixed left-0 top-0 z-50 flex h-screen w-64 flex-col border-r border-border bg-sidebar text-sidebar-foreground transition-transform lg:translate-x-0",
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        )}
+      >
+        <div className="flex h-16 items-center justify-between px-6 border-b border-border">
+          <div className="flex items-center gap-3 font-bold text-primary">
+            <div className="h-8 w-8 rounded-[4px] bg-primary flex items-center justify-center">
+               <div className="h-4 w-4 rounded-full border-2 border-primary-foreground/30" />
+            </div>
+            <span className="text-xl tracking-tight uppercase font-black">Life OS</span>
           </div>
-        )}
-        {collapsed && (
-           <div className="mx-auto h-8 w-8 rounded-lg bg-primary" />
-        )}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-muted-foreground hover:text-foreground"
-          onClick={() => setCollapsed(!collapsed)}
-        >
-          {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
-        </Button>
-      </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="lg:hidden h-8 w-8"
+            onClick={() => setIsOpen(false)}
+          >
+            <X size={20} />
+          </Button>
+        </div>
 
-      <nav className="flex-1 space-y-1 px-2 py-4">
-        {menuItems.map((item) => {
-          const isActive = pathname === item.href;
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                'flex items-center gap-3 rounded-lg px-3 py-2 transition-colors',
-                isActive
-                  ? 'bg-primary text-primary-foreground font-medium'
-                  : 'text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
-              )}
-            >
-              <item.icon size={20} />
-              {!collapsed && <span>{item.label}</span>}
-            </Link>
-          );
-        })}
-      </nav>
+        <nav className="flex-1 space-y-1 px-3 py-4 overflow-y-auto">
+          {menuItems.map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setIsOpen(false)}
+                className={cn(
+                  'flex items-center gap-3 rounded-[4px] px-3 py-2 transition-colors group relative',
+                  isActive
+                    ? 'bg-primary text-primary-foreground font-bold'
+                    : 'text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
+                )}
+              >
+                <item.icon size={18} />
+                <span className="text-sm font-medium">{item.label}</span>
+                {isActive && (
+                   <div className="absolute right-2 h-1 w-1 rounded-full bg-primary-foreground" />
+                )}
+              </Link>
+            );
+          })}
+        </nav>
 
-      <div className="p-4 border-t border-border">
-        <Button
-          variant="ghost"
-          className={cn(
-            "w-full justify-start gap-3 text-muted-foreground hover:text-destructive transition-colors",
-            collapsed && "px-2"
-          )}
-          onClick={logout}
-        >
-          <LogOut size={20} />
-          {!collapsed && <span>Logout</span>}
-        </Button>
-      </div>
-    </aside>
+        <div className="p-3 border-t border-border">
+          <Button
+            variant="ghost"
+            className="w-full justify-start gap-3 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-[4px] h-10 px-3"
+            onClick={logout}
+          >
+            <LogOut size={18} />
+            <span className="text-sm font-medium">Logout</span>
+          </Button>
+        </div>
+      </aside>
+    </>
   );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import {
   DndContext,
   closestCenter,
@@ -19,7 +19,6 @@ import {
 } from '@dnd-kit/sortable';
 import WidgetCard from './WidgetCard';
 import useWidgetStore from '@/store/useWidgetStore';
-import gsap from 'gsap';
 
 const dropAnimation = {
   sideEffects: defaultDropAnimationSideEffects({
@@ -34,29 +33,10 @@ const dropAnimation = {
 export default function WidgetGrid() {
   const { widgets, loading, fetchWidgets, reorderWidgets } = useWidgetStore();
   const [activeId, setActiveId] = useState(null);
-  const gridRef = useRef(null);
 
   useEffect(() => {
     fetchWidgets();
   }, [fetchWidgets]);
-
-  useEffect(() => {
-    if (!loading && widgets.length > 0 && gridRef.current) {
-      gsap.fromTo(
-        gridRef.current.children,
-        { opacity: 0, y: 20, scale: 0.95 },
-        { 
-          opacity: 1, 
-          y: 0, 
-          scale: 1, 
-          duration: 0.4, 
-          stagger: 0.05, 
-          ease: 'power2.out',
-          clearProps: 'all'
-        }
-      );
-    }
-  }, [loading, widgets.length]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -86,9 +66,9 @@ export default function WidgetGrid() {
 
   if (loading && widgets.length === 0) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {[1, 2, 3, 4, 5, 6].map((i) => (
-          <div key={i} className="h-[200px] bg-sidebar animate-pulse rounded-xl" />
+          <div key={i} className="h-[200px] bg-muted animate-pulse rounded-[4px]" />
         ))}
       </div>
     );
@@ -102,8 +82,7 @@ export default function WidgetGrid() {
       onDragEnd={handleDragEnd}
     >
       <div 
-        ref={gridRef}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 auto-rows-[200px]"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 auto-rows-[200px]"
       >
         <SortableContext items={widgets.map((w) => w._id)} strategy={rectSortingStrategy}>
           {widgets.map((widget) => (

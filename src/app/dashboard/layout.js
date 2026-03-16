@@ -1,15 +1,17 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useState } from 'react';
 import Sidebar from '@/components/layout/Sidebar';
 import TopNav from '@/components/layout/TopNav';
 import CommandPalette from '@/components/layout/CommandPalette';
 import useAuthStore from '@/store/useAuthStore';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function DashboardLayout({ children }) {
   const { user, fetchUser, loading } = useAuthStore();
   const router = useRouter();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     fetchUser();
@@ -25,8 +27,8 @@ export default function DashboardLayout({ children }) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-4">
-          <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-t-2 border-primary" />
-          <p className="text-muted-foreground animate-pulse">Loading Life OS...</p>
+          <div className="h-10 w-10 animate-spin border-t-2 border-primary rounded-full" />
+          <p className="text-sm text-muted-foreground">Loading Life OS...</p>
         </div>
       </div>
     );
@@ -34,19 +36,14 @@ export default function DashboardLayout({ children }) {
 
   return (
     <div className="flex min-h-screen bg-background font-sans antialiased text-foreground">
-      <Sidebar />
-      <div className="flex flex-1 flex-col transition-all duration-300 ml-[240px]" id="main-content">
-        <TopNav />
-        <main className="flex-1 overflow-y-auto p-6 scroll-smooth">
+      <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
+      <div className="flex flex-1 flex-col lg:pl-64" id="main-content">
+        <TopNav onMenuClick={() => setSidebarOpen(true)} />
+        <main className="flex-1 p-4 md:p-8 lg:p-10">
           {children}
         </main>
       </div>
       <CommandPalette />
-      <style jsx global>{`
-        #main-content {
-          margin-left: var(--sidebar-width, 240px);
-        }
-      `}</style>
     </div>
   );
 }
