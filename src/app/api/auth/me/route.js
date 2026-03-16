@@ -27,3 +27,25 @@ export async function GET(req) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
+
+export async function PATCH(req) {
+  try {
+    const token = req.cookies.get('token')?.value;
+    const decoded = verifyToken(token);
+    if (!decoded) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const updates = await req.json();
+    await connectDB();
+    
+    const user = await User.findByIdAndUpdate(
+      decoded.userId,
+      { $set: updates },
+      { new: true }
+    ).select('-password');
+
+    if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    return NextResponse.json({ user });
+  } catch (error) {
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}

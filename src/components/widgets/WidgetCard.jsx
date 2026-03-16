@@ -22,10 +22,16 @@ export default function WidgetCard({ widget }) {
   const getWidgetSizeClass = (size) => {
     const { w, h } = size || { w: 1, h: 1 };
     let classes = '';
-    if (w === 2) classes += ' md:col-span-2';
+    
+    // Width classes
+    if (w === 2) classes += ' sm:col-span-2';
     if (w === 3) classes += ' lg:col-span-3';
     if (w === 4) classes += ' xl:col-span-4';
+    
+    // Height classes
     if (h === 2) classes += ' row-span-2';
+    if (h === 3) classes += ' row-span-3';
+    
     return classes;
   };
 
@@ -53,12 +59,9 @@ export default function WidgetCard({ widget }) {
         return <QuickLinksWidget />;
       default:
         return (
-          <div className="flex flex-col items-center gap-2 text-center">
-            <div className="text-xs font-mono text-muted-foreground/50 italic">
-              {widget.widgetType.toUpperCase()}
-            </div>
-            <div className="text-[10px] text-muted-foreground/30">
-              Widget implementation pending
+          <div className="flex flex-col items-center justify-center h-full gap-2 text-center">
+            <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/30">
+              {widget.widgetType}
             </div>
           </div>
         );
@@ -68,7 +71,7 @@ export default function WidgetCard({ widget }) {
   return (
     <Card
       className={cn(
-        'group relative flex flex-col overflow-hidden bg-card border-border rounded-[4px] shadow-sm',
+        'group relative flex flex-col overflow-hidden bg-card border-border rounded-[4px] shadow-sm h-full',
         getWidgetSizeClass(widget.size)
       )}
     >

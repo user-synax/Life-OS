@@ -39,8 +39,11 @@ export default function NotesPage() {
   const [view, setView] = useState('grid'); // grid, list
   const [activeNote, setActiveNote] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [editTitle, setEditTitle] = useState('');
   const [editContent, setEditContent] = useState('');
+  const [editTags, setEditContentTags] = useState([]);
+  const [newTag, setNewTag] = useState('');
 
   useEffect(() => {
     fetchNotes();
@@ -53,16 +56,40 @@ export default function NotesPage() {
 
   const handleSaveNote = async () => {
     if (!activeNote) return;
-    await updateNote(activeNote._id, { title: editTitle, content: editContent });
-    setIsEditing(false);
-    setActiveNote(null);
+    try {
+      setIsSaving(true);
+      await updateNote(activeNote._id, { 
+        title: editTitle, 
+        content: editContent,
+        tags: editTags 
+      });
+      setIsSaving(false);
+      setIsEditing(false);
+      setActiveNote(null);
+    } catch (error) {
+      console.error('Save note error:', error);
+      setIsSaving(false);
+    }
   };
 
   const handleEditNote = (note) => {
     setActiveNote(note);
     setEditTitle(note.title);
     setEditContent(note.content);
+    setEditContentTags(note.tags || []);
     setIsEditing(true);
+  };
+
+  const handleAddTag = () => {
+    if (!newTag.trim()) return;
+    if (!editTags.includes(newTag.trim())) {
+      setEditContentTags([...editTags, newTag.trim()]);
+    }
+    setNewTag('');
+  };
+
+  const handleRemoveTag = (tagToRemove) => {
+    setEditContentTags(editTags.filter(t => t !== tagToRemove));
   };
 
   const filteredNotes = notes.filter((note) =>
@@ -86,9 +113,9 @@ export default function NotesPage() {
                  <X size={16} />
                  <span className="text-[10px] font-bold uppercase tracking-wider">Cancel</span>
               </Button>
-              <Button size="sm" className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-[4px]" onClick={handleSaveNote}>
+              <Button size="sm" className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-[4px]" onClick={handleSaveNote} disabled={isSaving}>
                  <Save size={16} />
-                 <span className="text-[10px] font-bold uppercase tracking-wider">Save</span>
+                 <span className="text-[10px] font-bold uppercase tracking-wider">{isSaving ? 'Saving...' : 'Save'}</span>
               </Button>
            </div>
         </div>
@@ -101,14 +128,33 @@ export default function NotesPage() {
                  value={editTitle}
                  onChange={(e) => setEditTitle(e.target.value)}
               />
-              <div className="flex items-center gap-2 mt-4">
-                 <Badge variant="outline" className="gap-1 px-1.5 py-0.5 border-primary/20 bg-primary/5 text-primary rounded-[2px]">
-                    <Tag size={8} />
-                    <span className="text-[8px]">General</span>
-                 </Badge>
-                 <Button variant="ghost" size="sm" className="h-6 px-2 text-[9px] font-bold uppercase tracking-wider text-muted-foreground rounded-[2px]">
-                    Add Tag
-                 </Button>
+              <div className="flex flex-wrap items-center gap-2 mt-4">
+                 {editTags.map(tag => (
+                    <Badge key={tag} variant="outline" className="gap-1 px-1.5 py-0.5 border-primary/20 bg-primary/5 text-primary rounded-[2px]">
+                       <Tag size={8} />
+                       <span className="text-[8px]">{tag}</span>
+                       <button onClick={() => handleRemoveTag(tag)} className="hover:text-destructive transition-colors ml-1">
+                          <X size={8} />
+                       </button>
+                    </Badge>
+                 ))}
+                 <div className="flex items-center gap-1 ml-2">
+                    <Input 
+                       className="h-6 w-24 text-[10px] bg-muted/30 border-border px-2 py-0"
+                       placeholder="New tag..."
+                       value={newTag}
+                       onChange={(e) => setNewTag(e.target.value)}
+                       onKeyDown={(e) => e.key === 'Enter' && handleAddTag()}
+                    />
+                    <Button 
+                       variant="ghost" 
+                       size="sm" 
+                       className="h-6 w-6 p-0 text-primary hover:bg-primary/10 rounded-[2px]"
+                       onClick={handleAddTag}
+                    >
+                       <Plus size={12} />
+                    </Button>
+                 </div>
               </div>
            </CardHeader>
            <CardContent className="p-6 flex-1">
@@ -273,11 +319,11 @@ function NoteCard({ note, view, onEdit, onPin, onDelete }) {
                   <Edit3 size={14} />
                </Button>
                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
+                  <DropdownMenuTrigger render={
                      <div role="button" className="h-7 w-7 flex items-center justify-center rounded-[4px] text-muted-foreground hover:bg-muted hover:text-foreground cursor-pointer transition-colors">
                         <MoreVertical size={14} />
                      </div>
-                  </DropdownMenuTrigger>
+                  } />
                   <DropdownMenuContent align="end" className="bg-card border-border p-1 rounded-[4px] shadow-sm">
                      <DropdownMenuItem className="rounded-[4px] text-xs font-bold uppercase tracking-wider p-2" onClick={onDelete}>
                         <Trash2 size={12} className="mr-2" />

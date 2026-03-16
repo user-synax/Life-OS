@@ -15,9 +15,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
+import { useRouter } from 'next/navigation';
+
 export default function NotesWidget() {
   const [newNoteTitle, setNewNoteTitle] = useState('');
   const { notes, loading, fetchNotes, addNote, updateNote, removeNote } = useNoteStore();
+  const router = useRouter();
 
   useEffect(() => {
     fetchNotes();
@@ -60,8 +63,9 @@ export default function NotesWidget() {
             {notes.map((note) => (
               <div
                 key={note._id}
+                onClick={() => router.push('/dashboard/notes')}
                 className={cn(
-                  "flex flex-col p-2.5 rounded-[4px] border border-border bg-muted/10 group transition-colors relative",
+                  "flex flex-col p-2.5 rounded-[4px] border border-border bg-muted/10 group transition-colors relative cursor-pointer hover:border-primary/30",
                   note.pinned && "border-primary/20 bg-primary/5"
                 )}
               >
@@ -75,18 +79,27 @@ export default function NotesWidget() {
                       variant="ghost" 
                       size="icon" 
                       className="h-6 w-6 text-muted-foreground hover:text-primary rounded-[4px]"
-                      onClick={() => updateNote(note._id, { pinned: !note.pinned })}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        updateNote(note._id, { pinned: !note.pinned });
+                      }}
                     >
                       {note.pinned ? <Pin size={10} /> : <PinOff size={10} />}
                     </Button>
                     <DropdownMenu>
-                      <DropdownMenuTrigger className="flex h-6 w-6 items-center justify-center rounded-[4px] text-muted-foreground hover:bg-muted hover:text-foreground transition-colors outline-none">
+                      <DropdownMenuTrigger 
+                        onClick={(e) => e.stopPropagation()}
+                        className="flex h-6 w-6 items-center justify-center rounded-[4px] text-muted-foreground hover:bg-muted hover:text-foreground transition-colors outline-none"
+                      >
                         <MoreVertical size={10} />
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="bg-card border-border rounded-[4px]">
                         <DropdownMenuItem 
                           className="text-destructive focus:bg-destructive/10 focus:text-destructive rounded-[4px] text-xs p-2"
-                          onClick={() => removeNote(note._id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            removeNote(note._id);
+                          }}
                         >
                           <Trash2 size={12} className="mr-2" />
                           Delete

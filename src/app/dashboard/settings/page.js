@@ -21,13 +21,36 @@ import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import useAuthStore from '@/store/useAuthStore';
 import { cn } from '@/lib/utils';
+import axios from 'axios';
 
 export default function SettingsPage() {
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
+  const fetchUser = useAuthStore((state) => state.fetchUser);
   const [activeTab, setActiveTab] = useState('profile');
+  const [isSaving, setIsSaving] = useState(false);
 
   if (!user) return null;
+
+  const handleUpdateProfile = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const updates = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      bio: formData.get('bio'),
+    };
+
+    try {
+      setIsSaving(true);
+      await axios.patch('/api/auth/me', updates);
+      await fetchUser();
+      setIsSaving(false);
+    } catch (error) {
+      console.error('Update profile error:', error);
+      setIsSaving(false);
+    }
+  };
 
   const tabs = [
     { id: 'profile', icon: User, label: 'Profile' },
@@ -77,54 +100,58 @@ export default function SettingsPage() {
          <div className="space-y-6">
             {activeTab === 'profile' && (
                <div className="space-y-6">
-                  <Card className="bg-card border-border rounded-[4px] overflow-hidden shadow-sm">
-                     <CardHeader className="p-6 border-b border-border bg-muted/20">
-                        <CardTitle className="text-xs font-bold uppercase tracking-wider">Public Profile</CardTitle>
-                     </CardHeader>
-                     <CardContent className="p-6 space-y-6">
-                        <div className="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
-                           <div className="relative group">
-                              <Avatar className="h-20 w-20 border-2 border-border rounded-[4px]">
-                                 <AvatarImage src={user?.avatar} className="rounded-[4px]" />
-                                 <AvatarFallback className="bg-primary text-primary-foreground text-xl font-bold rounded-[4px]">
-                                    {user?.name?.charAt(0) || <User size={24} />}
-                                 </AvatarFallback>
-                              </Avatar>
-                              <button className="absolute -bottom-2 -right-2 p-1.5 bg-background border border-border text-foreground rounded-[4px] shadow-sm hover:bg-muted transition-colors">
-                                 <Camera size={14} />
-                              </button>
+                  <form onSubmit={handleUpdateProfile} className="space-y-6">
+                     <Card className="bg-card border-border rounded-[4px] overflow-hidden shadow-sm">
+                        <CardHeader className="p-6 border-b border-border bg-muted/20">
+                           <CardTitle className="text-xs font-bold uppercase tracking-wider">Public Profile</CardTitle>
+                        </CardHeader>
+                        <CardContent className="p-6 space-y-6">
+                           <div className="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
+                              <div className="relative group">
+                                 <Avatar className="h-20 w-20 border-2 border-border rounded-[4px]">
+                                    <AvatarImage src={user?.avatar} className="rounded-[4px]" />
+                                    <AvatarFallback className="bg-primary text-primary-foreground text-xl font-bold rounded-[4px]">
+                                       {user?.name?.charAt(0) || <User size={24} />}
+                                    </AvatarFallback>
+                                 </Avatar>
+                                 <button type="button" className="absolute -bottom-2 -right-2 p-1.5 bg-background border border-border text-foreground rounded-[4px] shadow-sm hover:bg-muted transition-colors">
+                                    <Camera size={14} />
+                                 </button>
+                              </div>
+                              <div className="space-y-1">
+                                 <h3 className="text-xl font-bold tracking-tight">{user?.name || 'User'}</h3>
+                                 <p className="text-xs text-muted-foreground font-medium">{user?.email || 'user@example.com'}</p>
+                                 <Badge variant="outline" className="text-[9px] font-bold uppercase tracking-wider rounded-[2px] mt-2">Personal Account</Badge>
+                              </div>
                            </div>
-                           <div className="space-y-1">
-                              <h3 className="text-xl font-bold tracking-tight">{user?.name || 'User'}</h3>
-                              <p className="text-xs text-muted-foreground font-medium">{user?.email || 'user@example.com'}</p>
-                              <Badge variant="outline" className="text-[9px] font-bold uppercase tracking-wider rounded-[2px] mt-2">Personal Account</Badge>
-                           </div>
-                        </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                           <div className="space-y-1.5">
-                              <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground ml-1">Full Name</label>
-                              <Input defaultValue={user?.name || ''} className="bg-muted/30 border-border rounded-[4px] h-9 text-sm" />
+                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                              <div className="space-y-1.5">
+                                 <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground ml-1">Full Name</label>
+                                 <Input name="name" defaultValue={user?.name || ''} className="bg-muted/30 border-border rounded-[4px] h-9 text-sm" />
+                              </div>
+                              <div className="space-y-1.5">
+                                 <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground ml-1">Email Address</label>
+                                 <Input name="email" defaultValue={user?.email || ''} className="bg-muted/30 border-border rounded-[4px] h-9 text-sm" />
+                              </div>
+                              <div className="col-span-full space-y-1.5">
+                                 <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground ml-1">Bio</label>
+                                 <textarea 
+                                    name="bio"
+                                    defaultValue={user?.bio || ''}
+                                    className="w-full min-h-[100px] bg-muted/30 border border-border rounded-[4px] p-3 focus:ring-1 focus:ring-primary focus:border-primary transition-all resize-none text-sm outline-none"
+                                    placeholder="Tell us a bit about yourself..."
+                                 />
+                              </div>
                            </div>
-                           <div className="space-y-1.5">
-                              <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground ml-1">Email Address</label>
-                              <Input defaultValue={user?.email || ''} className="bg-muted/30 border-border rounded-[4px] h-9 text-sm" />
-                           </div>
-                           <div className="col-span-full space-y-1.5">
-                              <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground ml-1">Bio</label>
-                              <textarea 
-                                 className="w-full min-h-[100px] bg-muted/30 border border-border rounded-[4px] p-3 focus:ring-1 focus:ring-primary focus:border-primary transition-all resize-none text-sm outline-none"
-                                 placeholder="Tell us a bit about yourself..."
-                              />
-                           </div>
-                        </div>
-                     </CardContent>
-                     <CardFooter className="p-6 bg-muted/10 border-t border-border flex justify-end">
-                        <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-[4px] px-6 font-bold uppercase tracking-wider h-9 text-[10px]">
-                           Save Changes
-                        </Button>
-                     </CardFooter>
-                  </Card>
+                        </CardContent>
+                        <CardFooter className="p-6 bg-muted/10 border-t border-border flex justify-end">
+                           <Button type="submit" size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-[4px] px-6 font-bold uppercase tracking-wider h-9 text-[10px]" disabled={isSaving}>
+                              {isSaving ? 'Saving...' : 'Save Changes'}
+                           </Button>
+                        </CardFooter>
+                     </Card>
+                  </form>
 
                   <Card className="bg-card border-border rounded-[4px] overflow-hidden shadow-sm">
                      <CardHeader className="p-6 border-b border-border bg-muted/20">

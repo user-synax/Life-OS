@@ -1,15 +1,18 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Play, Pause, RotateCcw, Coffee, Brain } from 'lucide-react';
+import { Play, Pause, RotateCcw, Coffee, Brain, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import useTaskStore from '@/store/useTaskStore';
 
 export default function FocusTimerWidget() {
   const [timeLeft, setTimeLeft] = useState(25 * 60);
   const [isActive, setIsActive] = useState(false);
   const [mode, setMode] = useState('focus'); // 'focus' or 'break'
+  const tasks = useTaskStore((state) => state.tasks);
+  const completedToday = tasks.filter(t => t.completed).length;
 
   const toggleTimer = () => setIsActive(!isActive);
 
@@ -128,7 +131,12 @@ queueMicrotask(() => setMode(nextMode));
         >
           {isActive ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="currentColor" className="ml-0.5" />}
         </Button>
-        <div className="w-8" />
+        <div className="flex items-center justify-center h-8 w-8 bg-muted/30 rounded-[4px] border border-border">
+           <div className="flex flex-col items-center">
+              <span className="text-[8px] font-bold leading-none">{completedToday}</span>
+              <CheckCircle2 size={8} className="text-primary mt-0.5" />
+           </div>
+        </div>
       </div>
     </div>
   );

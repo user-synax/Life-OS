@@ -19,10 +19,10 @@ function DropdownMenuPortal({
 }
 
 function DropdownMenuTrigger({
-  asChild,
+  render,
   ...props
 }) {
-  return <MenuPrimitive.Trigger data-slot="dropdown-menu-trigger" asChild={asChild} {...props} />;
+  return <MenuPrimitive.Trigger data-slot="dropdown-menu-trigger" render={render} {...props} />;
 }
 
 function DropdownMenuContent({
