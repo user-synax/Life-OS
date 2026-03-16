@@ -22,8 +22,31 @@ const useHabitStore = create((set, get) => ({
     try {
       const { data } = await axios.post('/api/habits', { name });
       set({ habits: [...get().habits, data.habit] });
+      return data.habit;
     } catch (error) {
       console.error('Add habit error:', error);
+      throw error;
+    }
+  },
+
+  updateHabit: async (id, updates) => {
+    const oldHabits = get().habits;
+    set({
+      habits: get().habits.map((h) =>
+        h._id === id ? { ...h, ...updates } : h
+      ),
+    });
+
+    try {
+      const { data } = await axios.patch(`/api/habits/${id}`, updates);
+      set({
+        habits: get().habits.map((h) => (h._id === id ? data.habit : h)),
+      });
+      return data.habit;
+    } catch (error) {
+      console.error('Update habit error:', error);
+      set({ habits: oldHabits });
+      throw error;
     }
   },
 
@@ -59,6 +82,7 @@ const useHabitStore = create((set, get) => ({
     } catch (error) {
       console.error('Toggle habit error:', error);
       // Revert on error
+      fetchHabits();
     }
   },
 
@@ -71,6 +95,7 @@ const useHabitStore = create((set, get) => ({
       });
     } catch (error) {
       console.error('Remove habit error:', error);
+      throw error;
     }
   },
 }));

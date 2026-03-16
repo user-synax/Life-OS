@@ -58,18 +58,18 @@ export default function BookmarksPage() {
   );
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6">
+    <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">Bookmarks</h1>
-          <p className="text-muted-foreground mt-1 text-sm">Manage your personal links library.</p>
+          <h1 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-foreground">Bookmarks</h1>
+          <p className="text-muted-foreground mt-1 text-[10px] sm:text-xs font-medium uppercase tracking-widest opacity-50">Manage your personal links library.</p>
         </div>
         <div className="flex items-center gap-2">
-           <div className="bg-muted/50 p-1 rounded-[4px] border border-border flex items-center gap-1">
+           <div className="bg-muted/10 p-1 rounded-[4px] border border-border/50 flex items-center gap-1">
               <Button 
                 variant={view === 'grid' ? 'secondary' : 'ghost'} 
                 size="icon" 
-                className="h-7 w-7 rounded-[2px]"
+                className="h-8 w-8 sm:h-7 sm:w-7 rounded-[2px]"
                 onClick={() => setView('grid')}
               >
                 <LayoutGrid size={14} />
@@ -77,7 +77,7 @@ export default function BookmarksPage() {
               <Button 
                 variant={view === 'list' ? 'secondary' : 'ghost'} 
                 size="icon" 
-                className="h-7 w-7 rounded-[2px]"
+                className="h-8 w-8 sm:h-7 sm:w-7 rounded-[2px]"
                 onClick={() => setView('list')}
               >
                 <ListIcon size={14} />
@@ -86,48 +86,51 @@ export default function BookmarksPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6">
          <aside className="space-y-6">
-            <Card className="bg-card border-border rounded-[4px] p-4 shadow-sm">
-               <h3 className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60 mb-4">Add Bookmark</h3>
-               <form onSubmit={handleAddBookmark} className="space-y-3">
-                  <div className="space-y-1">
-                     <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/30 px-1">URL</label>
+            <Card className="bg-card border-border/50 rounded-[4px] p-5 sm:p-6 shadow-2xl shadow-black/5">
+               <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/50 mb-5 flex items-center gap-2">
+                  <Plus size={12} />
+                  Registry Entry
+               </h3>
+               <form onSubmit={handleAddBookmark} className="space-y-4">
+                  <div className="space-y-2">
+                     <label className="text-[8px] font-black uppercase tracking-[0.3em] text-muted-foreground/30 px-1">Source URL</label>
                      <Input 
                         placeholder="https://..." 
-                        className="bg-muted/30 border-border rounded-[4px] h-9 text-xs"
+                        className="bg-muted/10 border-border/50 rounded-[4px] h-11 text-[11px] font-black uppercase tracking-widest placeholder:text-muted-foreground/20 focus:bg-muted/20 transition-all"
                         value={newUrl}
                         onChange={(e) => setNewUrl(e.target.value)}
                      />
                   </div>
-                  <div className="space-y-1">
-                     <label className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground/30 px-1">Title</label>
+                  <div className="space-y-2">
+                     <label className="text-[8px] font-black uppercase tracking-[0.3em] text-muted-foreground/30 px-1">Alias Title</label>
                      <Input 
                         placeholder="Optional" 
-                        className="bg-muted/30 border-border rounded-[4px] h-9 text-xs"
+                        className="bg-muted/10 border-border/50 rounded-[4px] h-11 text-[11px] font-black uppercase tracking-widest placeholder:text-muted-foreground/20 focus:bg-muted/20 transition-all"
                         value={newTitle}
                         onChange={(e) => setNewTitle(e.target.value)}
                      />
                   </div>
-                  <Button type="submit" size="sm" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 rounded-[4px] h-9 font-bold uppercase tracking-wider text-[10px]">
-                     Save
+                  <Button type="submit" size="sm" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 rounded-[4px] h-11 font-black uppercase tracking-[0.2em] text-[10px] shadow-lg shadow-primary/20 transition-all active:scale-[0.98] mt-2">
+                     Add to Archive
                   </Button>
                </form>
             </Card>
 
-            <Card className="bg-card border-border rounded-[4px] p-2 shadow-sm">
-               <h3 className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60 p-2 mb-1">Collections</h3>
-               <div className="space-y-0.5">
+            <Card className="bg-card border-border/50 rounded-[4px] p-2 shadow-sm">
+               <h3 className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground/20 p-3 mb-1">Collections</h3>
+               <div className="space-y-1">
                   {['All Bookmarks', 'Dev', 'Design', 'Social'].map((cat, idx) => (
                      <button key={cat} className={cn(
-                        "w-full flex items-center justify-between px-3 py-2 rounded-[4px] transition-colors group",
-                        idx === 0 ? "bg-primary/10 text-primary font-bold" : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                        "w-full flex items-center justify-between px-4 py-3 rounded-[4px] transition-all group",
+                        idx === 0 ? "bg-primary/5 text-primary font-black" : "text-muted-foreground/40 hover:bg-muted/30 hover:text-foreground"
                      )}>
-                        <div className="flex items-center gap-2">
-                           <Folder size={14} className={cn(idx === 0 ? "text-primary" : "text-muted-foreground/40 group-hover:text-primary")} />
-                           <span className="text-xs">{cat}</span>
+                        <div className="flex items-center gap-3">
+                           <Folder size={14} className={cn("transition-colors", idx === 0 ? "text-primary" : "text-muted-foreground/20 group-hover:text-primary/60")} />
+                           <span className="text-[10px] font-black uppercase tracking-widest">{cat}</span>
                         </div>
-                        {idx === 0 && <span className="text-[9px] font-bold bg-primary/20 px-1.5 py-0.5 rounded-[2px]">{bookmarks.length}</span>}
+                        {idx === 0 && <span className="text-[8px] font-black bg-primary/10 px-2 py-0.5 rounded-[2px] border border-primary/10">{bookmarks.length}</span>}
                      </button>
                   ))}
                </div>
@@ -135,11 +138,11 @@ export default function BookmarksPage() {
          </aside>
 
          <div className="space-y-6">
-            <div className="relative w-full">
-               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
+            <div className="relative w-full group">
+               <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/30 group-focus-within:text-primary transition-colors" size={16} />
                <Input 
-                  placeholder="Search bookmarks..." 
-                  className="pl-10 h-10 bg-card border-border rounded-[4px] text-sm shadow-sm"
+                  placeholder="Search archives..." 
+                  className="pl-12 h-12 bg-card border-border/50 rounded-[4px] text-[11px] font-black uppercase tracking-widest shadow-sm focus:ring-1 focus:ring-primary/20 transition-all placeholder:text-muted-foreground/10"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                />
@@ -209,20 +212,32 @@ function BookmarkCard({ bookmark, view, onDelete }) {
                      href={bookmark.url} 
                      target="_blank" 
                      rel="noopener noreferrer"
-                     className="p-1.5 rounded-[4px] text-muted-foreground hover:text-primary hover:bg-primary/5 transition-colors"
+                     className="p-1.5 rounded-[4px] text-muted-foreground/40 hover:text-primary hover:bg-primary/5 transition-all"
                   >
                      <ExternalLink size={14} />
                   </a>
+                  <button 
+                     className="p-1.5 rounded-[4px] text-muted-foreground/40 hover:text-destructive hover:bg-destructive/5 transition-all"
+                     onClick={(e) => {
+                        e.stopPropagation();
+                        onDelete();
+                     }}
+                  >
+                     <Trash2 size={14} />
+                  </button>
                   <DropdownMenu>
                      <DropdownMenuTrigger render={
-                        <button className="p-1.5 rounded-[4px] text-muted-foreground hover:text-foreground transition-colors outline-none">
+                        <button className="p-1.5 rounded-[4px] text-muted-foreground/40 hover:text-foreground transition-all outline-none">
                            <MoreVertical size={14} />
                         </button>
                      } />
-                     <DropdownMenuContent align="end" className="bg-card border-border p-1 rounded-[4px] shadow-sm">
-                        <DropdownMenuItem className="rounded-[4px] text-xs font-bold uppercase tracking-wider p-2" onClick={onDelete}>
+                     <DropdownMenuContent align="end" className="bg-card border-border/50 p-1 rounded-[4px] shadow-xl min-w-32">
+                        <DropdownMenuItem 
+                           className="text-destructive focus:bg-destructive/10 focus:text-destructive rounded-[2px] text-[9px] font-black uppercase tracking-[0.2em] p-2.5 cursor-pointer"
+                           onSelect={onDelete}
+                        >
                            <Trash2 size={12} className="mr-2" />
-                           Delete
+                           Delete Bookmark
                         </DropdownMenuItem>
                      </DropdownMenuContent>
                   </DropdownMenu>

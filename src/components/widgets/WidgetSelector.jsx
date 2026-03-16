@@ -42,24 +42,24 @@ export default function WidgetSelector({ children }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger render={children} />
-      <DialogContent className="max-w-2xl bg-card border-border/50 p-0 overflow-hidden rounded-[4px] shadow-2xl">
-        <DialogHeader className="p-8 border-b border-border/50 bg-muted/5">
-          <div className="flex items-center gap-4">
-             <div className="h-12 w-12 rounded-[4px] bg-primary/10 flex items-center justify-center text-primary shadow-sm">
+      <DialogContent className="max-w-full sm:max-w-2xl lg:max-w-4xl bg-card border-border/50 p-0 overflow-hidden rounded-[4px] shadow-2xl transition-all duration-500">
+        <DialogHeader className="p-6 sm:p-8 border-b border-border/50 bg-muted/5">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+             <div className="h-12 w-12 rounded-[4px] bg-primary/10 flex items-center justify-center text-primary shadow-sm shrink-0">
                 <LayoutGrid size={24} />
              </div>
              <div>
-                <DialogTitle className="text-xl font-black uppercase tracking-[0.2em] text-foreground/90">Manage Widgets</DialogTitle>
+                <DialogTitle className="text-xl sm:text-2xl font-black uppercase tracking-[0.2em] text-foreground/90 leading-tight">Manage Widgets</DialogTitle>
                 <p className="text-[10px] font-black text-muted-foreground/30 uppercase tracking-[0.25em] mt-1.5 flex items-center gap-2">
                    <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-                   System Customization
+                   System Customization & Dashboard Control
                 </p>
              </div>
           </div>
         </DialogHeader>
         
-        <div className="p-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[450px] overflow-y-auto pr-4 custom-scrollbar">
+        <div className="p-6 sm:p-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[60vh] sm:max-h-[450px] overflow-y-auto pr-2 sm:pr-4 custom-scrollbar">
             {AVAILABLE_WIDGETS.map((widget) => {
               const active = isWidgetActive(widget.id);
               return (
@@ -80,7 +80,7 @@ export default function WidgetSelector({ children }) {
                       <widget.icon size={20} />
                     </div>
                     <div className="min-w-0">
-                      <h3 className="text-[11px] font-black uppercase tracking-widest text-foreground/90">{widget.name}</h3>
+                      <h3 className="text-[11px] font-black uppercase tracking-widest text-foreground/90 truncate">{widget.name}</h3>
                       <p className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-tight mt-0.5 line-clamp-1 italic">{widget.description}</p>
                     </div>
                   </div>
