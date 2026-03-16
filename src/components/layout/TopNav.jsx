@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Bell, Search, Plus, User, Menu, CheckSquare, StickyNote, Calendar, Activity, Bookmark, Timer } from 'lucide-react';
+import { Bell, Search, Plus, User, Menu, CheckSquare, StickyNote, Calendar, Activity, Bookmark, Timer, LayoutGrid, Command as CommandIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -18,6 +18,7 @@ import useNotificationStore from '@/store/useNotificationStore';
 import NotificationPanel from '@/components/notifications/NotificationPanel';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import useUIStore from '@/store/useUIStore';
 import { useRouter } from 'next/navigation';
 
 export default function TopNav({ onMenuClick }) {
@@ -27,6 +28,7 @@ export default function TopNav({ onMenuClick }) {
   const logout = useAuthStore((state) => state.logout);
   const unreadCount = useNotificationStore((state) => state.unreadCount);
   const router = useRouter();
+  const { setWidgetSelectorOpen, setCommandPaletteOpen } = useUIStore();
 
   return (
     <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-border/50 bg-background/80 backdrop-blur-md px-4 md:px-8">
@@ -121,6 +123,30 @@ export default function TopNav({ onMenuClick }) {
                         <span>Archive Link</span>
                      </div>
                      <span className="text-[8px] opacity-20 group-focus:opacity-40 font-black">B</span>
+                  </div>
+               </DropdownMenuItem>
+               <DropdownMenuSeparator className="bg-border/50 my-1" />
+               <DropdownMenuItem 
+                  className="rounded-[2px] text-[10px] font-black uppercase tracking-[0.2em] p-2.5 cursor-pointer focus:bg-primary/10 focus:text-primary group"
+                  onSelect={() => setWidgetSelectorOpen(true)}
+               >
+                  <div className="flex items-center justify-between w-full">
+                     <div className="flex items-center gap-3">
+                        <LayoutGrid size={14} className="opacity-40 group-focus:opacity-100 transition-opacity" />
+                        <span>Manage Modules</span>
+                     </div>
+                  </div>
+               </DropdownMenuItem>
+               <DropdownMenuItem 
+                  className="rounded-[2px] text-[10px] font-black uppercase tracking-[0.2em] p-2.5 cursor-pointer focus:bg-primary/10 focus:text-primary group"
+                  onSelect={() => setCommandPaletteOpen(true)}
+               >
+                  <div className="flex items-center justify-between w-full">
+                     <div className="flex items-center gap-3">
+                        <CommandIcon size={14} className="opacity-40 group-focus:opacity-100 transition-opacity" />
+                        <span>Registry Search</span>
+                     </div>
+                     <span className="text-[8px] opacity-20 group-focus:opacity-40 font-black">⌘ K</span>
                   </div>
                </DropdownMenuItem>
                <DropdownMenuSeparator className="bg-border/50 my-1" />

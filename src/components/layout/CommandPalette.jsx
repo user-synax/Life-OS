@@ -21,11 +21,12 @@ import useTaskStore from '@/store/useTaskStore';
 import useHabitStore from '@/store/useHabitStore';
 import useBookmarkStore from '@/store/useBookmarkStore';
 import useEventStore from '@/store/useEventStore';
+import useUIStore from '@/store/useUIStore';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 export default function CommandPalette() {
-  const [open, setOpen] = useState(false);
+  const { isCommandPaletteOpen, setCommandPaletteOpen, toggleCommandPalette } = useUIStore();
   const [search, setSearch] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
   const router = useRouter();
@@ -40,18 +41,18 @@ export default function CommandPalette() {
     const handleKeyDown = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault();
-        setOpen(true);
+        toggleCommandPalette();
       }
       if (e.key === 'Escape') {
-        setOpen(false);
+        setCommandPaletteOpen(false);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [toggleCommandPalette, setCommandPaletteOpen]);
 
   useEffect(() => {
-    if (open) {
+    if (isCommandPaletteOpen) {
       fetchNotes();
       fetchTasks();
       fetchHabits();
@@ -61,7 +62,7 @@ export default function CommandPalette() {
       queueMicrotask(() => setSearch(''));
       queueMicrotask(() => setSelectedIndex(0));
     }
-  }, [open, fetchNotes, fetchTasks, fetchHabits, fetchBookmarks, fetchEvents]);
+  }, [isCommandPaletteOpen, fetchNotes, fetchTasks, fetchHabits, fetchBookmarks, fetchEvents]);
 
   const quickActions = [
     { id: 'new-task', icon: Plus, label: 'Create New Task', shortcut: 'T', action: () => router.push('/dashboard/tasks') },
@@ -119,18 +120,18 @@ export default function CommandPalette() {
       e.preventDefault();
       if (allItems[selectedIndex]) {
         allItems[selectedIndex].action();
-        setOpen(false);
+        setCommandPaletteOpen(false);
       }
     }
   };
 
-  if (!open) return null;
+  if (!isCommandPaletteOpen) return null;
 
   return (
     <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[15vh] px-4" onKeyDown={handleKeyDown}>
       <div 
         className="absolute inset-0 bg-background/60 backdrop-blur-xl transition-all duration-500"
-        onClick={() => setOpen(false)}
+        onClick={() => setCommandPaletteOpen(false)}
       />
       
       <div 
@@ -171,7 +172,7 @@ export default function CommandPalette() {
                       )}
                       onClick={() => {
                         item.action();
-                        setOpen(false);
+                        setCommandPaletteOpen(false);
                       }}
                       onMouseEnter={() => setSelectedIndex(idx)}
                     >
@@ -220,7 +221,7 @@ export default function CommandPalette() {
                     )}
                     onClick={() => {
                       item.action();
-                      setOpen(false);
+                      setCommandPaletteOpen(false);
                     }}
                     onMouseEnter={() => setSelectedIndex(idx)}
                   >

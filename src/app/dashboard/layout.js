@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Sidebar from '@/components/layout/Sidebar';
 import TopNav from '@/components/layout/TopNav';
 import CommandPalette from '@/components/layout/CommandPalette';
+import WidgetSelector from '@/components/widgets/WidgetSelector';
 import useAuthStore from '@/store/useAuthStore';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -44,6 +45,7 @@ export default function DashboardLayout({ children }) {
         </main>
       </div>
       <CommandPalette />
+      <WidgetSelector />
     </div>
   );
 }

@@ -20,8 +20,31 @@ const useBookmarkStore = create((set, get) => ({
     try {
       const { data } = await axios.post('/api/bookmarks', bookmark);
       set({ bookmarks: [data.bookmark, ...get().bookmarks] });
+      return data.bookmark;
     } catch (error) {
       console.error('Add bookmark error:', error);
+      throw error;
+    }
+  },
+
+  updateBookmark: async (id, updates) => {
+    const oldBookmarks = get().bookmarks;
+    set({
+      bookmarks: get().bookmarks.map((b) =>
+        b._id === id ? { ...b, ...updates } : b
+      ),
+    });
+
+    try {
+      const { data } = await axios.patch(`/api/bookmarks/${id}`, updates);
+      set({
+        bookmarks: get().bookmarks.map((b) => (b._id === id ? data.bookmark : b)),
+      });
+      return data.bookmark;
+    } catch (error) {
+      console.error('Update bookmark error:', error);
+      set({ bookmarks: oldBookmarks });
+      throw error;
     }
   },
 
@@ -31,6 +54,7 @@ const useBookmarkStore = create((set, get) => ({
       set({ bookmarks: get().bookmarks.filter((b) => b._id !== id) });
     } catch (error) {
       console.error('Remove bookmark error:', error);
+      throw error;
     }
   },
 }));

@@ -3,11 +3,12 @@
 import { Plus, Settings2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import WidgetGrid from '@/components/widgets/WidgetGrid';
-import WidgetSelector from '@/components/widgets/WidgetSelector';
-import useWidgetStore from '@/store/useWidgetStore';
+import useAuthStore from '@/store/useAuthStore';
+import useUIStore from '@/store/useUIStore';
 
 export default function DashboardPage() {
-  const { addWidget } = useWidgetStore();
+  const { user } = useAuthStore();
+  const { setWidgetSelectorOpen } = useUIStore();
 
   return (
     <div className="space-y-4 sm:space-y-6">
@@ -21,16 +22,15 @@ export default function DashboardPage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <WidgetSelector>
             <Button 
               variant="outline" 
               size="sm" 
               className="gap-2 border-border/50 bg-muted/10 hover:bg-muted/20 hover:border-primary/20 rounded-[4px] h-10 sm:h-9 text-[10px] font-black uppercase tracking-[0.2em] px-6 transition-all shadow-sm"
+              onClick={() => setWidgetSelectorOpen(true)}
             >
               <Plus size={14} />
               <span>Manage Widgets</span>
             </Button>
-          </WidgetSelector>
         </div>
       </div>
 

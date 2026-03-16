@@ -6,9 +6,10 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 import { toast } from 'sonner';
 import useAuthStore from '@/store/useAuthStore';
+import { ShieldCheck, Command, Fingerprint, ArrowRight } from 'lucide-react';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -23,61 +24,110 @@ export default function LoginPage() {
     const result = await login(email, password);
     setLoading(false);
     if (result.success) {
-      toast.success('Logged in successfully!');
+      toast.success('ACCESS GRANTED');
       router.push('/dashboard');
     } else {
-      toast.error(result.error);
+      toast.error(result.error || 'ACCESS DENIED');
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <Card className="w-full max-w-md border-border bg-card">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold tracking-tight text-foreground">Sign in</CardTitle>
-          <CardDescription className="text-muted-foreground">
-            Enter your email and password to access your Life OS
-          </CardDescription>
-        </CardHeader>
-        <form onSubmit={handleSubmit}>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="name@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="bg-background border-border"
-              />
+    <div className="flex min-h-screen items-center justify-center bg-[#030303] px-4 relative overflow-hidden">
+      {/* Tactical Background Elements */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(var(--primary),0.05),transparent_70%)]" />
+      <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none" 
+           style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+      
+      <div className="relative w-full max-w-[420px] animate-in fade-in zoom-in-95 duration-700">
+        {/* System Header */}
+        <div className="flex flex-col items-center mb-8 space-y-4">
+           <div className="h-16 w-16 rounded-[4px] bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shadow-2xl shadow-primary/20">
+              <Command size={32} />
+           </div>
+           <div className="text-center">
+              <h1 className="text-2xl font-black uppercase tracking-[0.3em] text-foreground leading-tight">Life OS</h1>
+              <p className="text-[10px] font-black text-primary/40 uppercase tracking-[0.4em] mt-2 flex items-center justify-center gap-2">
+                 <span className="h-1 w-1 rounded-full bg-primary animate-pulse" />
+                 Secure Terminal Access
+              </p>
+           </div>
+        </div>
+
+        <Card className="border-border/50 bg-card/50 backdrop-blur-2xl rounded-[4px] shadow-2xl shadow-black/50 ring-1 ring-white/5">
+          <CardHeader className="p-8 pb-4 border-b border-border/30 bg-muted/5">
+            <div className="flex items-center gap-3">
+               <Fingerprint size={18} className="text-primary/60" />
+               <CardTitle className="text-[11px] font-black uppercase tracking-[0.3em] text-foreground/80">Identity Verification</CardTitle>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="bg-background border-border"
-              />
-            </div>
-          </CardContent>
-          <CardFooter className="flex flex-col gap-4">
-            <Button type="submit" className="w-full bg-primary text-primary-foreground hover:bg-primary/90" disabled={loading}>
-              {loading ? 'Signing in...' : 'Sign in'}
-            </Button>
-            <div className="text-center text-sm text-muted-foreground">
-              Don&apos;t have an account?{' '}
-              <Link href="/register" className="text-primary hover:underline">
-                Create one
-              </Link>
-            </div>
-          </CardFooter>
-        </form>
-      </Card>
+          </CardHeader>
+          
+          <form onSubmit={handleSubmit}>
+            <CardContent className="p-8 space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-[9px] font-black uppercase tracking-[0.3em] text-muted-foreground/40 px-1 font-mono">Source Identifier</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="USER@OS.INTERNAL"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="h-12 bg-muted/10 border-border/50 rounded-[4px] text-[11px] font-black uppercase tracking-widest placeholder:text-muted-foreground/10 focus:bg-muted/20 transition-all border-none focus:ring-1 focus:ring-primary/20 font-mono"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-[9px] font-black uppercase tracking-[0.3em] text-muted-foreground/40 px-1 font-mono">Access Protocol</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="h-12 bg-muted/10 border-border/50 rounded-[4px] text-[11px] font-black uppercase tracking-widest placeholder:text-muted-foreground/10 focus:bg-muted/20 transition-all border-none focus:ring-1 focus:ring-primary/20 font-mono"
+                />
+              </div>
+            </CardContent>
+            
+            <CardFooter className="p-8 pt-0 flex flex-col gap-6">
+              <Button 
+                type="submit" 
+                className="w-full h-12 bg-primary text-primary-foreground hover:bg-primary/90 rounded-[4px] font-black uppercase tracking-[0.3em] text-[10px] shadow-2xl shadow-primary/20 transition-all active:scale-[0.98] group" 
+                disabled={loading}
+              >
+                {loading ? 'Verifying...' : (
+                  <div className="flex items-center gap-2">
+                     <span>Initialize Access</span>
+                     <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                  </div>
+                )}
+              </Button>
+              
+              <div className="w-full flex items-center justify-between px-1">
+                 <div className="h-px flex-1 bg-border/30" />
+                 <span className="text-[8px] font-black uppercase tracking-[0.3em] text-muted-foreground/20 px-4">Registry Access</span>
+                 <div className="h-px flex-1 bg-border/30" />
+              </div>
+
+              <div className="text-center">
+                <span className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground/40">No Registry Record? </span>
+                <Link href="/register" className="text-[9px] font-black uppercase tracking-[0.2em] text-primary hover:text-primary/80 transition-colors underline underline-offset-4 decoration-primary/20">
+                  Initialize New Entity
+                </Link>
+              </div>
+            </CardFooter>
+          </form>
+        </Card>
+
+        {/* System Footer Info */}
+        <div className="mt-8 flex items-center justify-between px-2 opacity-20 group hover:opacity-100 transition-opacity">
+           <div className="flex items-center gap-2">
+              <ShieldCheck size={12} className="text-primary" />
+              <span className="text-[8px] font-black uppercase tracking-[0.3em]">End-to-End Encryption Active</span>
+           </div>
+           <span className="text-[8px] font-black uppercase tracking-[0.3em]">v1.0.4-STABLE</span>
+        </div>
+      </div>
     </div>
   );
 }
