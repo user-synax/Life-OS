@@ -17,8 +17,11 @@ import AnalyticsWidget from './AnalyticsWidget';
 import CalendarWidget from './CalendarWidget';
 import QuoteWidget from './QuoteWidget';
 import QuickLinksWidget from './QuickLinksWidget';
+import { useRef, useEffect } from 'react';
+import gsap from 'gsap';
 
 export default function WidgetCard({ widget, isDragging }) {
+  const cardRef = useRef(null);
   const {
     attributes,
     listeners,
@@ -29,6 +32,28 @@ export default function WidgetCard({ widget, isDragging }) {
   } = useSortable({ id: widget._id });
 
   const { removeWidget } = useWidgetStore();
+
+  const handleMouseEnter = () => {
+    if (cardRef.current && !isDragging && !isSortableDragging) {
+      gsap.to(cardRef.current, {
+        y: -4,
+        boxShadow: '0 20px 25px -5px rgba(163, 255, 18, 0.05), 0 8px 10px -6px rgba(163, 255, 18, 0.05)',
+        duration: 0.3,
+        ease: 'power2.out'
+      });
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (cardRef.current) {
+      gsap.to(cardRef.current, {
+        y: 0,
+        boxShadow: 'none',
+        duration: 0.3,
+        ease: 'power2.inOut'
+      });
+    }
+  };
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -83,10 +108,15 @@ export default function WidgetCard({ widget, isDragging }) {
 
   return (
     <Card
-      ref={setNodeRef}
+      ref={(node) => {
+        setNodeRef(node);
+        cardRef.current = node;
+      }}
       style={style}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       className={cn(
-        'group relative flex flex-col overflow-hidden bg-card border-border hover:shadow-lg hover:shadow-primary/5 transition-shadow duration-300',
+        'group relative flex flex-col overflow-hidden bg-card border-border transition-shadow duration-300',
         getWidgetSizeClass(widget.size),
         (isDragging || isSortableDragging) && 'opacity-50 z-50 ring-2 ring-primary border-primary',
       )}
