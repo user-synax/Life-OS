@@ -51,14 +51,14 @@ queueMicrotask(() => setMode(nextMode));
   const progress = ((totalTime - timeLeft) / totalTime) * 100;
 
   return (
-    <div className="flex flex-col h-full items-center justify-between">
-      <div className="flex gap-1 p-1 bg-muted/50 rounded-[4px] border border-border">
+    <div className="flex flex-col h-full items-center justify-between py-1">
+      <div className="flex gap-1 p-1 bg-muted/20 rounded-[4px] border border-border/50 transition-colors group-hover:border-primary/10">
         <Button
           variant="ghost"
           size="sm"
           className={cn(
-            "rounded-[2px] px-3 h-6 text-[9px] uppercase font-bold tracking-wider transition-colors",
-            mode === 'focus' ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+            "rounded-[2px] px-4 h-7 text-[8px] uppercase font-black tracking-[0.2em] transition-all duration-300",
+            mode === 'focus' ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground/50 hover:text-primary hover:bg-primary/5"
           )}
           onClick={() => setMode('focus')}
         >
@@ -68,8 +68,8 @@ queueMicrotask(() => setMode(nextMode));
           variant="ghost"
           size="sm"
           className={cn(
-            "rounded-[2px] px-3 h-6 text-[9px] uppercase font-bold tracking-wider transition-colors",
-            mode === 'break' ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+            "rounded-[2px] px-4 h-7 text-[8px] uppercase font-black tracking-[0.2em] transition-all duration-300",
+            mode === 'break' ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground/50 hover:text-primary hover:bg-primary/5"
           )}
           onClick={() => setMode('break')}
         >
@@ -77,64 +77,65 @@ queueMicrotask(() => setMode(nextMode));
         </Button>
       </div>
 
-      <div className="relative flex items-center justify-center py-4">
-         <svg className="w-28 h-28 -rotate-90 transform">
+      <div className="relative flex items-center justify-center py-2">
+         <svg className="w-24 h-24 -rotate-90 transform">
             <circle
-              cx="56"
-              cy="56"
-              r="52"
+              cx="48"
+              cy="48"
+              r="44"
               stroke="currentColor"
-              strokeWidth="4"
+              strokeWidth="3"
               fill="transparent"
-              className="text-border/30"
+              className="text-muted/10"
             />
             <circle
-              cx="56"
-              cy="56"
-              r="52"
+              cx="48"
+              cy="48"
+              r="44"
               stroke="currentColor"
-              strokeWidth="4"
+              strokeWidth="3"
               fill="transparent"
-              strokeDasharray={327}
-              strokeDashoffset={327 - (327 * progress) / 100}
+              strokeDasharray={276}
+              strokeDashoffset={276 - (276 * progress) / 100}
               className="text-primary transition-all duration-1000 ease-linear"
               strokeLinecap="round"
             />
          </svg>
          <div className="absolute flex flex-col items-center">
-            <span className="text-2xl font-bold tracking-tighter tabular-nums">
+            <span className="text-2xl font-black tracking-tighter tabular-nums text-foreground/90">
               {formatTime(timeLeft)}
             </span>
-            <span className="text-[9px] uppercase font-bold text-muted-foreground/60 tracking-wider flex items-center gap-1 mt-1">
-               {mode === 'focus' ? <Brain size={10} /> : <Coffee size={10} />}
-               {mode}
-            </span>
+            <div className="flex items-center gap-1 mt-0.5">
+               <span className="text-[7px] uppercase font-black text-primary tracking-[0.15em]">
+                  {mode}
+               </span>
+            </div>
          </div>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 w-full px-2">
         <Button
-          variant="outline"
+          variant="ghost"
           size="icon"
-          className="h-8 w-8 rounded-[4px] border-border hover:bg-muted transition-colors"
+          className="h-8 w-8 rounded-[4px] text-muted-foreground/30 hover:text-primary hover:bg-primary/5 transition-colors"
           onClick={resetTimer}
         >
-          <RotateCcw size={14} className="text-muted-foreground" />
+          <RotateCcw size={12} />
         </Button>
         <Button
-          size="icon"
+          size="sm"
           className={cn(
-            "h-10 w-10 rounded-[4px] transition-colors",
-            isActive ? "bg-destructive text-destructive-foreground hover:bg-destructive/90" : "bg-primary text-primary-foreground hover:bg-primary/90"
+            "flex-1 h-9 rounded-[4px] font-black uppercase text-[10px] tracking-[0.2em] transition-all duration-300",
+            isActive ? "bg-destructive/10 text-destructive hover:bg-destructive/20 border border-destructive/20" : "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"
           )}
           onClick={toggleTimer}
         >
-          {isActive ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="currentColor" className="ml-0.5" />}
+          {isActive ? 'Pause' : 'Start'}
         </Button>
-        <div className="flex items-center justify-center h-8 w-8 bg-muted/30 rounded-[4px] border border-border">
+        <div className="flex items-center justify-center h-8 w-8 bg-muted/10 rounded-[4px] border border-transparent">
            <div className="flex flex-col items-center">
-              <span className="text-[8px] font-bold leading-none">{completedToday}</span>
-              <CheckCircle2 size={8} className="text-primary mt-0.5" />
+              <span className="text-[10px] font-black text-primary leading-none">{completedToday}</span>
+              <CheckCircle2 size={8} className="text-primary/50 mt-1" />
            </div>
         </div>
       </div>

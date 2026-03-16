@@ -36,62 +36,66 @@ export default function TaskWidget() {
 
   return (
     <div className="flex flex-col h-full w-full">
-      <form onSubmit={handleAddTask} className="flex items-center gap-2 mb-3">
-        <Input
-          placeholder="Quick add..."
-          className="bg-muted/30 border-border h-8 text-xs rounded-[4px] focus:ring-1 focus:ring-primary"
-          value={newTaskTitle}
-          onChange={(e) => setNewTaskTitle(e.target.value)}
-        />
-        <Button type="submit" size="icon" className="h-8 w-8 bg-primary text-primary-foreground rounded-[4px]">
-          <Plus size={14} />
-        </Button>
+      <form onSubmit={handleAddTask} className="flex items-center gap-2 mb-4">
+        <div className="relative flex-1">
+          <Plus className="absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground/50" size={12} />
+          <Input
+            placeholder="Add task..."
+            className="bg-muted/30 border-none h-9 text-[11px] pl-8 rounded-[4px] focus:bg-muted/50 transition-colors placeholder:text-muted-foreground/30"
+            value={newTaskTitle}
+            onChange={(e) => setNewTaskTitle(e.target.value)}
+          />
+        </div>
       </form>
 
-      <ScrollArea className="flex-1 pr-2">
+      <ScrollArea className="flex-1 -mr-2 pr-2">
         {loading && tasks.length === 0 ? (
           <div className="space-y-2">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-10 bg-muted/50 animate-pulse rounded-[4px]" />
+              <div key={i} className="h-10 bg-muted/20 animate-pulse rounded-[4px]" />
             ))}
           </div>
         ) : tasks.length === 0 ? (
-          <div className="flex items-center justify-center h-20 text-muted-foreground/40 italic text-xs">
+          <div className="flex flex-col items-center justify-center h-full gap-2 text-muted-foreground/20 italic text-[10px] uppercase font-bold tracking-widest">
+             <Plus size={16} className="opacity-10" />
              No tasks.
           </div>
         ) : (
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             {tasks.map((task) => (
               <div
                 key={task._id}
                 className={cn(
-                  "flex items-center justify-between p-2 rounded-[4px] border border-border bg-muted/10 transition-colors",
-                  task.completed && "opacity-60"
+                  "group flex items-center justify-between p-2 rounded-[4px] hover:bg-muted/30 transition-all duration-200 border border-transparent hover:border-border/50",
+                  task.completed && "opacity-40"
                 )}
               >
-                <div className="flex items-center gap-2.5 min-w-0">
+                <div className="flex items-center gap-3 min-w-0">
                   <button 
                     onClick={() => toggleTask(task._id)}
-                    className="text-primary shrink-0"
+                    className={cn(
+                      "shrink-0 transition-all duration-200",
+                      task.completed ? "text-primary" : "text-muted-foreground/30 hover:text-primary/50"
+                    )}
                   >
                     {task.completed ? <CheckCircle2 size={16} /> : <Circle size={16} />}
                   </button>
                   <div className="flex flex-col min-w-0">
                     <span className={cn(
-                      "text-xs font-bold truncate tracking-tight",
-                      task.completed && "line-through text-muted-foreground"
+                      "text-[11px] font-bold truncate tracking-tight text-foreground/90",
+                      task.completed && "line-through"
                     )}>
                       {task.title}
                     </span>
                     {task.dueDate && (
-                      <span className="text-[9px] text-muted-foreground flex items-center gap-1 mt-0.5">
+                      <span className="text-[8px] text-muted-foreground/60 flex items-center gap-1 mt-0.5 font-medium uppercase tracking-tighter">
                         <Clock size={8} />
-                        {format(new Date(task.dueDate), 'MMM d, p')}
+                        {format(new Date(task.dueDate), 'MMM d')}
                       </span>
                     )}
                   </div>
                 </div>
-                <Badge variant="outline" className={cn("text-[8px] uppercase font-bold px-1 py-0 rounded-[2px] shrink-0 ml-2", getPriorityColor(task.priority))}>
+                <Badge variant="outline" className={cn("text-[7px] uppercase font-black px-1.5 py-0 rounded-[2px] shrink-0 ml-2 border-transparent", getPriorityColor(task.priority))}>
                   {task.priority}
                 </Badge>
               </div>

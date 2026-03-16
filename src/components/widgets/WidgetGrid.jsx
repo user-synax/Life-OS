@@ -21,9 +21,19 @@ export default function WidgetGrid() {
     );
   }
 
+  // Ensure only unique widget types are rendered to avoid layout issues
+  const uniqueWidgets = widgets.reduce((acc, current) => {
+    const x = acc.find(item => item.widgetType === current.widgetType);
+    if (!x) {
+      return acc.concat([current]);
+    } else {
+      return acc;
+    }
+  }, []);
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-[220px] grid-flow-dense pb-10">
-      {widgets.map((widget) => (
+      {uniqueWidgets.map((widget) => (
         <WidgetCard key={widget._id} widget={widget} />
       ))}
     </div>

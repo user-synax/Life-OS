@@ -20,8 +20,10 @@ const useNoteStore = create((set, get) => ({
     try {
       const { data } = await axios.post('/api/notes', note);
       set({ notes: [data.note, ...get().notes] });
+      return data.note;
     } catch (error) {
       console.error('Add note error:', error);
+      return null;
     }
   },
 

@@ -71,29 +71,22 @@ export default function WidgetCard({ widget }) {
   return (
     <Card
       className={cn(
-        'group relative flex flex-col overflow-hidden bg-card border-border rounded-[4px] shadow-sm h-full',
+        'group relative flex flex-col overflow-hidden bg-card border-border rounded-[4px] shadow-sm h-full hover:border-primary/20 transition-all duration-300',
         getWidgetSizeClass(widget.size)
       )}
     >
-      <CardHeader className="p-3 flex flex-row items-center justify-between space-y-0 border-b border-border bg-muted/30">
-        <CardTitle className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+      <CardHeader className="p-3 py-2 flex flex-row items-center justify-between space-y-0 border-b border-border bg-muted/20">
+        <CardTitle className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/80 flex items-center gap-2">
+          <span className="w-1 h-1 bg-primary rounded-full animate-pulse" />
           {widget.widgetType}
         </CardTitle>
         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-          <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground hover:text-foreground rounded-[4px]">
-            <Settings2 size={12} />
-          </Button>
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="h-6 w-6 text-muted-foreground hover:text-destructive rounded-[4px]"
-            onClick={() => removeWidget(widget._id)}
-          >
-            <X size={12} />
+          <Button variant="ghost" size="icon" className="h-5 w-5 text-muted-foreground/50 hover:text-primary rounded-[2px]">
+            <Settings2 size={10} />
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="p-4 pt-4 flex-1 overflow-hidden flex flex-col">
+      <CardContent className="p-4 pt-3 flex-1 overflow-hidden flex flex-col">
         {renderWidgetContent()}
       </CardContent>
     </Card>

@@ -36,27 +36,28 @@ export default function BookmarkWidget() {
 
   return (
     <div className="flex flex-col h-full w-full">
-      <form onSubmit={handleAddBookmark} className="flex items-center gap-2 mb-3">
-        <Input
-          placeholder="https://..."
-          className="bg-muted/30 border-border h-8 text-xs rounded-[4px] focus:ring-1 focus:ring-primary flex-1"
-          value={newBookmarkUrl}
-          onChange={(e) => setNewBookmarkUrl(e.target.value)}
-        />
-        <Button type="submit" size="icon" className="h-8 w-8 bg-primary text-primary-foreground rounded-[4px]">
-          <Plus size={14} />
-        </Button>
+      <form onSubmit={handleAddBookmark} className="flex items-center gap-2 mb-4">
+        <div className="relative flex-1">
+          <Plus className="absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground/50" size={12} />
+          <Input
+            placeholder="Add bookmark..."
+            className="bg-muted/30 border-none h-9 text-[11px] pl-8 rounded-[4px] focus:bg-muted/50 transition-colors placeholder:text-muted-foreground/30"
+            value={newBookmarkUrl}
+            onChange={(e) => setNewBookmarkUrl(e.target.value)}
+          />
+        </div>
       </form>
 
-      <ScrollArea className="flex-1 pr-2">
+      <ScrollArea className="flex-1 -mr-2 pr-2">
         {loading && bookmarks.length === 0 ? (
           <div className="grid grid-cols-2 gap-2">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="h-16 bg-muted/50 animate-pulse rounded-[4px]" />
+              <div key={i} className="h-16 bg-muted/20 animate-pulse rounded-[4px]" />
             ))}
           </div>
         ) : bookmarks.length === 0 ? (
-          <div className="flex items-center justify-center h-20 text-muted-foreground/40 italic text-xs">
+          <div className="flex flex-col items-center justify-center h-full gap-2 text-muted-foreground/20 italic text-[10px] uppercase font-bold tracking-widest">
+             <Plus size={16} className="opacity-10" />
              No bookmarks.
           </div>
         ) : (
@@ -64,14 +65,14 @@ export default function BookmarkWidget() {
             {bookmarks.map((bookmark) => (
               <div
                 key={bookmark._id}
-                className="flex flex-col p-2.5 rounded-[4px] border border-border bg-muted/10 group transition-colors relative"
+                className="flex flex-col p-2 rounded-[4px] hover:bg-muted/30 transition-all duration-200 border border-transparent hover:border-border/50 group relative overflow-hidden"
               >
                 <div className="flex items-center justify-between mb-1.5">
-                  <div className="h-6 w-6 rounded-[2px] bg-background flex items-center justify-center overflow-hidden border border-border">
+                  <div className="h-6 w-6 rounded-[2px] bg-background flex items-center justify-center overflow-hidden border border-border/50">
                     {bookmark.favicon ? (
                        <img src={bookmark.favicon} alt="" className="h-3.5 w-3.5" onError={(e) => e.target.style.display = 'none'} />
                     ) : (
-                       <Globe size={10} className="text-muted-foreground" />
+                       <Globe size={10} className="text-muted-foreground/40" />
                     )}
                   </div>
                   <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -79,20 +80,16 @@ export default function BookmarkWidget() {
                       href={bookmark.url} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="text-muted-foreground hover:text-primary p-0.5"
+                      className="text-muted-foreground/40 hover:text-primary p-0.5 transition-colors"
                     >
                       <ExternalLink size={10} />
                     </a>
-                    <button 
-                      onClick={() => removeBookmark(bookmark._id)}
-                      className="text-muted-foreground hover:text-destructive p-0.5"
-                    >
-                      <Trash2 size={10} />
-                    </button>
                   </div>
                 </div>
-                <span className="text-[10px] font-bold truncate text-foreground/80 tracking-tight">{bookmark.title}</span>
-                <span className="text-[8px] text-muted-foreground truncate font-medium">{new URL(bookmark.url).hostname}</span>
+                <span className="text-[10px] font-bold truncate text-foreground/90 tracking-tight leading-tight">{bookmark.title}</span>
+                <span className="text-[7px] text-muted-foreground/40 truncate font-black uppercase tracking-tighter mt-0.5">
+                  {new URL(bookmark.url).hostname.replace('www.', '')}
+                </span>
               </div>
             ))}
           </div>

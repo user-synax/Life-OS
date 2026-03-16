@@ -214,11 +214,11 @@ function BookmarkCard({ bookmark, view, onDelete }) {
                      <ExternalLink size={14} />
                   </a>
                   <DropdownMenu>
-                     <DropdownMenuTrigger asChild>
+                     <DropdownMenuTrigger render={
                         <button className="p-1.5 rounded-[4px] text-muted-foreground hover:text-foreground transition-colors outline-none">
                            <MoreVertical size={14} />
                         </button>
-                     </DropdownMenuTrigger>
+                     } />
                      <DropdownMenuContent align="end" className="bg-card border-border p-1 rounded-[4px] shadow-sm">
                         <DropdownMenuItem className="rounded-[4px] text-xs font-bold uppercase tracking-wider p-2" onClick={onDelete}>
                            <Trash2 size={12} className="mr-2" />

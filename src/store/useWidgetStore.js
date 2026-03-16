@@ -34,6 +34,11 @@ const useWidgetStore = create((set, get) => ({
   },
 
   addWidget: async (type) => {
+    // Prevent adding duplicates
+    if (get().widgets.some(w => w.widgetType === type)) {
+      return;
+    }
+    
     try {
       const { data } = await axios.post('/api/widgets', { widgetType: type });
       set({ widgets: [...get().widgets, data.widget] });

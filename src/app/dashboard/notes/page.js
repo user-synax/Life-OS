@@ -42,7 +42,7 @@ export default function NotesPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [editTitle, setEditTitle] = useState('');
   const [editContent, setEditContent] = useState('');
-  const [editTags, setEditContentTags] = useState([]);
+  const [editTags, setEditTags] = useState([]);
   const [newTag, setNewTag] = useState('');
 
   useEffect(() => {
@@ -50,8 +50,10 @@ export default function NotesPage() {
   }, [fetchNotes]);
 
   const handleAddNote = async () => {
-    await addNote({ title: 'New Note', content: '', tags: [] });
-    setIsEditing(false);
+    const newNote = await addNote({ title: 'New Note', content: '', tags: [] });
+    if (newNote) {
+      handleEditNote(newNote);
+    }
   };
 
   const handleSaveNote = async () => {
@@ -74,22 +76,22 @@ export default function NotesPage() {
 
   const handleEditNote = (note) => {
     setActiveNote(note);
-    setEditTitle(note.title);
-    setEditContent(note.content);
-    setEditContentTags(note.tags || []);
+    setEditTitle(note.title || '');
+    setEditContent(note.content || '');
+    setEditTags(note.tags || []);
     setIsEditing(true);
   };
 
   const handleAddTag = () => {
     if (!newTag.trim()) return;
     if (!editTags.includes(newTag.trim())) {
-      setEditContentTags([...editTags, newTag.trim()]);
+      setEditTags([...editTags, newTag.trim()]);
     }
     setNewTag('');
   };
 
   const handleRemoveTag = (tagToRemove) => {
-    setEditContentTags(editTags.filter(t => t !== tagToRemove));
+    setEditTags(editTags.filter(t => t !== tagToRemove));
   };
 
   const filteredNotes = notes.filter((note) =>
@@ -102,69 +104,77 @@ export default function NotesPage() {
 
   if (isEditing) {
     return (
-      <div className="max-w-4xl mx-auto flex flex-col gap-4">
+      <div className="max-w-4xl mx-auto flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
         <div className="flex items-center justify-between">
-           <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground rounded-[4px]" onClick={() => setIsEditing(false)}>
+           <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground/50 hover:text-primary hover:bg-primary/5 rounded-[4px] px-4" onClick={() => setIsEditing(false)}>
               <ChevronLeft size={16} />
-              <span className="text-[10px] font-bold uppercase tracking-wider">Back</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.2em]">Back</span>
            </Button>
-           <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" className="gap-2 border-border rounded-[4px]" onClick={() => setIsEditing(false)}>
-                 <X size={16} />
-                 <span className="text-[10px] font-bold uppercase tracking-wider">Cancel</span>
+           <div className="flex items-center gap-3">
+              <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground/40 hover:text-foreground rounded-[4px] px-4" onClick={() => setIsEditing(false)}>
+                 <span className="text-[10px] font-black uppercase tracking-[0.2em]">Cancel</span>
               </Button>
-              <Button size="sm" className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-[4px]" onClick={handleSaveNote} disabled={isSaving}>
-                 <Save size={16} />
-                 <span className="text-[10px] font-bold uppercase tracking-wider">{isSaving ? 'Saving...' : 'Save'}</span>
+              <Button size="sm" className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-[4px] px-6 shadow-lg shadow-primary/20" onClick={handleSaveNote} disabled={isSaving}>
+                 <Save size={14} />
+                 <span className="text-[10px] font-black uppercase tracking-[0.2em]">{isSaving ? 'Saving...' : 'Save Note'}</span>
               </Button>
            </div>
         </div>
 
-        <Card className="flex-1 flex flex-col bg-card border border-border rounded-[4px] shadow-sm overflow-hidden">
-           <CardHeader className="p-6 border-b border-border bg-muted/20">
-              <Input 
-                 className="text-2xl font-bold border-none bg-transparent focus:ring-0 p-0 placeholder:text-muted-foreground/30 h-auto"
-                 placeholder="Note Title"
+        <Card className="flex-1 flex flex-col bg-card border-border/50 rounded-[4px] shadow-2xl overflow-hidden min-h-[600px]">
+           <CardHeader className="p-8 border-b border-border/50 bg-muted/5">
+              <input 
+                 className="text-3xl font-black border-none bg-transparent focus:ring-0 p-0 placeholder:text-muted-foreground/10 h-auto uppercase tracking-tight text-foreground/90 outline-none"
+                 placeholder="NOTE TITLE"
                  value={editTitle}
                  onChange={(e) => setEditTitle(e.target.value)}
               />
-              <div className="flex flex-wrap items-center gap-2 mt-4">
+              <div className="flex flex-wrap items-center gap-2 mt-6">
                  {editTags.map(tag => (
-                    <Badge key={tag} variant="outline" className="gap-1 px-1.5 py-0.5 border-primary/20 bg-primary/5 text-primary rounded-[2px]">
-                       <Tag size={8} />
-                       <span className="text-[8px]">{tag}</span>
+                    <Badge key={tag} variant="outline" className="gap-1.5 px-2 py-1 border-primary/20 bg-primary/5 text-primary rounded-[2px]">
+                       <Tag size={10} className="opacity-50" />
+                       <span className="text-[9px] font-black uppercase tracking-widest">{tag}</span>
                        <button onClick={() => handleRemoveTag(tag)} className="hover:text-destructive transition-colors ml-1">
-                          <X size={8} />
+                          <X size={10} />
                        </button>
                     </Badge>
                  ))}
-                 <div className="flex items-center gap-1 ml-2">
-                    <Input 
-                       className="h-6 w-24 text-[10px] bg-muted/30 border-border px-2 py-0"
-                       placeholder="New tag..."
+                 <div className="flex items-center gap-2 ml-2">
+                    <input 
+                       className="h-7 w-32 text-[10px] font-black uppercase tracking-widest bg-muted/20 border-none rounded-[2px] px-3 placeholder:text-muted-foreground/20 outline-none focus:bg-muted/30 transition-colors"
+                       placeholder="ADD TAG..."
                        value={newTag}
                        onChange={(e) => setNewTag(e.target.value)}
                        onKeyDown={(e) => e.key === 'Enter' && handleAddTag()}
                     />
-                    <Button 
-                       variant="ghost" 
-                       size="sm" 
-                       className="h-6 w-6 p-0 text-primary hover:bg-primary/10 rounded-[2px]"
+                    <button 
+                       className="h-7 w-7 flex items-center justify-center text-primary/40 hover:text-primary hover:bg-primary/10 rounded-[2px] transition-all"
                        onClick={handleAddTag}
                     >
-                       <Plus size={12} />
-                    </Button>
+                       <Plus size={14} />
+                    </button>
                  </div>
               </div>
            </CardHeader>
-           <CardContent className="p-6 flex-1">
+           <CardContent className="p-0 flex-1 relative">
               <textarea 
-                 className="w-full h-[400px] bg-transparent border-none focus:ring-0 resize-none text-base text-foreground/80 leading-relaxed placeholder:text-muted-foreground/20 outline-none"
-                 placeholder="Start writing..."
+                 className="w-full h-full min-h-[400px] bg-transparent border-none focus:ring-0 resize-none text-base text-foreground/70 leading-relaxed placeholder:text-muted-foreground/10 outline-none p-8 font-medium"
+                 placeholder="Start writing your thoughts..."
                  value={editContent}
                  onChange={(e) => setEditContent(e.target.value)}
               />
            </CardContent>
+           <CardFooter className="px-8 py-4 border-t border-border/30 bg-muted/5 flex justify-between items-center">
+              <span className="text-[8px] font-black uppercase tracking-[0.3em] text-muted-foreground/20">Markdown Supported</span>
+              <div className="flex items-center gap-4">
+                 <span className="text-[8px] font-black uppercase tracking-[0.2em] text-muted-foreground/30">
+                    {editContent.length} Characters
+                 </span>
+                 <span className="text-[8px] font-black uppercase tracking-[0.2em] text-muted-foreground/30">
+                    {editContent.split(/\s+/).filter(Boolean).length} Words
+                 </span>
+              </div>
+           </CardFooter>
         </Card>
       </div>
     );
@@ -287,50 +297,82 @@ function NoteCard({ note, view, onEdit, onPin, onDelete }) {
    return (
       <Card 
         className={cn(
-          "group relative flex flex-col overflow-hidden bg-card border-border hover:border-primary/50 transition-colors rounded-[4px] shadow-sm",
+          "group relative flex flex-col overflow-hidden bg-card border-border hover:border-primary/50 transition-all duration-300 rounded-[4px] shadow-sm cursor-pointer",
           view === 'list' ? "flex-row items-center h-20" : "h-48",
           note.pinned && "border-primary/20 bg-primary/5"
         )}
+        onClick={onEdit}
       >
          <CardHeader className={cn("p-4 pb-1", view === 'list' && "flex-1 pb-4")}>
             <div className="flex items-start justify-between">
                <div className="flex-1 min-w-0">
-                  <CardTitle className="text-sm font-bold tracking-tight truncate group-hover:text-primary transition-colors">{note.title}</CardTitle>
-                  <p className="text-[9px] font-bold text-muted-foreground/40 mt-1 uppercase tracking-wider">{format(new Date(note.createdAt), 'MMM d, yyyy')}</p>
+                  <CardTitle className="text-sm font-black tracking-tight truncate group-hover:text-primary transition-colors uppercase">{note.title}</CardTitle>
+                  <p className="text-[9px] font-black text-muted-foreground/30 mt-1 uppercase tracking-[0.2em]">{format(new Date(note.createdAt), 'MMM d, yyyy')}</p>
                </div>
             </div>
          </CardHeader>
          <CardContent className={cn("px-4 py-1 flex-1 overflow-hidden", view === 'list' && "hidden")}>
-            <p className="text-xs text-muted-foreground/70 leading-relaxed line-clamp-3">
+            <p className="text-xs text-muted-foreground/60 leading-relaxed line-clamp-3 font-medium">
                {note.content || "No content..."}
             </p>
          </CardContent>
          <CardFooter className={cn("p-4 pt-1 flex items-center justify-between", view === 'list' && "p-4")}>
             <div className="flex items-center gap-1.5 overflow-hidden">
                {note.tags?.slice(0, 2).map(tag => (
-                  <Badge key={tag} variant="outline" className="text-[8px] uppercase font-bold tracking-wider px-1.5 py-0 border-border rounded-[2px]">{tag}</Badge>
+                  <Badge key={tag} variant="outline" className="text-[7px] uppercase font-black tracking-[0.1em] px-1.5 py-0 border-primary/10 bg-primary/5 text-primary/60 rounded-[2px]">{tag}</Badge>
                ))}
             </div>
             <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-               <Button variant="ghost" size="icon" className="h-7 w-7 rounded-[4px] text-muted-foreground hover:text-primary" onClick={onPin}>
+               <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="h-7 w-7 rounded-[4px] text-muted-foreground/40 hover:text-primary hover:bg-primary/5" 
+                  onClick={(e) => {
+                     e.stopPropagation();
+                     onPin();
+                  }}
+               >
                   {note.pinned ? <Pin size={14} /> : <PinOff size={14} />}
                </Button>
-               <Button variant="ghost" size="icon" className="h-7 w-7 rounded-[4px] text-muted-foreground hover:text-primary" onClick={onEdit}>
+               <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="h-7 w-7 rounded-[4px] text-muted-foreground/40 hover:text-primary hover:bg-primary/5" 
+                  onClick={(e) => {
+                     e.stopPropagation();
+                     onEdit();
+                  }}
+               >
                   <Edit3 size={14} />
                </Button>
-               <DropdownMenu>
-                  <DropdownMenuTrigger render={
-                     <div role="button" className="h-7 w-7 flex items-center justify-center rounded-[4px] text-muted-foreground hover:bg-muted hover:text-foreground cursor-pointer transition-colors">
-                        <MoreVertical size={14} />
-                     </div>
-                  } />
-                  <DropdownMenuContent align="end" className="bg-card border-border p-1 rounded-[4px] shadow-sm">
-                     <DropdownMenuItem className="rounded-[4px] text-xs font-bold uppercase tracking-wider p-2" onClick={onDelete}>
-                        <Trash2 size={12} className="mr-2" />
-                        Delete
-                     </DropdownMenuItem>
-                  </DropdownMenuContent>
-               </DropdownMenu>
+               <div onClick={(e) => e.stopPropagation()}>
+                  <DropdownMenu>
+                        <DropdownMenuTrigger render={
+                           <button 
+                              type="button"
+                              className="h-7 w-7 flex items-center justify-center rounded-[4px] text-muted-foreground/40 hover:bg-muted hover:text-foreground cursor-pointer transition-colors"
+                           >
+                              <MoreVertical size={14} />
+                           </button>
+                        } />
+                     <DropdownMenuContent align="end" className="bg-card border-border/50 p-1 rounded-[4px] shadow-xl min-w-32">
+                        <DropdownMenuItem 
+                           className="rounded-[2px] text-[9px] font-black uppercase tracking-[0.2em] p-2.5 cursor-pointer focus:bg-primary/10 focus:text-primary"
+                           onSelect={onEdit}
+                        >
+                           <Edit3 size={12} className="mr-2" />
+                           Edit Note
+                        </DropdownMenuItem>
+                        <DropdownMenuItem 
+                           className="rounded-[2px] text-[9px] font-black uppercase tracking-[0.2em] p-2.5 cursor-pointer text-destructive focus:bg-destructive/10 focus:text-destructive"
+                           onSelect={onDelete}
+                        >
+                           <Trash2 size={12} className="mr-2" />
+                           Delete
+                        </DropdownMenuItem>
+                     </DropdownMenuContent>
+                  </DropdownMenu>
+               </div>
             </div>
          </CardFooter>
       </Card>

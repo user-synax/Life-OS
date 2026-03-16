@@ -20,8 +20,10 @@ const useTaskStore = create((set, get) => ({
     try {
       const { data } = await axios.post('/api/tasks', task);
       set({ tasks: [data.task, ...get().tasks] });
+      return data.task;
     } catch (error) {
       console.error('Add task error:', error);
+      throw error;
     }
   },
 
@@ -40,6 +42,7 @@ const useTaskStore = create((set, get) => ({
       await axios.patch(`/api/tasks/${id}`, { completed: newCompleted });
     } catch (error) {
       console.error('Toggle task error:', error);
+      throw error;
     }
   },
 
@@ -49,6 +52,24 @@ const useTaskStore = create((set, get) => ({
       set({ tasks: get().tasks.filter((t) => t._id !== id) });
     } catch (error) {
       console.error('Remove task error:', error);
+      throw error;
+    }
+  },
+
+  updateTask: async (id, updates) => {
+    const oldTasks = get().tasks;
+    set({
+      tasks: get().tasks.map((t) =>
+        t._id === id ? { ...t, ...updates } : t
+      ),
+    });
+
+    try {
+      await axios.patch(`/api/tasks/${id}`, updates);
+    } catch (error) {
+      console.error('Update task error:', error);
+      set({ tasks: oldTasks });
+      throw error;
     }
   },
 }));

@@ -29,23 +29,23 @@ export default function TopNav({ onMenuClick }) {
   const router = useRouter();
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 md:px-8">
+    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-border/50 bg-background/80 backdrop-blur-md px-4 md:px-8">
       <div className="flex items-center gap-4 flex-1">
         <Button
           variant="ghost"
           size="icon"
-          className="lg:hidden h-9 w-9"
+          className="lg:hidden h-9 w-9 text-muted-foreground/50 hover:bg-muted/50"
           onClick={onMenuClick}
         >
           <Menu size={20} />
         </Button>
 
         <div className="relative w-full max-w-md group hidden md:block">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" size={16} />
-          <Input
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/30 group-focus-within:text-primary transition-colors" size={14} />
+          <input
             type="search"
             placeholder="Search... (Cmd+K)"
-            className="pl-10 bg-muted/50 border-border focus:bg-background h-9 text-sm rounded-[4px] transition-all"
+            className="w-full pl-10 bg-muted/20 border-none focus:bg-muted/40 h-9 text-[11px] font-black uppercase tracking-widest rounded-[4px] transition-all placeholder:text-muted-foreground/20"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -53,9 +53,9 @@ export default function TopNav({ onMenuClick }) {
       </div>
 
       <div className="flex items-center gap-2 md:gap-4">
-        <Button variant="outline" size="sm" className="hidden sm:flex gap-2 border-border hover:bg-muted rounded-[4px] h-9 px-3">
-          <Plus size={16} />
-          <span className="text-xs font-bold uppercase tracking-wider">New</span>
+        <Button variant="ghost" size="sm" className="hidden sm:flex gap-2 text-muted-foreground/50 hover:text-primary hover:bg-primary/5 rounded-[4px] h-9 px-4 transition-all">
+          <Plus size={14} />
+          <span className="text-[10px] font-black uppercase tracking-[0.2em]">New</span>
         </Button>
 
         <div className="relative">
@@ -63,52 +63,46 @@ export default function TopNav({ onMenuClick }) {
             variant="ghost" 
             size="icon" 
             className={cn(
-               "h-9 w-9 rounded-[4px] text-muted-foreground hover:text-foreground hover:bg-muted transition-colors", 
+               "h-9 w-9 rounded-[4px] text-muted-foreground/40 hover:text-primary hover:bg-primary/5 transition-all", 
                showNotifications && "text-primary bg-primary/10"
             )}
             onClick={() => setShowNotifications(!showNotifications)}
           >
-            <Bell size={20} />
+            <Bell size={18} />
             {unreadCount > 0 && (
-              <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-primary border-2 border-background" />
+              <span className="absolute right-2.5 top-2.5 h-1.5 w-1.5 rounded-full bg-primary" />
             )}
           </Button>
           <NotificationPanel open={showNotifications} setOpen={setShowNotifications} />
         </div>
 
         <DropdownMenu>
-          <DropdownMenuTrigger className="flex items-center gap-2 p-1 rounded-[4px] hover:bg-muted transition-colors outline-none group cursor-pointer">
-            <Avatar className="h-8 w-8 rounded-[4px] border border-border">
+          <DropdownMenuTrigger className="flex items-center gap-3 p-1 pl-3 rounded-[4px] hover:bg-muted/50 transition-all outline-none group cursor-pointer border border-transparent hover:border-border/50">
+            <span className="text-[10px] font-black uppercase tracking-widest hidden sm:inline-block text-foreground/80">{user?.name || 'User'}</span>
+            <Avatar className="h-8 w-8 rounded-[4px] border border-border/50">
               <AvatarImage src={user?.avatar} alt={user?.name} />
-              <AvatarFallback className="bg-primary text-primary-foreground text-xs font-bold">
-                {user?.name?.charAt(0) || <User size={14} />}
+              <AvatarFallback className="bg-primary/10 text-primary text-[10px] font-black">
+                {user?.name?.charAt(0) || <User size={12} />}
               </AvatarFallback>
             </Avatar>
-            <span className="text-sm font-bold hidden sm:inline-block">{user?.name || 'User'}</span>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56 bg-card border-border rounded-[4px] shadow-md" align="end">
+          <DropdownMenuContent className="w-56 bg-card border-border/50 rounded-[4px] shadow-xl p-1" align="end">
             <DropdownMenuLabel className="font-normal p-3">
               <div className="flex flex-col space-y-1">
-                <p className="text-sm font-bold leading-none">{user?.name || 'User'}</p>
-                <p className="text-xs leading-none text-muted-foreground">{user?.email || 'user@example.com'}</p>
+                <p className="text-[11px] font-black uppercase tracking-widest leading-none">{user?.name || 'User'}</p>
+                <p className="text-[9px] font-bold tracking-tight leading-none text-muted-foreground/60">{user?.email || 'user@example.com'}</p>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <div className="p-1">
+            <DropdownMenuSeparator className="bg-border/50" />
+            <div className="p-1 space-y-1">
                <DropdownMenuItem 
-                  className="rounded-[4px] text-xs font-bold uppercase tracking-wider p-2 cursor-pointer"
+                  className="rounded-[2px] text-[9px] font-black uppercase tracking-[0.2em] p-2.5 cursor-pointer focus:bg-primary/10 focus:text-primary"
                   onSelect={() => router.push('/dashboard/settings')}
                >
-                  Settings
+                  Profile Settings
                </DropdownMenuItem>
-               <DropdownMenuItem className="rounded-[4px] text-xs font-bold uppercase tracking-wider p-2 cursor-pointer">
-                  Billing
-               </DropdownMenuItem>
-            </div>
-            <DropdownMenuSeparator />
-            <div className="p-1">
                <DropdownMenuItem 
-                  className="text-destructive focus:bg-destructive/10 focus:text-destructive rounded-[4px] text-xs font-bold uppercase tracking-wider p-2 cursor-pointer" 
+                  className="rounded-[2px] text-[9px] font-black uppercase tracking-[0.2em] p-2.5 cursor-pointer text-destructive focus:bg-destructive/10 focus:text-destructive"
                   onSelect={logout}
                >
                   Sign Out

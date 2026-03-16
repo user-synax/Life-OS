@@ -43,47 +43,49 @@ export default function CommandPalette() {
   return (
     <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[15vh] px-4">
       <div 
-        className="absolute inset-0 bg-background/80"
+        className="absolute inset-0 bg-background/40 backdrop-blur-md"
         onClick={() => setOpen(false)}
       />
       
       <div 
-        className="relative w-full max-w-xl overflow-hidden rounded-[4px] border border-border bg-card shadow-lg"
+        className="relative w-full max-w-xl overflow-hidden rounded-[4px] border border-border/50 bg-card shadow-2xl transition-all animate-in fade-in zoom-in-95 duration-200"
       >
-        <div className="flex items-center border-b border-border px-4 py-3">
-          <Search size={18} className="text-muted-foreground mr-3" />
-          <Input
+        <div className="flex items-center border-b border-border/50 px-6 py-4 bg-muted/5">
+          <Search size={16} className="text-muted-foreground/30 mr-4" />
+          <input
             autoFocus
-            placeholder="Type a command..."
-            className="flex-1 bg-transparent border-none focus:ring-0 text-base rounded-none h-auto p-0"
+            placeholder="Search commands..."
+            className="flex-1 bg-transparent border-none focus:ring-0 text-[11px] font-black uppercase tracking-[0.2em] h-auto p-0 placeholder:text-muted-foreground/20 text-foreground/80 outline-none"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <div className="flex items-center gap-1 bg-muted px-1.5 py-0.5 rounded-[2px] border border-border">
-             <CommandIcon size={10} className="text-muted-foreground" />
-             <span className="text-[10px] font-bold text-muted-foreground">K</span>
+          <div className="flex items-center gap-1.5 bg-muted/20 px-2 py-1 rounded-[2px] border border-border/50">
+             <CommandIcon size={10} className="text-muted-foreground/40" />
+             <span className="text-[9px] font-black text-muted-foreground/40">K</span>
           </div>
         </div>
 
-        <div className="p-2">
-           <div className="px-3 py-1.5">
-              <span className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground/60">Suggestions</span>
+        <div className="p-3">
+           <div className="px-3 py-2 mb-1">
+              <span className="text-[8px] uppercase font-black tracking-[0.3em] text-muted-foreground/20">Quick Actions</span>
            </div>
            <div className="space-y-0.5">
               {actions.map((item) => (
                 <button
                   key={item.label}
-                  className="w-full flex items-center justify-between px-3 py-2 rounded-[2px] hover:bg-muted transition-colors group text-left"
+                  className="w-full flex items-center justify-between px-4 py-2.5 rounded-[4px] hover:bg-primary/5 transition-all duration-200 group text-left border border-transparent hover:border-primary/10"
                   onClick={() => {
                     item.action();
                     setOpen(false);
                   }}
                 >
-                  <div className="flex items-center gap-3">
-                    <item.icon size={16} className="text-muted-foreground group-hover:text-primary" />
-                    <span className="text-sm font-medium">{item.label}</span>
+                  <div className="flex items-center gap-4">
+                    <div className="p-1.5 rounded-[4px] bg-muted/10 group-hover:bg-primary/10 transition-colors">
+                      <item.icon size={14} className="text-muted-foreground/40 group-hover:text-primary transition-colors" />
+                    </div>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground group-hover:text-foreground transition-colors">{item.label}</span>
                   </div>
-                  <span className="text-[10px] font-bold text-muted-foreground/40 group-hover:text-primary/60 border border-border px-1.5 py-0.5 rounded-[2px] uppercase">
+                  <span className="text-[8px] font-black text-muted-foreground/20 group-hover:text-primary/40 border border-border/30 group-hover:border-primary/20 px-2 py-0.5 rounded-[2px] uppercase tracking-widest">
                     {item.shortcut}
                   </span>
                 </button>
@@ -91,20 +93,20 @@ export default function CommandPalette() {
            </div>
         </div>
 
-        <div className="border-t border-border p-2.5 bg-muted/30 flex items-center justify-between">
-           <div className="flex items-center gap-4">
-              <div className="flex items-center gap-1.5">
-                 <kbd className="px-1.5 py-0.5 rounded-[2px] border border-border bg-card text-[9px] font-bold text-muted-foreground uppercase">↑↓</kbd>
-                 <span className="text-[10px] text-muted-foreground font-medium tracking-tight">Navigate</span>
+        <div className="border-t border-border/30 p-3 bg-muted/5 flex items-center justify-between">
+           <div className="flex items-center gap-6 pl-2">
+              <div className="flex items-center gap-2">
+                 <kbd className="px-1.5 py-0.5 rounded-[2px] border border-border/50 bg-card text-[8px] font-black text-muted-foreground/30 uppercase">↑↓</kbd>
+                 <span className="text-[8px] text-muted-foreground/30 font-black uppercase tracking-widest">Navigate</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                 <kbd className="px-1.5 py-0.5 rounded-[2px] border border-border bg-card text-[9px] font-bold text-muted-foreground uppercase">Enter</kbd>
-                 <span className="text-[10px] text-muted-foreground font-medium tracking-tight">Select</span>
+              <div className="flex items-center gap-2">
+                 <kbd className="px-1.5 py-0.5 rounded-[2px] border border-border/50 bg-card text-[8px] font-black text-muted-foreground/30 uppercase">Enter</kbd>
+                 <span className="text-[8px] text-muted-foreground/30 font-black uppercase tracking-widest">Select</span>
               </div>
            </div>
-           <div className="flex items-center gap-1.5">
-              <kbd className="px-1.5 py-0.5 rounded-[2px] border border-border bg-card text-[9px] font-bold text-muted-foreground uppercase">ESC</kbd>
-              <span className="text-[10px] text-muted-foreground font-medium tracking-tight">Close</span>
+           <div className="flex items-center gap-2 pr-2">
+              <kbd className="px-1.5 py-0.5 rounded-[2px] border border-border/50 bg-card text-[8px] font-black text-muted-foreground/30 uppercase">ESC</kbd>
+              <span className="text-[8px] text-muted-foreground/30 font-black uppercase tracking-widest">Close</span>
            </div>
         </div>
       </div>

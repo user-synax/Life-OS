@@ -34,58 +34,62 @@ export default function HabitWidget() {
 
   return (
     <div className="flex flex-col h-full w-full">
-      <form onSubmit={handleAddHabit} className="flex items-center gap-2 mb-3">
-        <Input
-          placeholder="New habit..."
-          className="bg-muted/30 border-border h-8 text-xs rounded-[4px] focus:ring-1 focus:ring-primary"
-          value={newHabitName}
-          onChange={(e) => setNewHabitName(e.target.value)}
-        />
-        <Button type="submit" size="icon" className="h-8 w-8 bg-primary text-primary-foreground rounded-[4px]">
-          <Plus size={14} />
-        </Button>
+      <form onSubmit={handleAddHabit} className="flex items-center gap-2 mb-4">
+        <div className="relative flex-1">
+          <Plus className="absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground/50" size={12} />
+          <Input
+            placeholder="Add habit..."
+            className="bg-muted/30 border-none h-9 text-[11px] pl-8 rounded-[4px] focus:bg-muted/50 transition-colors placeholder:text-muted-foreground/30"
+            value={newHabitName}
+            onChange={(e) => setNewHabitName(e.target.value)}
+          />
+        </div>
       </form>
 
-      <ScrollArea className="flex-1 pr-2">
+      <ScrollArea className="flex-1 -mr-2 pr-2">
         {loading && habits.length === 0 ? (
           <div className="space-y-2">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-12 bg-muted/50 animate-pulse rounded-[4px]" />
+              <div key={i} className="h-12 bg-muted/20 animate-pulse rounded-[4px]" />
             ))}
           </div>
         ) : habits.length === 0 ? (
-          <div className="flex items-center justify-center h-20 text-muted-foreground/40 italic text-xs">
+          <div className="flex flex-col items-center justify-center h-full gap-2 text-muted-foreground/20 italic text-[10px] uppercase font-bold tracking-widest">
+             <Plus size={16} className="opacity-10" />
              No habits.
           </div>
         ) : (
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             {habits.map((habit) => (
               <div
                 key={habit._id}
                 className={cn(
-                  "flex items-center justify-between p-2 rounded-[4px] border border-border bg-muted/10 transition-colors",
+                  "flex items-center justify-between p-2 rounded-[4px] hover:bg-muted/30 transition-all duration-200 border border-transparent hover:border-border/50",
                   isCompletedToday(habit._id) && "bg-primary/5 border-primary/20"
                 )}
               >
-                <div className="flex items-center gap-2.5 min-w-0">
+                <div className="flex items-center gap-3 min-w-0">
                   <button 
                     onClick={() => toggleHabit(habit._id, new Date())}
-                    className="text-primary shrink-0"
+                    className="text-primary shrink-0 transition-transform hover:scale-110 active:scale-95"
                   >
                     {isCompletedToday(habit._id) ? <CheckCircle2 size={18} /> : <Circle size={18} className="text-muted-foreground/30 hover:text-primary/50 transition-colors" />}
                   </button>
                   <div className="flex flex-col min-w-0">
-                    <span className="text-xs font-bold truncate tracking-tight">{habit.name}</span>
+                    <span className="text-[11px] font-bold truncate tracking-tight text-foreground/90">{habit.name}</span>
                     <div className="flex items-center gap-1.5 mt-0.5">
-                       <span className="text-[9px] text-muted-foreground flex items-center gap-1 font-medium">
-                          <Flame size={10} className="text-orange-500" />
-                          {habit.streak || 0}d streak
+                       <span className="text-[8px] text-muted-foreground/60 flex items-center gap-1 font-black uppercase tracking-widest">
+                          <Flame size={10} className={cn("transition-colors", habit.streak > 0 ? "text-orange-500" : "text-muted-foreground/30")} />
+                          {habit.streak || 0}d
                        </span>
                     </div>
                   </div>
                 </div>
-                <div className="h-1 w-8 bg-muted rounded-full overflow-hidden shrink-0 ml-2">
-                   <div className="h-full bg-primary" style={{ width: '60%' }} />
+                <div className="h-1 w-10 bg-muted/50 rounded-full overflow-hidden shrink-0 ml-2">
+                   <div 
+                    className="h-full bg-primary transition-all duration-1000" 
+                    style={{ width: `${Math.min((habit.streak / 30) * 100, 100)}%` }} 
+                   />
                 </div>
               </div>
             ))}
