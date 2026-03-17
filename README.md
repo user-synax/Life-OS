@@ -1,9 +1,16 @@
 
-# 🚀 Life OS - Your Personal Productivity Command Center
-
 <p align="center">
-  <img src="https://i.imgur.com/sZqL9M8.png" alt="Life OS Banner" width="800"/>
+  <pre>
+██╗     ██╗███████╗███████╗    ██████╗ ███████╗
+██║     ██║██╔════╝██╔════╝    ██╔══██╗██╔════╝
+██║     ██║█████╗  █████╗      ██████╔╝███████╗
+██║     ██║██╔══╝  ██╔══╝      ██╔══██╗╚════██║
+███████╗██║██║     ███████╗    ██║  ██║███████║
+╚══════╝╚═╝╚═╝     ╚══════╝    ╚═╝  ╚═╝╚══════╝
+  </pre>
 </p>
+
+<h1 align="center">Life OS - Your Personal Productivity Command Center</h1>
 
 <p align="center">
   <strong>A sleek, modern, and highly customizable dashboard to organize, track, and optimize your life.</strong>
@@ -91,17 +98,6 @@ Follow these instructions to get a local copy of Life OS up and running.
    ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to see the application in action!
-
-## 📸 Screenshots
-
-*A picture is worth a thousand words. Here's a glimpse into Life OS.*
-
-<p align="center">
-  <img src="https://i.imgur.com/EXAMPLE_LOGIN.png" alt="Login Screen" width="48%">
-  &nbsp;
-  <img src="https://i.imgur.com/EXAMPLE_DASH.png" alt="Dashboard" width="48%">
-</p>
-<p align="center"><em>Login Screen & Main Dashboard</em></p>
 
 ## 📄 License
 
