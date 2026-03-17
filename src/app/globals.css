@@ -48,37 +48,37 @@
 }
 
 :root {
-  --background: #f8f7ff;
-  --foreground: #1c1917;
+  --background: #ffffff;
+  --foreground: #09090b;
   --card: #ffffff;
-  --card-foreground: #1c1917;
+  --card-foreground: #09090b;
   --popover: #ffffff;
-  --popover-foreground: #1c1917;
+  --popover-foreground: #09090b;
   --primary: #7c3aed;
-  --primary-foreground: #ffffff;
+  --primary-foreground: #fafafa;
   --secondary: #f4f4f5;
-  --secondary-foreground: #1c1917;
+  --secondary-foreground: #18181b;
   --muted: #f4f4f5;
   --muted-foreground: #71717a;
-  --accent: #7c3aed;
-  --accent-foreground: #ffffff;
+  --accent: #f4f4f5;
+  --accent-foreground: #18181b;
   --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
+  --destructive-foreground: #fafafa;
   --border: #e4e4e7;
   --input: #e4e4e7;
   --ring: #7c3aed;
-  --radius: 4px;
+  --radius: 0.5rem;
   --chart-1: #7c3aed;
-  --chart-2: #8b5cf6;
-  --chart-3: #a78bfa;
-  --chart-4: #c4b5fd;
-  --chart-5: #ddd6fe;
-  --sidebar: #ffffff;
-  --sidebar-foreground: #1c1917;
+  --chart-2: #10b981;
+  --chart-3: #f59e0b;
+  --chart-4: #3b82f6;
+  --chart-5: #ec4899;
+  --sidebar: #fafafa;
+  --sidebar-foreground: #18181b;
   --sidebar-primary: #7c3aed;
-  --sidebar-primary-foreground: #ffffff;
+  --sidebar-primary-foreground: #fafafa;
   --sidebar-accent: #f4f4f5;
-  --sidebar-accent-foreground: #1c1917;
+  --sidebar-accent-foreground: #18181b;
   --sidebar-border: #e4e4e7;
   --sidebar-ring: #7c3aed;
 }
@@ -91,27 +91,27 @@
   --popover: #09090b;
   --popover-foreground: #fafafa;
   --primary: #7c3aed;
-  --primary-foreground: #ffffff;
+  --primary-foreground: #fafafa;
   --secondary: #27272a;
   --secondary-foreground: #fafafa;
   --muted: #27272a;
   --muted-foreground: #a1a1aa;
-  --accent: #7c3aed;
-  --accent-foreground: #ffffff;
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
+  --accent: #27272a;
+  --accent-foreground: #fafafa;
+  --destructive: #7f1d1d;
+  --destructive-foreground: #fafafa;
   --border: #27272a;
   --input: #27272a;
   --ring: #7c3aed;
   --chart-1: #7c3aed;
-  --chart-2: #8b5cf6;
-  --chart-3: #a78bfa;
-  --chart-4: #c4b5fd;
-  --chart-5: #ddd6fe;
-  --sidebar: #09090b;
+  --chart-2: #10b981;
+  --chart-3: #f59e0b;
+  --chart-4: #3b82f6;
+  --chart-5: #ec4899;
+  --sidebar: #18181b;
   --sidebar-foreground: #fafafa;
   --sidebar-primary: #7c3aed;
-  --sidebar-primary-foreground: #ffffff;
+  --sidebar-primary-foreground: #fafafa;
   --sidebar-accent: #27272a;
   --sidebar-accent-foreground: #fafafa;
   --sidebar-border: #27272a;
@@ -152,3 +152,21 @@
 .dark ::-webkit-scrollbar-thumb:hover {
   background: #3f3f46;
 }
+
+@layer utilities {
+  .glass {
+    @apply bg-background/60 backdrop-blur-xl border border-border;
+  }
+  
+  .glass-card {
+    @apply bg-card/40 backdrop-blur-xl border border-border shadow-md;
+  }
+
+  .bg-gradient-mesh {
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(124, 58, 237, 0.05) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(124, 58, 237, 0.05) 0px, transparent 50%);
+  }
+}
+
+

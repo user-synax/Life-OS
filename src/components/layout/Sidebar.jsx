@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { 
   LayoutDashboard, 
+  User,
   CheckSquare, 
   StickyNote, 
   Calendar, 
@@ -24,6 +25,7 @@ import useAuthStore from '@/store/useAuthStore';
 
 const menuItems = [
   { icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard' },
+  { icon: User, label: 'Profile', href: '/dashboard/profile' },
   { icon: CheckSquare, label: 'Tasks', href: '/dashboard/tasks' },
   { icon: StickyNote, label: 'Notes', href: '/dashboard/notes' },
   { icon: Calendar, label: 'Calendar', href: '/dashboard/calendar' },
@@ -49,21 +51,21 @@ export default function Sidebar({ isOpen, setIsOpen }) {
 
       <aside
         className={cn(
-          "fixed left-0 top-0 z-50 flex h-screen w-64 flex-col border-r border-border/50 bg-sidebar text-sidebar-foreground transition-transform lg:translate-x-0",
+          "fixed left-0 top-0 z-50 flex h-screen w-64 flex-col border-r border-border bg-sidebar text-sidebar-foreground transition-all duration-300 lg:translate-x-0",
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <div className="flex h-16 items-center justify-between px-6 border-b border-border/50 bg-muted/5">
-          <div className="flex items-center gap-3 font-black text-primary">
-            <div className="h-8 w-8 rounded-[4px] bg-primary flex items-center justify-center shadow-sm">
+        <div className="flex h-16 items-center justify-between px-6 border-b border-border bg-muted/5">
+          <div className="flex items-center gap-3 font-bold text-primary">
+            <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center shadow-sm">
                <div className="h-3 w-3 rounded-full border-2 border-primary-foreground/30" />
             </div>
-            <span className="text-lg tracking-[0.1em] uppercase font-black">Life OS</span>
+            <span className="text-lg tracking-tight uppercase">Life OS</span>
           </div>
           <Button
             variant="ghost"
             size="icon"
-            className="lg:hidden h-8 w-8 text-muted-foreground/50"
+            className="lg:hidden h-8 w-8 text-muted-foreground"
             onClick={() => setIsOpen(false)}
           >
             <X size={18} />
@@ -82,52 +84,57 @@ export default function Sidebar({ isOpen, setIsOpen }) {
               window.dispatchEvent(event);
               setIsOpen(false);
             }}
-            className="w-full flex items-center justify-between px-4 py-3 rounded-[4px] bg-muted/10 border border-border/50 hover:bg-muted/20 hover:border-primary/20 transition-all duration-300 group"
+            className="w-full flex items-center justify-between px-4 py-2 rounded-md bg-muted/50 border border-border hover:bg-muted transition-colors group"
           >
             <div className="flex items-center gap-3">
-              <Search size={16} className="text-muted-foreground/30 group-hover:text-primary transition-colors" />
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/40 group-hover:text-foreground transition-colors">Registry Search</span>
+              <Search size={16} className="text-muted-foreground group-hover:text-primary transition-colors" />
+              <span className="text-xs font-medium text-muted-foreground group-hover:text-foreground transition-colors">Search...</span>
             </div>
-            <div className="flex items-center gap-1 bg-muted/20 px-1.5 py-0.5 rounded-[2px] border border-border/50 group-hover:border-primary/10">
-               <CommandIcon size={8} className="text-muted-foreground/20 group-hover:text-primary/40" />
-               <span className="text-[8px] font-black text-muted-foreground/20 group-hover:text-primary/40">K</span>
+            <div className="flex items-center gap-1 bg-background px-1.5 py-0.5 rounded border border-border">
+               <CommandIcon size={10} className="text-muted-foreground" />
+               <span className="text-[10px] font-medium text-muted-foreground">K</span>
             </div>
           </button>
         </div>
 
-        <nav className="flex-1 space-y-0.5 px-3 py-4 overflow-y-auto">
+        <nav className="flex-1 space-y-1 px-3 py-4 overflow-y-auto">
           {menuItems.map((item) => {
             const isActive = pathname === item.href;
+            const Icon = item.icon;
+            
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
                 className={cn(
-                  'flex items-center gap-3 rounded-[4px] px-4 py-2.5 transition-all duration-200 group relative',
-                  isActive
-                    ? 'bg-primary text-primary-foreground font-black shadow-sm'
-                    : 'text-muted-foreground/60 hover:bg-muted/50 hover:text-foreground'
+                  "group flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors",
+                  isActive 
+                    ? "bg-primary/10 text-primary" 
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 )}
               >
-                <item.icon size={16} className={cn("transition-colors", isActive ? "text-primary-foreground" : "group-hover:text-primary")} />
-                <span className="text-[11px] font-black uppercase tracking-widest">{item.label}</span>
-                {isActive && (
-                   <div className="absolute right-3 h-1 w-1 rounded-full bg-primary-foreground/40" />
-                )}
+                <Icon 
+                  size={18} 
+                  className={cn(
+                    "transition-colors",
+                    isActive ? "text-primary" : "text-muted-foreground group-hover:text-primary"
+                  )} 
+                />
+                <span>{item.label}</span>
               </Link>
             );
           })}
         </nav>
 
-        <div className="p-4 border-t border-border/50 bg-muted/5">
-          <Button
-            variant="ghost"
-            className="w-full justify-start gap-3 text-muted-foreground/40 hover:text-destructive hover:bg-destructive/5 rounded-[4px] h-10 px-4 transition-colors"
+        <div className="p-4 mt-auto border-t border-border">
+          <Button 
             onClick={logout}
+            variant="ghost" 
+            className="w-full justify-start gap-3 px-3 py-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
           >
-            <LogOut size={16} />
-            <span className="text-[11px] font-black uppercase tracking-widest">Logout</span>
+            <LogOut size={18} />
+            <span>Sign Out</span>
           </Button>
         </div>
       </aside>

@@ -27,10 +27,10 @@ export default function NotificationPanel({ open, setOpen }) {
   if (!open) return null;
 
   return (
-    <div className="absolute right-0 top-12 z-50 w-80 rounded-2xl border border-border bg-card shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200">
+    <div className="absolute right-0 top-12 z-50 w-80 rounded-lg border border-border bg-card shadow-lg animate-in fade-in slide-in-from-top-2 duration-200">
       <div className="flex items-center justify-between border-b border-border p-4">
         <div className="flex items-center gap-2">
-          <h3 className="text-sm font-bold uppercase tracking-widest">Notifications</h3>
+          <h3 className="text-sm font-semibold">Notifications</h3>
           {unreadCount > 0 && (
             <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
               {unreadCount}
@@ -59,11 +59,11 @@ export default function NotificationPanel({ open, setOpen }) {
               <div
                 key={notification._id}
                 className={cn(
-                  "flex items-start gap-3 p-4 transition-colors hover:bg-sidebar/50",
+                  "flex items-start gap-3 p-4 transition-colors hover:bg-muted/50",
                   !notification.isRead && "bg-primary/5"
                 )}
               >
-                <div className="mt-1 p-2 rounded-lg bg-sidebar border border-border/50">
+                <div className="mt-1 p-2 rounded-md bg-muted border border-border">
                   {getIcon(notification.type)}
                 </div>
                 <div className="flex-1 space-y-1">
@@ -90,8 +90,8 @@ export default function NotificationPanel({ open, setOpen }) {
         )}
       </ScrollArea>
       <div className="border-t border-border p-2">
-         <Button variant="ghost" className="w-full text-[10px] uppercase font-bold tracking-widest text-muted-foreground hover:text-primary">
-            View All Notifications
+         <Button variant="ghost" className="w-full text-xs font-medium text-muted-foreground hover:text-primary">
+            View All
          </Button>
       </div>
     </div>
