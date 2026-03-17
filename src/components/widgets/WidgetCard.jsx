@@ -71,22 +71,30 @@ export default function WidgetCard({ widget }) {
   return (
     <Card
       className={cn(
-        'group relative flex flex-col overflow-hidden bg-card border-border/50 rounded-[4px] shadow-sm h-full hover:border-primary/20 transition-all duration-300 hover:shadow-2xl hover:shadow-black/5',
+        'group relative flex flex-col overflow-hidden bg-card/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl h-full transition-all duration-500 hover:border-primary/40 hover:shadow-primary/5 hover:-translate-y-1',
         getWidgetSizeClass(widget.size)
       )}
     >
-      <CardHeader className="p-4 py-2.5 flex flex-row items-center justify-between space-y-0 border-b border-border/30 bg-muted/5">
-        <CardTitle className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground/40 flex items-center gap-2 group-hover:text-primary/60 transition-colors">
-          <div className="h-1.5 w-1.5 rounded-full bg-primary/20 group-hover:bg-primary transition-colors" />
-          {widget.widgetType}
-        </CardTitle>
-        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0">
-          <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground/30 hover:text-primary hover:bg-primary/5 rounded-[2px] transition-colors">
-            <Settings2 size={12} />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      
+      <CardHeader className="p-4 flex flex-row items-center justify-between space-y-0 border-b border-white/5 bg-white/[0.02] relative z-10">
+        <div className="flex items-center gap-3">
+           <div className="h-1.5 w-1.5 rounded-full bg-primary/40 group-hover:bg-primary group-hover:animate-pulse transition-all duration-500" />
+           <CardTitle className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 group-hover:text-foreground transition-colors duration-500">
+             {widget.widgetType}
+           </CardTitle>
+        </div>
+        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-2 group-hover:translate-x-0">
+          <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground/40 hover:text-primary hover:bg-primary/10 rounded-lg transition-all">
+            <Settings2 size={14} />
+          </Button>
+          <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground/40 hover:text-destructive hover:bg-destructive/10 rounded-lg transition-all" onClick={() => removeWidget(widget._id)}>
+            <X size={14} />
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="p-5 pt-4 flex-1 overflow-hidden flex flex-col bg-card/50">
+      
+      <CardContent className="p-5 flex-1 overflow-auto relative z-10 scrollbar-hide">
         {renderWidgetContent()}
       </CardContent>
     </Card>
