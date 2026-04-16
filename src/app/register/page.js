@@ -33,19 +33,19 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted/50 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-[#171717] px-4">
       <div className="w-full max-w-[400px] space-y-6">
         <div className="flex flex-col items-center space-y-2">
-           <div className="h-12 w-12 rounded-xl bg-primary flex items-center justify-center text-primary-foreground shadow-lg">
+           <div className="h-12 w-12 rounded-xl bg-[#3ecf8e] flex items-center justify-center text-[#0a0a0a]">
               <Command size={24} />
            </div>
-           <h1 className="text-2xl font-bold tracking-tight">Life OS</h1>
-           <p className="text-sm text-muted-foreground">Create your account</p>
+           <h1 className="text-[2.25rem] font-normal leading-[1.25] tracking-tight">Life OS</h1>
+           <p className="text-sm text-[#898989]">Create your account</p>
         </div>
 
-        <Card className="shadow-xl border-border">
+        <Card className="border-[#2e2e2e]">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-xl font-bold">Register</CardTitle>
+            <CardTitle className="text-[1.5rem] font-normal tracking-[-0.16px]">Register</CardTitle>
           </CardHeader>
           
           <form onSubmit={handleSubmit}>
@@ -93,9 +93,9 @@ export default function RegisterPage() {
                 {loading ? 'Creating account...' : 'Sign up'}
               </Button>
               
-              <div className="text-center text-sm text-muted-foreground">
+              <div className="text-center text-sm text-[#898989]">
                 Already have an account? {' '}
-                <Link href="/login" className="text-primary hover:underline underline-offset-4">
+                <Link href="/login" className="text-[#00c573] hover:underline underline-offset-4">
                   Login
                 </Link>
               </div>
