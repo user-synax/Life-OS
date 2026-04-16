@@ -22,6 +22,7 @@ export default function CalendarWidget() {
   const { events, fetchEvents } = useEventStore();
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [today, setToday] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(null);
 
   useEffect(() => {
     fetchEvents();
@@ -49,6 +50,15 @@ export default function CalendarWidget() {
       .sort((a, b) => new Date(a.date) - new Date(b.date))[0];
   }, [events]);
 
+  const selectedDateEvents = useMemo(() => {
+    if (!selectedDate) return [];
+    return events.filter(e => isSameDay(new Date(e.date), selectedDate));
+  }, [events, selectedDate]);
+
+  const handleDateClick = (day) => {
+    setSelectedDate(day);
+  };
+
   const { monthStart, days } = calendarData;
 
   return (
@@ -75,29 +85,33 @@ export default function CalendarWidget() {
 
       <div className="grid grid-cols-7 gap-1 flex-1">
         {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, idx) => (
-          <div key={`${day}-${idx}`} className="text-[8px] font-black text-muted-foreground/20 text-center mb-2 tracking-widest">
+          <div key={`${day}-${idx}`} className="text-[12px] font-medium text-muted-foreground/20 text-center mb-2 tracking-widest">
             {day}
           </div>
         ))}
         {days.map((day, idx) => {
           const isToday = isSameDay(day, today);
           const isCurrentMonth = isSameMonth(day, monthStart);
+          const isSelected = selectedDate && isSameDay(day, selectedDate);
           const dayEvents = events.filter(e => isSameDay(new Date(e.date), day));
           
           return (
             <div
               key={day.toString()}
+              onClick={() => handleDateClick(day)}
               className={cn(
-                "aspect-square flex flex-col items-center justify-center rounded-[4px] text-[9px] relative group cursor-pointer border border-transparent transition-all duration-200",
+                "aspect-square flex flex-col items-center justify-center rounded-[4px] text-[14px] relative group cursor-pointer border border-[#2e2e2e]/30 transition-all duration-200",
                 !isCurrentMonth && "text-muted-foreground/10",
                 isToday 
-                  ? "bg-primary text-primary-foreground font-black shadow-sm" 
-                  : "hover:bg-muted/30 text-foreground/60 hover:text-foreground hover:border-border/50",
+                  ? "bg-[#3ecf8e] text-[#0a0a0a] font-black shadow-sm border-[#3ecf8e]" 
+                  : isSelected
+                    ? "bg-[#3ecf8e]/20 text-[#3ecf8e] font-black border-[#3ecf8e]"
+                    : "bg-[#171717]/30 hover:bg-[#2e2e2e]/50 text-foreground/60 hover:text-foreground hover:border-[#3ecf8e]/30",
               )}
             >
               {format(day, 'd')}
               {isToday && <div className="absolute bottom-1 h-0.5 w-0.5 bg-primary-foreground/40 rounded-full" />}
-              {dayEvents.length > 0 && !isToday && (
+              {dayEvents.length > 0 && !isToday && !isSelected && (
                 <div className="absolute top-1 right-1 h-1 w-1 bg-primary/30 rounded-full" />
               )}
             </div>
@@ -116,26 +130,71 @@ export default function CalendarWidget() {
       </div>
 
       <div className="mt-4 pt-3 border-t border-border/10">
-         <div className="flex items-center justify-between text-[9px] font-black text-muted-foreground/20 uppercase tracking-[0.2em]">
-            <span>Next Operation</span>
-            <span className="text-primary/40 hover:text-primary cursor-pointer transition-colors">Registry</span>
-         </div>
-         {nextEvent ? (
-            <div className="mt-2 flex items-center gap-3 p-2.5 bg-muted/10 rounded-[4px] border border-border/50 group hover:border-primary/20 transition-all">
-               <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse shadow-[0_0_8px_rgba(var(--primary),0.6)]" />
-               <div className="flex-1 min-w-0">
-                  <p className="text-[10px] font-black truncate tracking-tight text-foreground/80 uppercase">{nextEvent.title}</p>
-                  <div className="flex items-center gap-2 mt-0.5 opacity-40">
-                     <MapPin size={8} />
-                     <span className="text-[8px] font-black uppercase tracking-widest truncate">{nextEvent.location || "Sector Unknown"}</span>
-                  </div>
+         {selectedDate ? (
+            <>
+               <div className="flex items-center justify-between text-[9px] font-black text-muted-foreground/20 uppercase tracking-[0.2em] mb-2">
+                  <span>Selected Date</span>
+                  <button 
+                    onClick={() => setSelectedDate(null)}
+                    className="text-primary/40 hover:text-primary cursor-pointer transition-colors text-[8px]"
+                  >
+                    Clear
+                  </button>
                </div>
-               <span className="text-[9px] font-black text-primary/60 ml-auto tabular-nums">{nextEvent.startTime || "00:00"}</span>
-            </div>
+               <div className="p-2.5 bg-[#171717]/50 rounded-[4px] border border-[#2e2e2e]/30">
+                  <div className="flex items-center justify-between mb-2">
+                     <span className="text-[16px] font-medium text-foreground/80 uppercase">{format(selectedDate, 'EEEE, MMMM d, yyyy')}</span>
+                     <span className="text-[14px] font-medium text-primary/60 uppercase">{format(selectedDate, 'MMM d')}</span>
+                  </div>
+                  {selectedDateEvents.length > 0 ? (
+                     <div className="space-y-2 mt-3">
+                        {selectedDateEvents.map((event, idx) => (
+                           <div key={event._id || idx} className="flex items-center gap-3 p-2 bg-[#0f0f0f]/50 rounded-[4px] border border-[#2e2e2e]/30">
+                              <div className="h-1 w-1 rounded-full bg-primary animate-pulse shadow-[0_0_8px_rgba(var(--primary),0.6)]" />
+                              <div className="flex-1 min-w-0">
+                                 <p className="text-[16px] font-medium truncate tracking-tight text-foreground/80 uppercase">{event.title}</p>
+                                 <div className="flex items-center gap-2 mt-0.5 opacity-40">
+                                    <MapPin size={7} />
+                                    <span className="text-[14px] font-medium uppercase tracking-widest truncate">{event.location || "Sector Unknown"}</span>
+                                 </div>
+                              </div>
+                              <span className="text-[14px] font-medium text-primary/60 tabular-nums">{event.startTime || "00:00"}</span>
+                           </div>
+                        ))}
+                     </div>
+                  ) : (
+                     <div className="mt-2 p-2 bg-[#171717]/30 rounded-[4px] border border-dashed border-[#2e2e2e]/30 text-center">
+                        <span className="text-[12px] font-medium uppercase tracking-[0.3em] text-muted-foreground/20">
+                           No event on {format(selectedDate, 'MMM d')}
+                        </span>
+                     </div>
+                  )}
+               </div>
+            </>
          ) : (
-            <div className="mt-2 p-2.5 bg-muted/5 rounded-[4px] border border-dashed border-border/50 text-center">
-               <span className="text-[8px] font-black uppercase tracking-[0.3em] text-muted-foreground/20">No Operations Scheduled</span>
-            </div>
+            <>
+               <div className="flex items-center justify-between text-[9px] font-black text-muted-foreground/20 uppercase tracking-[0.2em]">
+                  <span>Next Operation</span>
+                  <span className="text-primary/40 hover:text-primary cursor-pointer transition-colors">Registry</span>
+               </div>
+               {nextEvent ? (
+                  <div className="mt-2 flex items-center gap-3 p-2.5 bg-[#171717]/50 rounded-[4px] border border-[#2e2e2e]/30 group hover:border-[#3ecf8e]/30 transition-all">
+                     <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse shadow-[0_0_8px_rgba(var(--primary),0.6)]" />
+                     <div className="flex-1 min-w-0">
+                        <span className="text-[18px] font-medium truncate tracking-tight text-foreground/80 uppercase">{nextEvent.title}</span>
+                        <div className="flex items-center gap-2 mt-0.5 opacity-40">
+                           <MapPin size={8} />
+                           <span className="text-[16px] font-medium uppercase tracking-widest truncate">{nextEvent.location || "Sector Unknown"}</span>
+                        </div>
+                     </div>
+                     <span className="text-[16px] font-medium text-primary/60 ml-auto tabular-nums">{nextEvent.startTime || "00:00"}</span>
+                  </div>
+               ) : (
+                  <div className="mt-2 p-2.5 bg-[#171717]/30 rounded-[4px] border border-dashed border-[#2e2e2e]/30 text-center">
+                     <span className="text-[14px] font-medium uppercase tracking-[0.3em] text-muted-foreground/20">No Operations Scheduled</span>
+                  </div>
+               )}
+            </>
          )}
       </div>
     </div>
