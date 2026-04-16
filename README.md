@@ -1,108 +1,302 @@
+<div align="center">
 
-<p align="center">
-  <pre>
-██╗     ██╗███████╗███████╗     ██████╗  ███████╗
-██║     ██║██╔════╝██╔════╝    ██╔═══██╗ ██╔════╝
-██║     ██║█████╗  █████╗      ██║   ██║ ███████╗
-██║     ██║██╔══╝  ██╔══╝      ██║   ██║ ╚════██║
-███████╗██║██║     ███████╗    ██╚═══██║ ███████║
-╚══════╝╚═╝╚═╝     ╚══════╝     ╚█████╔╝ ╚══════╝
-  </pre>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0a0a0a,50:1a1a2e,100:16213e&height=220&section=header&text=%20Life%20OS&fontSize=72&fontColor=e2e8f0&fontAlignY=45&desc=Your%20Entire%20Life%2C%20One%20Dashboard&descAlignY=68&descSize=18&descColor=94a3b8&animation=fadeIn" width="100%"/>
+
+<br/>
+
+<!-- STACK BADGES -->
+<p>
+  <img src="https://img.shields.io/badge/Next.js-App%20Router-000000?style=for-the-badge&logo=next.js&logoColor=white"/>
+  <img src="https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Mongoose-ODM-880000?style=for-the-badge&logo=mongoose&logoColor=white"/>
+  <img src="https://img.shields.io/badge/JWT-Auth-F7DF1E?style=for-the-badge&logo=jsonwebtokens&logoColor=black"/>
+</p>
+<p>
+  <img src="https://img.shields.io/badge/Tailwind_CSS-Styling-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Weather_API-Live_Data-4FC3F7?style=for-the-badge&logo=openweathermap&logoColor=white"/>
+  <img src="https://img.shields.io/badge/SSR-Server%20Side%20Rendering-111827?style=for-the-badge&logo=vercel&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Deployed-Vercel-000?style=for-the-badge&logo=vercel&logoColor=white"/>
 </p>
 
-<h1 align="center">Life OS - Your Personal Productivity Command Center</h1>
-
-<p align="center">
-  <strong>A sleek, modern, and highly customizable dashboard to organize, track, and optimize your life.</strong>
+<!-- STATUS -->
+<p>
+  <img src="https://img.shields.io/badge/status-live-22c55e?style=flat-square"/>
+  <img src="https://img.shields.io/badge/license-MIT-6366f1?style=flat-square"/>
+  <img src="https://img.shields.io/badge/PRs-welcome-f97316?style=flat-square"/>
+  <img src="https://img.shields.io/badge/made%20with-☕%20%26%20focus-e2e8f0?style=flat-square"/>
 </p>
 
-<p align="center">
-  <a href="#-core-features">Core Features</a> •
-  <a href="#-tech-stack">Tech Stack</a> •
-  <a href="#-getting-started">Getting Started</a> •
-  <a href="#-license">License</a>
-</p>
+<br/>
+
+> **🔗 Live Demo → [life-os-two-plum.vercel.app](https://life-os-two-plum.vercel.app)**
+
+<br/>
+
+_Stop juggling 10 different apps. Life OS brings your tasks, habits, notes, bookmarks, and daily tools into one clean, distraction-free command center._
+
+</div>
 
 ---
 
-## ✨ Introduction
+## 🧠 What is Life OS?
 
-**Life OS** is not just another productivity app; it's a centralized command center for your digital life. Built with a focus on speed, aesthetics, and modularity, it provides a beautiful and efficient interface to manage your tasks, notes, habits, and more. The design philosophy is inspired by futuristic UI, tactical dashboards, and the clean efficiency of modern developer tools.
+**Life OS** is a personal productivity operating system for your browser. Inspired by the Notion-meets-dashboard philosophy, it's built for people who want a single source of truth for their daily life — without the bloat of enterprise software or the chaos of scattered apps.
 
-Whether you're a developer, a student, or a professional, Life OS offers the tools you need to stay on top of your goals in a visually stunning package.
+It's full-stack, fast, and yours.
 
-## 🌟 Core Features
+---
 
-- **Unified Dashboard**: A fully customizable grid-based dashboard where you can add, remove, and rearrange widgets to fit your workflow.
-- **Modular Widgets**: A growing library of widgets including:
-  - **Tasks**: A powerful task manager with priorities and status tracking.
-  - **Notes**: A simple and elegant note-taking system.
-  - **Calendar**: Keep track of your important events.
-  - **Habit Tracker**: Build good habits with a visual tracker.
-  - **Focus Timer**: A Pomodoro-style timer to boost your productivity.
-  - **Analytics**: Visualize your productivity data over time.
-- **Blazing Fast Search**: A `Cmd+K` command palette to instantly search, navigate, and execute commands across the entire application.
-- **Modern Authentication**: Secure, JWT-based authentication for user registration and login.
-- **Theming**: A clean, dark-mode-first design system built with Tailwind CSS, easily adaptable to your preferences.
-- **Responsive Design**: A seamless experience across all your devices, from desktop to mobile.
+## ✦ Feature Suite
+
+<div align="center">
+
+| Module | What it does |
+|:---:|---|
+| ✅ **Task Manager** | Create, prioritize, and complete daily tasks with status tracking |
+| 📝 **Notes** | Markdown-friendly notes — quick capture, always available |
+| 🔁 **Habit Tracker** | Build streaks and track daily habits with visual progress |
+| 🔖 **Bookmarks** | Save and organize links with tags — your personal read-it-later |
+| 🌤️ **Live Weather** | Real-time weather widget powered by Weather API |
+| 🔐 **Secure Auth** | JWT-based login system with protected routes and SSR |
+| 🎨 **Minimal UI** | Clean, distraction-free design that gets out of your way |
+| 📱 **Responsive** | Fully usable on mobile, tablet, and widescreen |
+| ⚡ **SSR + SSG** | Next.js server-side rendering for fast loads and SEO |
+
+</div>
+
+---
 
 ## 🛠️ Tech Stack
 
-Life OS is built with a modern, robust, and scalable technology stack:
-
-- **Framework**: [Next.js 14](https://nextjs.org/) (App Router)
-- **Language**: [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/) with `shadcn/ui` for component primitives.
-- **State Management**: [Zustand](https://zustand-demo.pmnd.rs/) for lightweight, global state management.
-- **Database**: [MongoDB](https://www.mongodb.com/) with [Mongoose](https://mongoosejs.com/) for data modeling.
-- **Authentication**: [JWT](https://jwt.io/) & [bcrypt.js](https://github.com/dcodeIO/bcrypt.js) for secure password hashing.
-- **UI/UX**: `framer-motion` for animations and `lucide-react` for icons.
-
-## 🚀 Getting Started
-
-Follow these instructions to get a local copy of Life OS up and running.
-
-### Prerequisites
-
-- [Node.js](https://nodejs.org/en/) (v18.x or higher)
-- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
-- A [MongoDB](https://www.mongodb.com/try/download/community) instance (local or cloud-based via MongoDB Atlas).
-
-### Installation
-
-1. **Clone the repository:**
-   ```sh
-   git clone https://github.com/your-username/life-os.git
-   cd life-os
-   ```
-
-2. **Install dependencies:**
-   ```sh
-   npm install
-   # or
-   yarn install
-   ```
-
-3. **Set up environment variables:**
-   Create a `.env.local` file in the root of the project and add the following variables:
-   ```env
-   MONGODB_URI=your_mongodb_connection_string
-   JWT_SECRET=your_super_secret_jwt_key
-   ```
-
-4. **Run the development server:**
-   ```sh
-   npm run dev
-   # or
-   yarn dev
-   ```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser to see the application in action!
-
-## 📄 License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+```
+╔══════════════════════════════════════════════════════════════╗
+║                      LIFE OS · STACK                         ║
+╠══════════════════════╦═══════════════════════════════════════╣
+║  Framework           ║  Next.js (App Router, SSR/SSG)        ║
+║  Styling             ║  Tailwind CSS                         ║
+║  Database            ║  MongoDB Atlas + Mongoose             ║
+║  Auth                ║  JWT · bcrypt · HTTP-only cookies     ║
+║  External APIs       ║  Weather API (live forecast)          ║
+║  Rendering           ║  Server-Side Rendering + API Routes   ║
+║  Deployment          ║  Vercel                               ║
+╚══════════════════════╩═══════════════════════════════════════╝
+```
 
 ---
 
-<p align="center"><em>Crafted with ❤️ for the modern operator.</em></p>
+## 🚀 Getting Started
+
+### Prerequisites
+
+- **Node.js** `v18+`
+- **npm** or **yarn**
+- A **MongoDB Atlas** free cluster
+- A **Weather API** key from [weatherapi.com](https://www.weatherapi.com/) (free tier)
+
+---
+
+### 1 · Clone the Repo
+
+```bash
+git clone https://github.com/user-synax/life-os.git
+cd life-os
+```
+
+### 2 · Install Dependencies
+
+```bash
+npm install
+```
+
+### 3 · Set Up Environment Variables
+
+Create a `.env.local` at the project root:
+
+```env
+# ─── Database ──────────────────────────────────────────────
+MONGODB_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/life-os
+
+# ─── Auth ──────────────────────────────────────────────────
+JWT_SECRET=your_strong_jwt_secret_here
+NEXTAUTH_SECRET=your_nextauth_secret
+NEXTAUTH_URL=http://localhost:3000
+
+# ─── Weather API ───────────────────────────────────────────
+NEXT_PUBLIC_WEATHER_API_KEY=your_weatherapi_key
+NEXT_PUBLIC_DEFAULT_CITY=Delhi
+```
+
+### 4 · Start the Dev Server
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) — your dashboard is ready. 🎉
+
+---
+
+## 📁 Project Structure
+
+```
+life-os/
+├── app/                        # Next.js App Router
+│   ├── (auth)/                 # Login & Register pages
+│   │   ├── login/
+│   │   └── register/
+│   ├── dashboard/              # Main dashboard layout + modules
+│   │   ├── tasks/
+│   │   ├── notes/
+│   │   ├── habits/
+│   │   └── bookmarks/
+│   ├── api/                    # REST API route handlers
+│   │   ├── auth/
+│   │   ├── tasks/
+│   │   ├── notes/
+│   │   ├── habits/
+│   │   └── bookmarks/
+│   └── layout.jsx              # Root layout with providers
+│
+├── components/                 # Reusable UI components
+│   ├── ui/                     # Base components (buttons, cards, etc.)
+│   ├── dashboard/              # Module-specific components
+│   └── widgets/                # Weather widget, clock, etc.
+│
+├── lib/                        # Utilities & configurations
+│   ├── db.js                   # MongoDB connection singleton
+│   ├── auth.js                 # JWT helpers & middleware
+│   └── utils.js                # General utilities
+│
+├── models/                     # Mongoose schemas
+│   ├── User.js
+│   ├── Task.js
+│   ├── Note.js
+│   ├── Habit.js
+│   └── Bookmark.js
+│
+└── middleware.js               # Route protection middleware
+```
+
+---
+
+## 🗺️ Architecture
+
+```
+  Browser
+    │
+    ├── GET /dashboard ──► Next.js SSR ──► Fetch user data ──► MongoDB
+    │                         │
+    │                    Render on server
+    │                    Send hydrated HTML
+    │
+    ├── API calls ───► /api/tasks, /api/notes... ──► Mongoose ──► MongoDB
+    │
+    └── Weather widget ──► /api/weather ──► WeatherAPI.com
+```
+
+**Auth Flow:**
+1. User logs in → credentials verified against MongoDB (bcrypt)
+2. JWT signed and stored in secure HTTP-only cookie
+3. Next.js middleware reads cookie on every protected route
+4. SSR fetches user-specific data server-side before sending HTML
+
+---
+
+## 🔌 API Reference
+
+<details>
+<summary><b>Auth Routes</b></summary>
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/api/auth/register` | Create a new account |
+| `POST` | `/api/auth/login` | Login and receive JWT cookie |
+| `POST` | `/api/auth/logout` | Clear auth cookie |
+
+</details>
+
+<details>
+<summary><b>Tasks</b></summary>
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/tasks` | Get all tasks for user |
+| `POST` | `/api/tasks` | Create a new task |
+| `PATCH` | `/api/tasks/[id]` | Update task (status, title) |
+| `DELETE` | `/api/tasks/[id]` | Delete a task |
+
+</details>
+
+<details>
+<summary><b>Notes</b></summary>
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/notes` | Get all notes for user |
+| `POST` | `/api/notes` | Create a new note |
+| `PATCH` | `/api/notes/[id]` | Update note content |
+| `DELETE` | `/api/notes/[id]` | Delete a note |
+
+</details>
+
+<details>
+<summary><b>Habits · Bookmarks</b></summary>
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/habits` | Get habits + today's completion status |
+| `POST` | `/api/habits` | Create a habit |
+| `PATCH` | `/api/habits/[id]/check` | Mark habit as done for today |
+| `GET` | `/api/bookmarks` | Get all bookmarks |
+| `POST` | `/api/bookmarks` | Save a new bookmark |
+| `DELETE` | `/api/bookmarks/[id]` | Remove a bookmark |
+
+</details>
+
+---
+
+## 🚢 Deploy to Vercel
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/user-synax/life-os)
+
+1. Click **Deploy** — Vercel auto-detects Next.js
+2. Go to **Project → Settings → Environment Variables**
+3. Add all keys from your `.env.local`
+4. Hit **Redeploy** — done ✅
+
+---
+
+## 🤝 Contributing
+
+```bash
+# Fork → clone → branch
+git checkout -b feature/your-idea
+
+# Make changes, then commit
+git commit -m "feat: describe your change"
+
+# Push and open a PR
+git push origin feature/your-idea
+```
+
+All contributions welcome — bug fixes, new modules, UI improvements, and ideas.
+
+---
+
+## 📜 License
+
+Licensed under the **MIT License** — see [LICENSE](./LICENSE) for details. Free to use, fork, and build upon.
+
+---
+
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=rect&color=0:16213e,50:1a1a2e,100:0a0a0a&height=100&section=footer&text=Build%20your%20system.%20Own%20your%20day.&fontSize=18&fontColor=94a3b8&fontAlignY=50" width="100%"/>
+
+<br/>
+
+**Built by [Ayush](https://github.com/user-synax)** · Delhi, India 🇮🇳
+
+If Life OS helped you ship, drop a ⭐ — it means everything to a solo builder.
+
+</div>
