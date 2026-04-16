@@ -112,58 +112,65 @@ export default function HabitsPage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-foreground">Habits</h1>
-          <p className="text-muted-foreground mt-1 text-[10px] sm:text-xs font-medium uppercase tracking-widest opacity-50">Build consistency and track your progress.</p>
-        </div>
-        <div className="flex items-center gap-2 bg-muted/10 p-1 rounded-[4px] border border-border/50 shadow-sm">
-           <div className="flex flex-col items-center px-4">
-              <span className="text-[8px] uppercase font-black text-muted-foreground/30 tracking-[0.2em]">Active</span>
-              <span className="text-sm font-black text-primary uppercase tracking-widest">{habits.length}</span>
-           </div>
-           <div className="h-6 w-px bg-border/50" />
-           <div className="flex flex-col items-center px-4">
-              <span className="text-[8px] uppercase font-black text-muted-foreground/30 tracking-[0.2em]">Avg Streak</span>
-              <span className="text-sm font-black text-orange-500 uppercase tracking-widest">
-                 {habits.length > 0 ? Math.round(habits.reduce((acc, h) => acc + (h.streak || 0), 0) / habits.length) : 0}
-              </span>
-           </div>
+    <div className="w-full min-h-screen bg-background">
+      <div className="border-b border-[#2e2e2e] px-6 py-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+          <div className="space-y-2">
+            <h1 className="text-[2.25rem] font-normal leading-[1.25] text-[#fafafa]">
+              Habits
+            </h1>
+            <p className="text-[#898989] mt-1 text-[1rem] font-medium">Build consistency and track your progress.</p>
+          </div>
+          <div className="flex items-center gap-3 bg-[#0f0f0f] p-2 rounded-[9999px] border border-[#2e2e2e]">
+             <div className="flex flex-col items-center px-6 py-2">
+                <span className="text-[12px] font-medium uppercase tracking-wider text-[#898989]">Active</span>
+                <span className="text-[1.25rem] font-medium text-[#3ecf8e] uppercase tracking-widest">{habits.length}</span>
+             </div>
+             <div className="h-8 w-px bg-[#2e2e2e]/50" />
+             <div className="flex flex-col items-center px-6 py-2">
+                <span className="text-[12px] font-medium uppercase tracking-wider text-[#898989]">Avg Streak</span>
+                <span className="text-[1.25rem] font-medium text-orange-500 uppercase tracking-widest">
+                   {habits.length > 0 ? Math.round(habits.reduce((acc, h) => acc + (h.streak || 0), 0) / habits.length) : 0}
+                </span>
+             </div>
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-6">
-        <Card className="bg-card border-border/50 shadow-sm rounded-[4px] overflow-hidden">
-          <CardHeader className="p-0 border-b border-border/30 bg-muted/5">
-             <form onSubmit={handleAddHabit} className="flex items-center gap-3 p-4">
+      <div className="p-4 md:p-6">
+
+        <div className="grid grid-cols-1 gap-6">
+        <Card className="bg-[#0f0f0f] border-[#2e2e2e] rounded-[8px] overflow-hidden">
+          <CardHeader className="p-0 border-b border-[#2e2e2e] bg-[#171717]/30">
+             <form onSubmit={handleAddHabit} className="flex items-center gap-3 p-5">
                 <div className="relative flex-1 group">
-                   <Activity className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/40 group-focus-within:text-primary transition-colors" size={18} />
+                   <Activity className="absolute left-4 top-1/2 -translate-y-1/2 text-[#3ecf8e]/40 group-focus-within:text-[#3ecf8e] transition-colors" size={18} />
                    <Input 
-                      placeholder="INITIALIZE NEW HABIT PROTOCOL..." 
-                      className="pl-12 h-12 bg-muted/10 border-border/50 rounded-[4px] text-[11px] font-black uppercase tracking-[0.2em] placeholder:text-muted-foreground/10 focus:bg-muted/20 transition-all border-none focus:ring-0"
+                      placeholder="Initialize new habit protocol..." 
+                      className="pl-12 h-11 bg-[#171717]/50 border-[#2e2e2e] rounded-[6px] text-[14px] font-medium placeholder:text-[#898989]/20 focus:bg-[#171717] focus:border-[#3ecf8e] transition-all"
                       value={newHabitName}
                       onChange={(e) => setNewHabitName(e.target.value)}
                    />
                 </div>
-                <Button type="submit" size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-[4px] px-8 font-black uppercase tracking-[0.2em] h-12 text-[10px] shadow-lg shadow-primary/20 active:scale-[0.98] transition-all">
-                   Deploy
+                <Button type="submit" size="default" className="bg-[#3ecf8e] text-[#0a0a0a] hover:bg-[#3ecf8e]/90 rounded-[9999px] px-8 font-medium h-11 gap-2 transition-all">
+                   <Plus size={18} />
+                   <span>Add Habit</span>
                 </Button>
              </form>
           </CardHeader>
           <CardContent className="p-0">
-             <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] border-b border-border bg-muted/10">
-                <div className="p-4 hidden md:block">
-                   <span className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground/60">Habit Protocol</span>
+             <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] border-b border-[#2e2e2e] bg-[#171717]/30">
+                <div className="p-5 hidden md:block">
+                   <span className="text-[14px] font-medium tracking-wider text-[#898989]">Habit Protocol</span>
                 </div>
-                <div className="flex items-center overflow-x-auto custom-scrollbar md:pr-10 py-2 md:py-0">
+                <div className="flex items-center overflow-x-auto custom-scrollbar md:pr-10 py-3 md:py-0">
                    <div className="flex min-w-full md:min-w-0">
                       {last7Days.map((date) => (
-                         <div key={date.toString()} className="w-12 shrink-0 flex flex-col items-center gap-1">
-                            <span className="text-[8px] uppercase font-bold text-muted-foreground/40">{format(date, 'EEE')}</span>
+                         <div key={date.toString()} className="w-14 shrink-0 flex flex-col items-center gap-1">
+                            <span className="text-[12px] font-medium text-[#898989]/40">{format(date, 'EEE')}</span>
                             <span className={cn(
-                               "text-[10px] font-bold",
-                               isSameDay(date, today) ? "text-primary" : "text-muted-foreground/60"
+                               "text-[14px] font-medium",
+                               isSameDay(date, today) ? "text-[#3ecf8e]" : "text-[#898989]/60"
                             )}>{format(date, 'd')}</span>
                          </div>
                       ))}
@@ -172,41 +179,41 @@ export default function HabitsPage() {
              </div>
 
              <ScrollArea className="h-[60vh] sm:h-[500px]">
-                <div className="divide-y divide-border">
+                <div className="divide-y divide-[#2e2e2e]/30">
                    {loading && habits.length === 0 ? (
                       [1, 2, 3, 4].map(i => (
                          <div key={i} className="p-6 flex flex-col md:flex-row md:items-center justify-between animate-pulse gap-4">
-                            <div className="h-4 w-40 bg-muted rounded-[4px]" />
+                            <div className="h-4 w-40 bg-[#2e2e2e]/20 rounded-[6px]" />
                             <div className="flex gap-2 overflow-hidden">
                                {[1, 2, 3, 4, 5, 6, 7].map(j => (
-                                  <div key={j} className="h-8 w-8 rounded-[4px] bg-muted shrink-0" />
+                                  <div key={j} className="h-9 w-9 rounded-[9999px] bg-[#2e2e2e]/20 shrink-0" />
                                ))}
                             </div>
                          </div>
                       ))
                    ) : habits.length === 0 ? (
-                      <div className="flex flex-col items-center justify-center h-64 text-muted-foreground/20">
+                      <div className="flex flex-col items-center justify-center h-64 text-[#898989]/20">
                          <Trophy size={48} className="mb-4" />
-                         <p className="text-sm font-bold uppercase tracking-widest">No habits tracked yet.</p>
+                         <p className="text-[16px] font-medium uppercase tracking-widest">No habits tracked yet.</p>
                       </div>
                    ) : (
                       habits.map((habit) => (
                         <div 
                            key={habit._id} 
-                           className="group flex flex-col md:flex-row md:items-center justify-between p-4 hover:bg-muted/10 transition-colors cursor-pointer border-l-2 border-transparent gap-4 md:gap-0"
+                           className="group flex flex-col md:flex-row md:items-center justify-between p-5 hover:bg-[#171717]/30 transition-colors cursor-pointer border-l-2 border-transparent gap-4 md:gap-0"
                            onClick={() => handleOpenEditModal(habit)}
                         >
                            <div className="flex items-center gap-4 flex-1 min-w-0">
                               <div className="flex flex-col min-w-0">
-                                 <span className="text-sm font-black tracking-tight truncate group-hover:text-primary transition-colors uppercase">{habit.name}</span>
-                                 <div className="flex items-center gap-2 mt-1">
-                                    <div className="flex items-center gap-1 bg-orange-500/10 px-1.5 py-0.5 rounded-[2px] border border-orange-500/20">
-                                       <Flame size={10} className="text-orange-500" />
-                                       <span className="text-[8px] font-black text-orange-500 uppercase tracking-widest">{habit.streak || 0} Streak</span>
+                                 <span className="text-[16px] font-medium tracking-tight truncate group-hover:text-[#3ecf8e] transition-colors">{habit.name}</span>
+                                 <div className="flex items-center gap-2 mt-2">
+                                    <div className="flex items-center gap-1.5 bg-orange-500/10 px-2 py-0.5 rounded-[9999px] border border-orange-500/20">
+                                       <Flame size={12} className="text-orange-500" />
+                                       <span className="text-[12px] font-medium text-orange-500 uppercase tracking-wider">{habit.streak || 0} Streak</span>
                                     </div>
-                                    <div className="flex items-center gap-1 bg-primary/10 px-1.5 py-0.5 rounded-[2px] border border-primary/20">
-                                       <TrendingUp size={10} className="text-primary" />
-                                       <span className="text-[8px] font-black text-primary uppercase tracking-widest">85% Score</span>
+                                    <div className="flex items-center gap-1.5 bg-[#3ecf8e]/10 px-2 py-0.5 rounded-[9999px] border border-[#3ecf8e]/20">
+                                       <TrendingUp size={12} className="text-[#3ecf8e]" />
+                                       <span className="text-[12px] font-medium text-[#3ecf8e] uppercase tracking-wider">85% Score</span>
                                     </div>
                                  </div>
                               </div>
@@ -222,20 +229,20 @@ export default function HabitsPage() {
                                           key={date.toString()}
                                           onClick={() => toggleHabit(habit._id, date)}
                                           className={cn(
-                                             "w-12 shrink-0 flex items-center justify-center transition-transform hover:scale-110 active:scale-95",
+                                             "w-14 shrink-0 flex items-center justify-center transition-transform hover:scale-110 active:scale-95",
                                              !isTodayDate && "opacity-60 hover:opacity-100"
                                           )}
                                        >
                                           {completed ? (
-                                             <div className="h-8 w-8 rounded-[4px] bg-primary text-primary-foreground flex items-center justify-center shadow-lg shadow-primary/20">
-                                                <CheckCircle2 size={16} />
+                                             <div className="h-9 w-9 rounded-[9999px] bg-[#3ecf8e] text-[#0a0a0a] flex items-center justify-center">
+                                                <CheckCircle2 size={18} />
                                              </div>
                                           ) : (
                                              <div className={cn(
-                                                "h-8 w-8 rounded-[4px] border border-border flex items-center justify-center transition-all hover:border-primary/50",
-                                                isTodayDate ? "bg-primary/5 border-primary/20 text-primary/40" : "bg-muted/30 text-muted-foreground/20"
+                                                "h-9 w-9 rounded-[9999px] border border-[#2e2e2e] flex items-center justify-center transition-all hover:border-[#3ecf8e]/50",
+                                                isTodayDate ? "bg-[#3ecf8e]/5 border-[#3ecf8e]/20 text-[#3ecf8e]/40" : "bg-[#171717]/30 text-[#898989]/20"
                                              )}>
-                                                <Circle size={16} />
+                                                <Circle size={18} />
                                              </div>
                                           )}
                                        </button>
@@ -246,7 +253,7 @@ export default function HabitsPage() {
                                  <Button 
                                     variant="ghost" 
                                     size="icon" 
-                                    className="h-8 w-8 text-muted-foreground/40 hover:text-primary hover:bg-primary/5 rounded-[4px]"
+                                    className="h-9 w-9 text-[#898989]/40 hover:text-[#3ecf8e] hover:bg-[#3ecf8e]/5 rounded-[9999px]"
                                     onClick={() => handleOpenEditModal(habit)}
                                  >
                                     <Edit3 size={16} />
@@ -254,30 +261,30 @@ export default function HabitsPage() {
                                  <Button 
                                     variant="ghost" 
                                     size="icon" 
-                                    className="h-8 w-8 text-muted-foreground/40 hover:text-destructive hover:bg-destructive/5 rounded-[4px]"
+                                    className="h-9 w-9 text-[#898989]/40 hover:text-[#ef4444] hover:bg-[#ef4444]/5 rounded-[9999px]"
                                     onClick={() => handleOpenDeleteModal(habit)}
                                  >
                                     <Trash2 size={16} />
                                  </Button>
                                  <DropdownMenu>
                                     <DropdownMenuTrigger render={
-                                       <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground/40 hover:text-foreground transition-all rounded-[4px]">
+                                       <Button variant="ghost" size="icon" className="h-9 w-9 text-[#898989]/40 hover:text-[#fafafa] hover:bg-[#171717] transition-all rounded-[9999px]">
                                           <MoreVertical size={16} />
                                        </Button>
                                     } />
-                                    <DropdownMenuContent align="end" className="bg-card border-border/50 p-1 rounded-[4px] shadow-xl min-w-32">
+                                    <DropdownMenuContent align="end" className="bg-[#0f0f0f] border-[#2e2e2e] p-1 rounded-[8px] min-w-40">
                                        <DropdownMenuItem 
-                                          className="rounded-[2px] text-[9px] font-black uppercase tracking-[0.2em] p-2.5 cursor-pointer focus:bg-primary/10 focus:text-primary"
+                                          className="rounded-[6px] text-[14px] font-medium p-2.5 cursor-pointer focus:bg-[#3ecf8e]/10 focus:text-[#3ecf8e]"
                                           onSelect={() => handleOpenEditModal(habit)}
                                        >
-                                          <Edit3 size={12} className="mr-2" />
+                                          <Edit3 size={14} className="mr-2" />
                                           Edit Habit
                                        </DropdownMenuItem>
                                        <DropdownMenuItem 
-                                          className="text-destructive focus:bg-destructive/10 focus:text-destructive rounded-[2px] text-[9px] font-black uppercase tracking-[0.2em] p-2.5 cursor-pointer"
+                                          className="text-[#ef4444] focus:bg-[#ef4444]/10 focus:text-[#ef4444] rounded-[6px] text-[14px] font-medium p-2.5 cursor-pointer"
                                           onSelect={() => handleOpenDeleteModal(habit)}
                                        >
-                                          <Trash2 size={12} className="mr-2" />
+                                          <Trash2 size={14} className="mr-2" />
                                           Delete Habit
                                        </DropdownMenuItem>
                                     </DropdownMenuContent>
@@ -295,16 +302,16 @@ export default function HabitsPage() {
 
       {/* Edit Habit Dialog */}
       <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
-        <DialogContent className="max-w-full sm:max-w-2xl lg:max-w-3xl bg-card border-border/50 p-0 overflow-hidden rounded-[4px] shadow-2xl transition-all duration-500">
-          <DialogHeader className="p-6 sm:p-8 border-b border-border/50 bg-muted/5">
+        <DialogContent className="max-w-full sm:max-w-2xl lg:max-w-3xl bg-[#0f0f0f] border-[#2e2e2e] p-0 overflow-hidden rounded-[8px] transition-all duration-500">
+          <DialogHeader className="p-6 sm:p-8 border-b border-[#2e2e2e] bg-[#3ecf8e]/5">
             <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-               <div className="h-12 w-12 rounded-[4px] bg-primary/10 flex items-center justify-center text-primary shadow-sm shrink-0">
+               <div className="h-12 w-12 rounded-[9999px] bg-[#3ecf8e]/10 flex items-center justify-center text-[#3ecf8e] shrink-0">
                   <Target size={24} />
                </div>
                <div>
-                  <DialogTitle className="text-xl sm:text-2xl font-black uppercase tracking-[0.2em] text-foreground/90 leading-tight">Edit Habit</DialogTitle>
-                  <p className="text-[10px] font-black text-muted-foreground/30 uppercase tracking-[0.25em] mt-1.5 flex items-center gap-2">
-                     <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                  <DialogTitle className="text-[1.5rem] font-normal tracking-tight text-[#fafafa]/90 leading-tight">Edit Habit</DialogTitle>
+                  <p className="text-[12px] font-medium text-[#3ecf8e]/40 uppercase tracking-wider mt-1.5 flex items-center gap-2">
+                     <span className="h-1.5 w-1.5 rounded-full bg-[#3ecf8e] animate-pulse" />
                      Modifying Habit Protocol
                   </p>
                </div>
@@ -314,35 +321,35 @@ export default function HabitsPage() {
           <div className="p-6 sm:p-8 space-y-8">
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                 <Label htmlFor="edit-name" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/40">Habit Designation</Label>
-                 <span className="text-[9px] font-black text-primary/40 uppercase tracking-[0.25em] bg-primary/5 px-2 py-0.5 rounded-[2px] border border-primary/10">Mandatory</span>
+                 <Label htmlFor="edit-name" className="text-[12px] font-medium uppercase tracking-wider text-[#898989]">Habit Designation</Label>
+                 <span className="text-[12px] font-medium text-[#3ecf8e]/40 uppercase tracking-wider bg-[#3ecf8e]/5 px-2 py-0.5 rounded-[9999px] border border-[#3ecf8e]/10">Mandatory</span>
               </div>
               <div className="relative group">
-                 <Activity className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/20 group-focus-within:text-primary transition-colors" size={16} />
+                 <Activity className="absolute left-4 top-1/2 -translate-y-1/2 text-[#898989]/20 group-focus-within:text-[#3ecf8e] transition-colors" size={16} />
                  <Input
                    id="edit-name"
                    value={editName}
                    onChange={(e) => setEditName(e.target.value)}
-                   className="bg-muted/10 border-border/50 focus:bg-muted/20 h-14 text-sm font-black uppercase tracking-widest pl-12 rounded-[4px] transition-all placeholder:text-muted-foreground/10"
-                   placeholder="ENTER HABIT NAME..."
+                   className="bg-[#171717]/50 border-[#2e2e2e] focus:bg-[#171717] h-12 text-[14px] font-medium pl-12 rounded-[6px] transition-all placeholder:text-[#898989]/20 focus:border-[#3ecf8e]"
+                   placeholder="Enter habit name..."
                  />
               </div>
             </div>
           </div>
 
-          <DialogFooter className="p-6 sm:p-8 bg-muted/5 border-t border-border/30 flex flex-col sm:flex-row gap-3 sm:gap-4">
+          <DialogFooter className="p-6 sm:p-8 bg-[#0f0f0f] border-t border-[#2e2e2e] flex flex-col sm:flex-row gap-3 sm:gap-4">
             <Button 
                variant="ghost" 
                size="sm" 
                onClick={() => setIsEditModalOpen(false)} 
-               className="w-full sm:flex-1 h-12 rounded-[4px] text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/30 hover:text-foreground transition-all border border-transparent hover:border-border/50"
+               className="w-full sm:flex-1 h-12 rounded-[6px] text-[14px] font-medium text-[#898989]/30 hover:text-[#fafafa] transition-all border border-transparent hover:border-[#2e2e2e]/50"
             >
               Cancel
             </Button>
             <Button 
                size="sm" 
                onClick={handleSaveEdit} 
-               className="w-full sm:flex-[2] h-12 bg-primary text-primary-foreground hover:bg-primary/90 rounded-[4px] text-[10px] font-black uppercase tracking-[0.3em] shadow-2xl shadow-primary/20 transition-all active:scale-[0.98]"
+               className="w-full sm:flex-[2] h-12 bg-[#3ecf8e] text-[#0a0a0a] hover:bg-[#3ecf8e]/90 rounded-[9999px] text-[14px] font-medium transition-all"
             >
               Update Protocol
             </Button>
@@ -352,31 +359,31 @@ export default function HabitsPage() {
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
-        <DialogContent className="max-w-full sm:max-w-lg bg-card border-border/50 p-0 overflow-hidden rounded-[4px] shadow-2xl transition-all duration-500">
-          <DialogHeader className="p-6 sm:p-8 border-b border-border/50 bg-destructive/5">
+        <DialogContent className="max-w-full sm:max-w-lg bg-[#0f0f0f] border-[#2e2e2e] p-0 overflow-hidden rounded-[8px] transition-all duration-500">
+          <DialogHeader className="p-6 sm:p-8 border-b border-[#2e2e2e] bg-[#ef4444]/5">
             <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-               <div className="h-12 w-12 rounded-[4px] bg-destructive/10 flex items-center justify-center text-destructive shadow-sm shrink-0">
+               <div className="h-12 w-12 rounded-[9999px] bg-[#ef4444]/10 flex items-center justify-center text-[#ef4444] shrink-0">
                   <AlertTriangle size={24} />
                </div>
                <div>
-                  <DialogTitle className="text-xl sm:text-2xl font-black uppercase tracking-[0.2em] text-destructive/90 leading-tight">Terminate Habit?</DialogTitle>
-                  <p className="text-[10px] font-black text-destructive/30 uppercase tracking-[0.25em] mt-1.5">Critical System Action</p>
+                  <DialogTitle className="text-[1.5rem] font-normal tracking-tight text-[#ef4444]/90 leading-tight">Terminate Habit?</DialogTitle>
+                  <p className="text-[12px] font-medium text-[#ef4444]/30 uppercase tracking-wider mt-1.5">Critical System Action</p>
                </div>
             </div>
           </DialogHeader>
           
           <div className="p-6 sm:p-8">
-            <p className="text-xs sm:text-sm font-bold text-muted-foreground/60 leading-relaxed uppercase tracking-widest">
-              Are you sure you want to terminate habit <span className="font-black text-foreground underline decoration-destructive/30 underline-offset-4 decoration-2">&ldquo;{activeHabit?.name}&rdquo;</span>? This will permanently remove all streak data and history.
+            <p className="text-[14px] font-medium text-[#898989]/60 leading-relaxed uppercase tracking-wider">
+              Are you sure you want to terminate habit <span className="font-medium text-[#fafafa] underline decoration-[#ef4444]/30 underline-offset-4 decoration-2">&ldquo;{activeHabit?.name}&rdquo;</span>? This will permanently remove all streak data and history.
             </p>
           </div>
 
-          <DialogFooter className="p-6 sm:p-8 bg-muted/5 border-t border-border/30 flex flex-col sm:flex-row gap-3 sm:gap-4">
+          <DialogFooter className="p-6 sm:p-8 bg-[#0f0f0f] border-t border-[#2e2e2e] flex flex-col sm:flex-row gap-3 sm:gap-4">
             <Button 
                variant="ghost" 
                size="sm" 
                onClick={() => setIsDeleteModalOpen(false)} 
-               className="w-full sm:flex-1 h-12 rounded-[4px] text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/30 hover:text-foreground transition-all border border-transparent hover:border-border/50"
+               className="w-full sm:flex-1 h-12 rounded-[6px] text-[14px] font-medium text-[#898989]/30 hover:text-[#fafafa] transition-all border border-transparent hover:border-[#2e2e2e]/50"
             >
               Abort
             </Button>
@@ -384,13 +391,14 @@ export default function HabitsPage() {
                variant="destructive"
                size="sm" 
                onClick={handleConfirmDelete} 
-               className="w-full sm:flex-1 h-12 bg-destructive text-white hover:bg-destructive/90 rounded-[4px] text-[10px] font-black uppercase tracking-[0.3em] shadow-2xl shadow-destructive/20 transition-all active:scale-[0.98]"
+               className="w-full sm:flex-1 h-12 bg-[#ef4444] text-[#fafafa] hover:bg-[#ef4444]/90 rounded-[9999px] text-[14px] font-medium transition-all"
             >
               Confirm Termination
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      </div>
     </div>
   );
 }
