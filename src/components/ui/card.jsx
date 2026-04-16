@@ -10,7 +10,7 @@ function Card({
     <div
       data-slot="card"
       className={cn(
-        "flex flex-col gap-4 overflow-hidden rounded-[4px] bg-card text-sm text-card-foreground border border-border",
+        "flex flex-col gap-4 overflow-hidden rounded-[8px] bg-card text-sm text-card-foreground border border-[#2e2e2e]",
         className
       )}
       {...props} />
@@ -40,7 +40,7 @@ function CardTitle({
     <div
       data-slot="card-title"
       className={cn(
-        "text-lg font-bold leading-none tracking-tight",
+        "text-[1.5rem] font-normal leading-none tracking-[-0.16px]",
         className
       )}
       {...props} />
