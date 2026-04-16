@@ -47,12 +47,12 @@ export default function TopNav({ onMenuClick }) {
         useUIStore();
 
     return (
-        <header className="sticky top-0 z-30 flex h-14 w-full items-center justify-between border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 md:px-8">
+        <header className="sticky top-0 z-30 flex h-14 w-full items-center justify-between border-b border-[#2e2e2e] bg-[#171717]/95 backdrop-blur supports-[backdrop-filter]:bg-[#171717]/60 px-4 md:px-8">
             <div className="flex items-center gap-4 flex-1">
                 <Button
                     variant="ghost"
                     size="icon"
-                    className="lg:hidden h-9 w-9 text-muted-foreground hover:bg-accent"
+                    className="lg:hidden h-9 w-9 text-[#898989] hover:bg-[#0f0f0f]"
                     onClick={onMenuClick}
                 >
                     <Menu size={20} />
@@ -60,13 +60,13 @@ export default function TopNav({ onMenuClick }) {
 
                 <div className="relative w-full max-w-md group hidden md:block">
                     <Search
-                        className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                        className="absolute left-3 top-1/2 -translate-y-1/2 text-[#898989]"
                         size={14}
                     />
                     <input
                         type="search"
                         placeholder="Search... (Cmd+K)"
-                        className="w-full pl-9 pr-4 bg-muted border-none focus:ring-1 focus:ring-ring h-9 text-sm rounded-md transition-all placeholder:text-muted-foreground outline-none"
+                        className="w-full pl-9 pr-4 bg-[#0f0f0f] border-none focus:ring-1 focus:ring-[#3ecf8e] h-9 text-sm rounded-md transition-all placeholder:text-[#898989] outline-none"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                     />
@@ -78,9 +78,9 @@ export default function TopNav({ onMenuClick }) {
                     <DropdownMenuTrigger
                         render={
                             <Button
-                                variant="outline"
-                                size="sm"
-                                className="hidden sm:flex gap-2 h-9 px-4 rounded-md"
+                                variant="default"
+                                size="default"
+                                className="hidden sm:flex gap-2 h-9 rounded-[9999px]"
                             >
                                 <Plus size={16} />
                                 <span className="text-sm font-medium">New</span>
@@ -111,28 +111,28 @@ export default function TopNav({ onMenuClick }) {
                     </DropdownMenuContent>
                 </DropdownMenu>
 
-                <div className="h-4 w-px bg-border hidden md:block" />
+                <div className="h-4 w-px bg-[#2e2e2e] hidden md:block" />
 
                 <div className="flex items-center gap-1">
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="relative h-9 w-9 text-muted-foreground hover:bg-accent rounded-md transition-all"
+                        className="relative h-9 w-9 text-[#898989] hover:bg-[#0f0f0f] rounded-md transition-all"
                         onClick={() => setShowNotifications(!showNotifications)}
                     >
                         <Bell size={18} />
                         {unreadCount > 0 && (
-                            <span className="absolute top-2 right-2 flex h-2 w-2 rounded-full bg-primary" />
+                            <span className="absolute top-2 right-2 flex h-2 w-2 rounded-full bg-[#3ecf8e]" />
                         )}
                     </Button>
 
                     <DropdownMenu>
                         <DropdownMenuTrigger
                             render={
-                                <button className="flex items-center gap-2 p-1 rounded-full hover:bg-accent transition-all outline-none">
+                                <button className="flex items-center gap-2 p-1 rounded-full hover:bg-[#0f0f0f] transition-all outline-none">
                                     <Avatar className="h-8 w-8">
                                         <AvatarImage src={user?.avatar} />
-                                        <AvatarFallback className="bg-primary/10 text-primary text-xs font-medium">
+                                        <AvatarFallback className="bg-[#3ecf8e]/10 text-[#3ecf8e] text-xs font-medium">
                                             {user?.name
                                                 ?.substring(0, 2)
                                                 .toUpperCase() || "OS"}
@@ -147,7 +147,7 @@ export default function TopNav({ onMenuClick }) {
                                     <p className="text-sm font-medium leading-none">
                                         {user?.name}
                                     </p>
-                                    <p className="text-xs leading-none text-muted-foreground">
+                                    <p className="text-xs leading-none text-[#898989]">
                                         {user?.email}
                                     </p>
                                 </div>
@@ -164,7 +164,7 @@ export default function TopNav({ onMenuClick }) {
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
                                 onSelect={logout}
-                                className="text-destructive focus:text-destructive"
+                                className="text-[#ef4444] focus:text-[#ef4444]"
                             >
                                 <LogOut size={14} className="mr-2" />
                                 Sign Out
