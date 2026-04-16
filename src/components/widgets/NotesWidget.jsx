@@ -68,19 +68,19 @@ export default function NotesWidget() {
                 key={note._id}
                 onClick={() => router.push('/dashboard/notes')}
                 className={cn(
-                  "flex flex-col p-3 rounded-[4px] hover:bg-muted/30 transition-all duration-300 border border-transparent hover:border-border/50 group relative cursor-pointer",
-                  note.pinned && "bg-primary/5 border-primary/10 hover:border-primary/20 shadow-sm"
+                  "flex flex-col p-3 rounded-[4px] bg-[#171717]/50 hover:bg-[#2e2e2e]/50 transition-all duration-300 border border-[#2e2e2e]/30 hover:border-[#3ecf8e]/30 group relative cursor-pointer",
+                  note.pinned && "bg-[#3ecf8e]/5 border-[#3ecf8e]/10 hover:border-[#3ecf8e]/20 shadow-sm"
                 )}
               >
                 <div className="flex items-center justify-between mb-1.5">
                   <div className="flex items-center gap-3 min-w-0">
                     <div className={cn(
                       "p-1.5 rounded-[2px] transition-colors",
-                      note.pinned ? "bg-primary/10 text-primary" : "bg-muted/20 text-muted-foreground/40 group-hover:bg-primary/5 group-hover:text-primary/60"
+                      note.pinned ? "bg-[#3ecf8e]/10 text-[#3ecf8e]" : "bg-[#0f0f0f]/50 text-muted-foreground/40 group-hover:bg-[#3ecf8e]/5 group-hover:text-[#3ecf8e]/60"
                     )}>
-                      <StickyNote size={12} className="shrink-0" />
+                      <StickyNote size={14} className="shrink-0" />
                     </div>
-                    <span className="text-[12px] font-black truncate tracking-tight text-foreground/80 group-hover:text-foreground transition-colors uppercase">{note.title}</span>
+                    <span className="text-[16px] font-medium truncate tracking-tight text-foreground/80 group-hover:text-foreground transition-colors uppercase">{note.title}</span>
                   </div>
                   <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0 shrink-0">
                     <button 
@@ -98,7 +98,7 @@ export default function NotesWidget() {
                   </div>
                 </div>
                 {note.content && (
-                  <p className="text-[10px] text-muted-foreground/50 line-clamp-2 pl-10 leading-relaxed font-medium">
+                  <p className="text-[14px] text-muted-foreground/50 line-clamp-2 pl-10 leading-relaxed font-medium">
                     {note.content.replace(/[#*`]/g, '').slice(0, 80)}...
                   </p>
                 )}
