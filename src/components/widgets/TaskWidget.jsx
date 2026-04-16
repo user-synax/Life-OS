@@ -68,7 +68,7 @@ export default function TaskWidget() {
               <div
                 key={task._id}
                 className={cn(
-                  "group flex items-center justify-between p-3 rounded-[4px] hover:bg-muted/30 transition-all duration-300 border border-transparent hover:border-border/50",
+                  "group flex items-center justify-between p-3 rounded-[4px] bg-[#171717]/50 hover:bg-[#2e2e2e]/50 transition-all duration-300 border border-[#2e2e2e]/30 hover:border-[#3ecf8e]/30",
                   task.completed && "opacity-40 grayscale"
                 )}
               >
@@ -80,11 +80,11 @@ export default function TaskWidget() {
                       task.completed ? "text-primary" : "text-muted-foreground/20 hover:text-primary/40"
                     )}
                   >
-                    {task.completed ? <CheckCircle2 size={18} className="drop-shadow-[0_0_8px_rgba(var(--primary),0.4)]" /> : <Circle size={18} />}
+                    {task.completed ? <CheckCircle2 size={20} className="drop-shadow-[0_0_8px_rgba(var(--primary),0.4)]" /> : <Circle size={20} />}
                   </button>
                   <div className="flex flex-col min-w-0">
                     <span className={cn(
-                      "text-[12px] font-black truncate tracking-tight text-foreground/80 transition-all",
+                      "text-[16px] font-medium truncate tracking-tight text-foreground/80 transition-all",
                       task.completed && "line-through opacity-50"
                     )}>
                       {task.title}
@@ -97,7 +97,7 @@ export default function TaskWidget() {
                     )}
                   </div>
                 </div>
-                <Badge variant="outline" className={cn("text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-[2px] shrink-0 ml-3 border-transparent bg-muted/5", getPriorityColor(task.priority))}>
+                <Badge variant="outline" className={cn("text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-[2px] shrink-0 ml-3 border-transparent bg-[#0f0f0f]/50", getPriorityColor(task.priority))}>
                   {task.priority}
                 </Badge>
               </div>
