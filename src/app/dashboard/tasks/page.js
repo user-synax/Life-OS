@@ -122,8 +122,8 @@ export default function TasksPage() {
     <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-foreground">Tasks</h1>
-          <p className="text-muted-foreground mt-1 text-[10px] sm:text-xs font-medium uppercase tracking-widest opacity-50">Manage and organize your daily goals.</p>
+          <h1 className="text-[2.25rem] font-normal leading-[1.25] text-[#fafafa]">Tasks</h1>
+          <p className="text-[#898989] mt-1 text-[0.88rem] font-normal leading-[1.56] opacity-60">Manage and organize your daily goals.</p>
         </div>
         <div className="flex items-center gap-2 bg-muted/10 p-1 rounded-[4px] border border-border/50">
           <Button 
@@ -162,53 +162,53 @@ export default function TasksPage() {
         </div>
       </div>
 
-      <Card className="bg-card border-border/50 rounded-[4px] overflow-hidden shadow-sm">
-        <CardHeader className="p-0 border-b border-border/30 bg-muted/5">
+      <Card className="bg-card border-[#2e2e2e] rounded-[8px] overflow-hidden">
+        <CardHeader className="p-0 border-b border-[#2e2e2e] bg-[#0f0f0f]">
            <form onSubmit={handleAddTask} className="flex items-center gap-3 p-4">
               <div className="relative flex-1 group">
-                 <Plus className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/40 group-focus-within:text-primary transition-colors" size={18} />
+                 <Plus className="absolute left-4 top-1/2 -translate-y-1/2 text-[#3ecf8e]/40 group-focus-within:text-[#3ecf8e] transition-colors" size={18} />
                  <Input 
                     placeholder="ENTER NEW TASK IDENTIFIER..." 
-                    className="pl-12 h-12 bg-muted/10 border-border/50 rounded-[4px] text-[11px] font-black uppercase tracking-[0.2em] placeholder:text-muted-foreground/10 focus:bg-muted/20 transition-all border-none focus:ring-0"
+                    className="pl-12 h-12 bg-[#0f0f0f] border-[#2e2e2e] rounded-[6px] text-[0.88rem] font-medium placeholder:text-[#898989]/10 focus:bg-[#171717] transition-all"
                     value={newTaskTitle}
                     onChange={(e) => setNewTaskTitle(e.target.value)}
                  />
               </div>
-              <Button type="submit" size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-[4px] px-6 font-black uppercase tracking-[0.2em] h-12 text-[10px] shadow-lg shadow-primary/20 active:scale-[0.98] transition-all">
+              <Button type="submit" size="default" className="bg-[#3ecf8e] text-[#0a0a0a] hover:bg-[#3ecf8e]/90 rounded-[9999px] px-8 font-medium h-12 transition-all">
                  Initialize
               </Button>
            </form>
         </CardHeader>
         <CardContent className="p-0">
-           <div className="p-4 border-b border-border/30 bg-muted/5 flex items-center justify-between">
+           <div className="p-4 border-b border-[#2e2e2e] bg-[#0f0f0f] flex items-center justify-between">
               <div className="relative w-full max-w-xs group">
-                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/20 group-focus-within:text-primary transition-colors" size={14} />
+                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#898989]/20 group-focus-within:text-[#3ecf8e] transition-colors" size={14} />
                  <Input 
                     placeholder="FILTER REGISTRY..." 
-                    className="pl-10 h-10 bg-muted/10 border-border/50 rounded-[4px] text-[9px] font-black uppercase tracking-[0.2em] placeholder:text-muted-foreground/10 focus:bg-muted/20 transition-all"
+                    className="pl-10 h-10 bg-[#0f0f0f] border-[#2e2e2e] rounded-[6px] text-[0.88rem] font-medium placeholder:text-[#898989]/10 focus:bg-[#171717] transition-all"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                  />
               </div>
               <div className="flex items-center gap-2 px-3">
-                 <div className="h-1.5 w-1.5 rounded-full bg-primary/40 animate-pulse" />
-                 <span className="text-[8px] font-black uppercase tracking-[0.3em] text-muted-foreground/30">Live Filter Active</span>
+                 <div className="h-1.5 w-1.5 rounded-full bg-[#3ecf8e]/40 animate-pulse" />
+                 <span className="code-label text-[#898989]/30">Live Filter Active</span>
               </div>
            </div>
            
            <ScrollArea className="h-[calc(100vh-400px)] sm:h-[500px]">
-              <div className="divide-y divide-border">
+              <div className="divide-y divide-[#2e2e2e]">
                  {loading && tasks.length === 0 ? (
                     [1, 2, 3, 4, 5].map((i) => (
                       <div key={i} className="p-4 flex items-center gap-4 animate-pulse">
-                         <div className="h-5 w-5 rounded-full bg-muted" />
+                         <div className="h-5 w-5 rounded-full bg-[#2e2e2e]" />
                          <div className="space-y-2 flex-1">
-                            <div className="h-4 w-1/3 bg-muted rounded" />
+                            <div className="h-4 w-1/3 bg-[#2e2e2e] rounded" />
                          </div>
                       </div>
                     ))
                  ) : filteredTasks.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center h-48 text-muted-foreground/30">
+                    <div className="flex flex-col items-center justify-center h-48 text-[#898989]/30">
                        <List size={40} className="mb-2 opacity-10" />
                        <p className="text-sm font-medium">No tasks found.</p>
                     </div>
@@ -217,11 +217,11 @@ export default function TasksPage() {
                       <div 
                         key={task._id} 
                         className={cn(
-                          "group flex items-center justify-between p-4 hover:bg-muted/30 transition-all duration-200 cursor-pointer border-l-2 border-transparent",
+                          "group flex items-center justify-between p-4 hover:bg-[#0f0f0f] transition-all duration-200 cursor-pointer border-l-2 border-transparent",
                           task.completed && "opacity-60",
-                          task.priority === 'high' && !task.completed && "border-l-red-500/50 bg-red-500/5",
-                          task.priority === 'medium' && !task.completed && "border-l-yellow-500/50 bg-yellow-500/5",
-                          task.priority === 'low' && !task.completed && "border-l-blue-500/50 bg-blue-500/5"
+                          task.priority === 'high' && !task.completed && "border-l-[#ef4444]/50 bg-[#ef4444]/5",
+                          task.priority === 'medium' && !task.completed && "border-l-[#f59e0b]/50 bg-[#f59e0b]/5",
+                          task.priority === 'low' && !task.completed && "border-l-[#3b82f6]/50 bg-[#3b82f6]/5"
                         )}
                         onClick={() => handleOpenEditModal(task)}
                       >
@@ -232,23 +232,23 @@ export default function TasksPage() {
                                     e.stopPropagation();
                                     toggleTask(task._id);
                                  }}
-                                 className="text-primary transition-transform cursor-pointer shrink-0 hover:scale-110 active:scale-95"
+                                 className="text-[#3ecf8e] transition-transform cursor-pointer shrink-0 hover:scale-110 active:scale-95"
                                >
-                                  {task.completed ? <CheckCircle2 size={20} /> : <Circle size={20} className="text-muted-foreground/30 hover:text-primary transition-colors" />}
+                                  {task.completed ? <CheckCircle2 size={20} /> : <Circle size={20} className="text-[#898989]/30 hover:text-[#3ecf8e] transition-colors" />}
                                </div>
                                <div className="flex flex-col gap-1 min-w-0">
                                <span className={cn(
-                                  "text-sm font-black tracking-tight uppercase truncate",
-                                  task.completed && "line-through text-muted-foreground/50"
+                                  "text-sm font-medium tracking-tight truncate",
+                                  task.completed && "line-through text-[#898989]/50"
                                )}>
                                   {task.title}
                                </span>
                                <div className="flex items-center gap-2">
-                                  <Badge variant="outline" className={cn("text-[8px] uppercase font-black tracking-widest px-1.5 py-0 rounded-[2px] border-transparent shadow-none", getPriorityColor(task.priority))}>
+                                  <Badge variant="outline" className={cn("text-[0.75rem] uppercase font-medium tracking-wide px-1.5 py-0 rounded-[2px] border-transparent", getPriorityColor(task.priority))}>
                                      {task.priority}
                                   </Badge>
                                   {task.dueDate && (
-                                     <span className="text-[9px] text-muted-foreground/50 flex items-center gap-1 font-black uppercase tracking-widest">
+                                     <span className="text-[0.75rem] text-[#898989]/50 flex items-center gap-1 font-medium tracking-wide">
                                         <Clock size={10} className="opacity-30" />
                                         {format(new Date(task.dueDate), 'MMM d, yyyy')}
                                      </span>
@@ -260,7 +260,7 @@ export default function TasksPage() {
                             <Button 
                                variant="ghost" 
                                size="icon" 
-                               className="h-8 w-8 text-muted-foreground/40 hover:text-primary hover:bg-primary/5 rounded-[4px]"
+                               className="h-8 w-8 text-[#898989]/40 hover:text-[#3ecf8e] hover:bg-[#3ecf8e]/5 rounded-[6px]"
                                onClick={(e) => {
                                   e.stopPropagation();
                                   handleOpenEditModal(task);
@@ -271,7 +271,7 @@ export default function TasksPage() {
                             <Button 
                                variant="ghost" 
                                size="icon" 
-                               className="h-8 w-8 text-muted-foreground/40 hover:text-destructive hover:bg-destructive/5 rounded-[4px]"
+                               className="h-8 w-8 text-[#898989]/40 hover:text-[#ef4444] hover:bg-[#ef4444]/5 rounded-[6px]"
                                onClick={(e) => {
                                   e.stopPropagation();
                                   handleOpenDeleteModal(task);
@@ -282,20 +282,20 @@ export default function TasksPage() {
                             <div onClick={(e) => e.stopPropagation()}>
                                <DropdownMenu>
                                   <DropdownMenuTrigger render={
-                                     <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground/40 hover:text-foreground rounded-[4px]">
+                                     <Button variant="ghost" size="icon" className="h-8 w-8 text-[#898989]/40 hover:text-[#fafafa] rounded-[6px]">
                                         <MoreVertical size={16} />
                                      </Button>
                                   } />
-                                  <DropdownMenuContent align="end" className="bg-card border-border p-1 min-w-32 rounded-[4px] shadow-sm">
+                                  <DropdownMenuContent align="end" className="bg-card border-[#2e2e2e] p-1 min-w-32 rounded-[8px]">
                                      <DropdownMenuItem 
-                                        className="rounded-[4px] text-[10px] font-black uppercase tracking-[0.2em] p-2.5 cursor-pointer focus:bg-primary/10 focus:text-primary"
+                                        className="rounded-[6px] text-[0.88rem] font-medium p-2.5 cursor-pointer focus:bg-[#3ecf8e]/10 focus:text-[#3ecf8e]"
                                         onSelect={() => handleOpenEditModal(task)}
                                      >
                                         <Edit3 size={12} className="mr-2" />
                                         Edit Task
                                      </DropdownMenuItem>
                                      <DropdownMenuItem 
-                                        className="text-destructive focus:bg-destructive/10 focus:text-destructive rounded-[4px] text-[10px] font-black uppercase tracking-[0.2em] p-2.5 cursor-pointer"
+                                        className="text-[#ef4444] focus:bg-[#ef4444]/10 focus:text-[#ef4444] rounded-[6px] text-[0.88rem] font-medium p-2.5 cursor-pointer"
                                         onSelect={() => handleOpenDeleteModal(task)}
                                      >
                                         <Trash2 size={12} className="mr-2" />
