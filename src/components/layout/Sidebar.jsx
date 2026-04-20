@@ -17,7 +17,9 @@ import {
   X,
   LogOut,
   Search,
-  Command as CommandIcon
+  Command as CommandIcon,
+  BookOpen,
+  Star
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -31,6 +33,8 @@ const menuItems = [
   { icon: Activity, label: 'Habits', href: '/dashboard/habits' },
   { icon: Bookmark, label: 'Bookmarks', href: '/dashboard/bookmarks' },
   { icon: Timer, label: 'Focus Timer', href: '/dashboard/focus' },
+  { icon: BookOpen, label: 'Knowledge', href: '/dashboard/knowledge' },
+  { icon: Star, label: 'Flashcards', href: '/dashboard/flashcards' },
 ];
 
 export default function Sidebar({ isOpen, setIsOpen }) {
