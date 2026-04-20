@@ -19,7 +19,9 @@ import {
   Search,
   Command as CommandIcon,
   BookOpen,
-  Star
+  Star,
+  BarChart3,
+  FolderPlus
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -35,6 +37,8 @@ const menuItems = [
   { icon: Timer, label: 'Focus Timer', href: '/dashboard/focus' },
   { icon: BookOpen, label: 'Knowledge', href: '/dashboard/knowledge' },
   { icon: Star, label: 'Flashcards', href: '/dashboard/flashcards' },
+  { icon: BarChart3, label: 'Analytics', href: '/dashboard/analytics' },
+  { icon: FolderPlus, label: 'Projects', href: '/dashboard/projects' },
 ];
 
 export default function Sidebar({ isOpen, setIsOpen }) {
