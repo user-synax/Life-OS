@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
+import { log } from '@/lib/logger';
+import { createErrorResponse } from '@/lib/errorHandler';
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
@@ -26,7 +28,8 @@ export async function GET(request) {
 
     return NextResponse.json(weatherData);
   } catch (error) {
-    console.error('Weather API error:', error.response?.data || error.message);
-    return NextResponse.json({ error: 'Failed to fetch weather data' }, { status: 500 });
+    log.error('Weather API error', error.response?.data || error.message);
+    const { error: message, statusCode } = createErrorResponse(error, request);
+    return NextResponse.json({ error: message || 'Failed to fetch weather data' }, { status: statusCode });
   }
 }
