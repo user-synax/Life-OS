@@ -3,6 +3,8 @@ import { verifyToken } from '@/lib/auth/jwt';
 import connectDB from '@/lib/db/mongodb';
 import Habit from '@/lib/db/models/Habit';
 import HabitLog from '@/lib/db/models/HabitLog';
+import { habitSchema } from '@/lib/validations';
+import { createErrorResponse } from '@/lib/errorHandler';
 
 export async function GET(req) {
   try {
@@ -18,7 +20,8 @@ export async function GET(req) {
 
     return NextResponse.json({ habits, logs });
   } catch (error) {
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    const { error: message, statusCode } = createErrorResponse(error, req);
+    return NextResponse.json({ error: message }, { status: statusCode });
   }
 }
 
@@ -28,7 +31,18 @@ export async function POST(req) {
     const decoded = verifyToken(token);
     if (!decoded) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const { name } = await req.json();
+    const body = await req.json();
+
+    // Validate input using Zod
+    const validationResult = habitSchema.safeParse(body);
+    if (!validationResult.success) {
+      return NextResponse.json(
+        { error: validationResult.error.errors[0].message },
+        { status: 400 }
+      );
+    }
+
+    const { name } = validationResult.data;
     await connectDB();
     const habit = await Habit.create({
       name,
@@ -36,6 +50,7 @@ export async function POST(req) {
     });
     return NextResponse.json({ habit });
   } catch (error) {
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    const { error: message, statusCode } = createErrorResponse(error, req);
+    return NextResponse.json({ error: message }, { status: statusCode });
   }
 }
