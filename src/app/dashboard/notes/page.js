@@ -425,7 +425,7 @@ function NoteCard({ note, view, onEdit, onPin, onDelete }) {
                   <Badge key={tag} variant="outline" className="text-[12px] font-medium tracking-wide px-2 py-0.5 border-[#3ecf8e]/20 bg-[#3ecf8e]/5 text-[#3ecf8e]/80 rounded-[9999px]">{tag}</Badge>
                ))}
             </div>
-            <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="flex items-center gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                <Button 
                   variant="ghost" 
                   size="icon" 
@@ -459,34 +459,6 @@ function NoteCard({ note, view, onEdit, onPin, onDelete }) {
                >
                   <Trash2 size={14} />
                </Button>
-               <div onClick={(e) => e.stopPropagation()}>
-                  <DropdownMenu>
-                        <DropdownMenuTrigger render={
-                           <button 
-                              type="button"
-                              className="h-8 w-8 flex items-center justify-center rounded-[9999px] text-[#898989]/40 hover:bg-[#171717] hover:text-[#fafafa] cursor-pointer transition-colors"
-                           >
-                              <MoreVertical size={14} />
-                           </button>
-                        } />
-                     <DropdownMenuContent align="end" className="bg-[#0f0f0f] border-[#2e2e2e] p-1 rounded-[8px] min-w-40">
-                        <DropdownMenuItem 
-                           className="rounded-[6px] text-[14px] font-medium p-2.5 cursor-pointer focus:bg-[#3ecf8e]/10 focus:text-[#3ecf8e]"
-                           onSelect={onEdit}
-                        >
-                           <Edit3 size={14} className="mr-2" />
-                           Edit Note
-                        </DropdownMenuItem>
-                        <DropdownMenuItem 
-                           className="rounded-[6px] text-[14px] font-medium p-2.5 cursor-pointer text-[#ef4444] focus:bg-[#ef4444]/10 focus:text-[#ef4444]"
-                           onSelect={onDelete}
-                        >
-                           <Trash2 size={14} className="mr-2" />
-                           Delete Note
-                        </DropdownMenuItem>
-                     </DropdownMenuContent>
-                  </DropdownMenu>
-               </div>
             </div>
          </CardFooter>
       </Card>
