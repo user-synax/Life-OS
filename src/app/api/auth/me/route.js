@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth/jwt';
 import connectDB from '@/lib/db/mongodb';
 import User from '@/lib/db/models/User';
+import { createErrorResponse } from '@/lib/errorHandler';
+import { log } from '@/lib/logger';
 
 export async function GET(req) {
   try {
@@ -23,8 +25,9 @@ export async function GET(req) {
 
     return NextResponse.json({ user });
   } catch (error) {
-    console.error('Auth check error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    log.error('Auth check error', error);
+    const { error: message, statusCode } = createErrorResponse(error, req);
+    return NextResponse.json({ error: message }, { status: statusCode });
   }
 }
 
@@ -40,12 +43,14 @@ export async function PATCH(req) {
     const user = await User.findByIdAndUpdate(
       decoded.userId,
       { $set: updates },
-      { new: true }
+      { new: true, returnDocument: 'after' }
     ).select('-password');
 
     if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
     return NextResponse.json({ user });
   } catch (error) {
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    log.error('User update error', error);
+    const { error: message, statusCode } = createErrorResponse(error, req);
+    return NextResponse.json({ error: message }, { status: statusCode });
   }
 }
