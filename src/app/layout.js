@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import FloatingTimer from "@/components/FloatingTimer";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -22,9 +23,11 @@ export default function RootLayout({ children }) {
         style={{ fontFamily: 'var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif', fontWeight: '400' }}
         suppressHydrationWarning
       >
-        {children}
-        <FloatingTimer />
-        <Toaster theme="dark" position="bottom-right" richColors />
+        <ErrorBoundary>
+          {children}
+          <FloatingTimer />
+          <Toaster theme="dark" position="bottom-right" richColors />
+        </ErrorBoundary>
       </body>
     </html>
   );
