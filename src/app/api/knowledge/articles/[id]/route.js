@@ -3,6 +3,8 @@ import { verifyToken } from '@/lib/auth/jwt';
 import connectDB from '@/lib/db/mongodb';
 import KnowledgeArticle from '@/lib/db/models/KnowledgeArticle';
 import { ObjectId } from 'mongodb';
+import { log } from '@/lib/logger';
+import { createErrorResponse } from '@/lib/errorHandler';
 
 export async function GET(req, { params }) {
   try {
@@ -33,8 +35,9 @@ export async function GET(req, { params }) {
     
     return NextResponse.json({ article });
   } catch (error) {
-    console.error('Get article error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    log.error('Get article error', error);
+    const { error: message, statusCode } = createErrorResponse(error, req);
+    return NextResponse.json({ error: message }, { status: statusCode });
   }
 }
 
@@ -68,8 +71,9 @@ export async function PATCH(req, { params }) {
     
     return NextResponse.json({ article });
   } catch (error) {
-    console.error('Update article error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    log.error('Update article error', error);
+    const { error: message, statusCode } = createErrorResponse(error, req);
+    return NextResponse.json({ error: message }, { status: statusCode });
   }
 }
 
@@ -106,7 +110,8 @@ export async function DELETE(req, { params }) {
     
     return NextResponse.json({ message: 'Article deleted successfully' });
   } catch (error) {
-    console.error('Delete article error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    log.error('Delete article error', error);
+    const { error: message, statusCode } = createErrorResponse(error, req);
+    return NextResponse.json({ error: message }, { status: statusCode });
   }
 }
