@@ -3,6 +3,8 @@ import { verifyToken } from '@/lib/auth/jwt';
 import connectDB from '@/lib/db/mongodb';
 import Project from '@/lib/db/models/Project';
 import ProjectTemplate from '@/lib/db/models/ProjectTemplate';
+import { log } from '@/lib/logger';
+import { createErrorResponse } from '@/lib/errorHandler';
 
 export async function GET(req) {
   try {
@@ -92,8 +94,9 @@ export async function GET(req) {
       }
     });
   } catch (error) {
-    console.error('Get projects error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    log.error('Get projects error', error);
+    const { error: message, statusCode } = createErrorResponse(error, req);
+    return NextResponse.json({ error: message }, { status: statusCode });
   }
 }
 
@@ -120,7 +123,8 @@ export async function POST(req) {
 
     return NextResponse.json({ project }, { status: 201 });
   } catch (error) {
-    console.error('Create project error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    log.error('Create project error', error);
+    const { error: message, statusCode } = createErrorResponse(error, req);
+    return NextResponse.json({ error: message }, { status: statusCode });
   }
 }
