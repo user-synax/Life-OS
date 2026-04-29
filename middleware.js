@@ -5,9 +5,17 @@ export async function middleware(req) {
   const token = req.cookies.get('token')?.value;
   const { pathname } = req.nextUrl;
   const hasJWTSecret = !!process.env.JWT_SECRET;
+  const isProduction = process.env.NODE_ENV === 'production';
 
   // Paths that don't require authentication
   const isPublicPath = pathname === '/login' || pathname === '/register';
+
+  // In production, JWT_SECRET must be set
+  if (isProduction && !hasJWTSecret) {
+    console.error('JWT_SECRET is not set in production. Authentication will fail.');
+    // Allow request to proceed but login will fail at API level
+    return NextResponse.next();
+  }
 
   // Skip JWT validation in development if JWT_SECRET is not set
   if (!hasJWTSecret) {
