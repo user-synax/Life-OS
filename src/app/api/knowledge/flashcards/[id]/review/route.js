@@ -3,6 +3,8 @@ import { verifyToken } from '@/lib/auth/jwt';
 import connectDB from '@/lib/db/mongodb';
 import Flashcard from '@/lib/db/models/Flashcard';
 import FlashcardReview from '@/lib/db/models/FlashcardReview';
+import { log } from '@/lib/logger';
+import { createErrorResponse } from '@/lib/errorHandler';
 
 // SM-2 Algorithm implementation
 function calculateNextReview(card, quality) {
@@ -94,7 +96,8 @@ export async function POST(req, { params }) {
       flashcard: updatedFlashcard 
     });
   } catch (error) {
-    console.error('Review flashcard error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    log.error('Review flashcard error', error);
+    const { error: message, statusCode } = createErrorResponse(error, req);
+    return NextResponse.json({ error: message }, { status: statusCode });
   }
 }
