@@ -11,7 +11,6 @@ import HabitWidget from './HabitWidget';
 import WeatherWidget from './WeatherWidget';
 import FocusTimerWidget from './FocusTimerWidget';
 import BookmarkWidget from './BookmarkWidget';
-import AnalyticsWidget from './AnalyticsWidget';
 import CalendarWidget from './CalendarWidget';
 import QuoteWidget from './QuoteWidget';
 import QuickLinksWidget from './QuickLinksWidget';
@@ -49,8 +48,6 @@ export default function WidgetCard({ widget }) {
         return <FocusTimerWidget />;
       case 'bookmarks':
         return <BookmarkWidget />;
-      case 'analytics':
-        return <AnalyticsWidget />;
       case 'calendar':
         return <CalendarWidget />;
       case 'quote':

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -8,7 +8,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 import { toast } from 'sonner';
-import useAuthStore from '@/store/useAuthStore';
 import { ShieldCheck, Command, Fingerprint, ArrowRight } from 'lucide-react';
 
 export default function LoginPage() {
@@ -16,22 +15,48 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const login = useAuthStore((state) => state.login);
+
+  useEffect(() => {
+    // If already authenticated, redirect to dashboard
+    const isAuth = localStorage.getItem('isAuthenticated');
+    if (isAuth === 'true') {
+      router.push('/dashboard');
+    }
+  }, [router]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     console.log('Login attempt:', { email });
-    const result = await login(email, password);
-    console.log('Login result:', result);
-    setLoading(false);
-    if (result.success) {
-      toast.success('ACCESS GRANTED');
-      console.log('Redirecting to dashboard...');
-      // Use window.location for full page reload to ensure middleware runs
-      window.location.href = '/dashboard';
-    } else {
-      toast.error(result.error || 'ACCESS DENIED');
+
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+        credentials: 'include',
+      });
+
+      const data = await response.json();
+      console.log('Login response:', data);
+
+      if (response.ok) {
+        toast.success('ACCESS GRANTED');
+        console.log('Login successful, redirecting to dashboard...');
+        // Store auth state in localStorage as fallback
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('user', JSON.stringify(data.user));
+        window.location.href = '/dashboard';
+      } else {
+        toast.error(data.error || 'ACCESS DENIED');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      toast.error('Login failed');
+    } finally {
+      setLoading(false);
     }
   };
 

@@ -20,12 +20,20 @@ export default function DashboardLayout({ children }) {
   }, [fetchUser]);
 
   useEffect(() => {
+    // Fallback: if no user from API, check localStorage
     if (!loading && !user) {
-      router.push('/login');
+      const isAuth = localStorage.getItem('isAuthenticated');
+      const storedUser = localStorage.getItem('user');
+      if (isAuth === 'true' && storedUser) {
+        // Restore user from localStorage
+        useAuthStore.setState({ user: JSON.parse(storedUser), loading: false });
+      } else {
+        router.push('/login');
+      }
     }
   }, [loading, user, router]);
 
-  if (loading || !user) {
+  if (loading) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-4">

@@ -43,7 +43,6 @@ const AVAILABLE_WIDGETS = [
   { id: 'calendar', name: 'Calendar', icon: Calendar, description: 'View your upcoming events.', category: 'Organization' },
   { id: 'weather', name: 'Weather', icon: Cloud, description: 'Check the current weather conditions.', category: 'Utility' },
   { id: 'bookmarks', name: 'Bookmarks', icon: BookMarked, description: 'Save your favorite web links.', category: 'Organization' },
-  { id: 'analytics', name: 'Analytics', icon: BarChart3, description: 'Track your productivity stats.', category: 'Productivity' },
   { id: 'quote', name: 'Daily Quote', icon: Quote, description: 'Get a dose of daily inspiration.', category: 'Utility' },
   { id: 'quicklinks', name: 'Quick Links', icon: Link2, description: 'Access your most used links.', category: 'Organization' },
 ];
