@@ -256,7 +256,7 @@ export default function TasksPage() {
                                </div>
                             </div>
                          </div>
-                         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                         <div className="flex items-center gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity shrink-0">
                             <Button 
                                variant="ghost" 
                                size="icon" 
@@ -279,31 +279,6 @@ export default function TasksPage() {
                             >
                                <Trash2 size={16} />
                             </Button>
-                            <div onClick={(e) => e.stopPropagation()}>
-                               <DropdownMenu>
-                                  <DropdownMenuTrigger render={
-                                     <Button variant="ghost" size="icon" className="h-8 w-8 text-[#898989]/40 hover:text-[#fafafa] rounded-[6px]">
-                                        <MoreVertical size={16} />
-                                     </Button>
-                                  } />
-                                  <DropdownMenuContent align="end" className="bg-card border-[#2e2e2e] p-1 min-w-32 rounded-[8px]">
-                                     <DropdownMenuItem 
-                                        className="rounded-[6px] text-[0.88rem] font-medium p-2.5 cursor-pointer focus:bg-[#3ecf8e]/10 focus:text-[#3ecf8e]"
-                                        onSelect={() => handleOpenEditModal(task)}
-                                     >
-                                        <Edit3 size={12} className="mr-2" />
-                                        Edit Task
-                                     </DropdownMenuItem>
-                                     <DropdownMenuItem 
-                                        className="text-[#ef4444] focus:bg-[#ef4444]/10 focus:text-[#ef4444] rounded-[6px] text-[0.88rem] font-medium p-2.5 cursor-pointer"
-                                        onSelect={() => handleOpenDeleteModal(task)}
-                                     >
-                                        <Trash2 size={12} className="mr-2" />
-                                        Delete Task
-                                     </DropdownMenuItem>
-                                  </DropdownMenuContent>
-                               </DropdownMenu>
-                            </div>
                          </div>
                       </div>
                     ))
