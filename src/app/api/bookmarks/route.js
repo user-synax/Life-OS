@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth/jwt';
 import connectDB from '@/lib/db/mongodb';
 import Bookmark from '@/lib/db/models/Bookmark';
+import { bookmarkSchema } from '@/lib/validations';
+import { createErrorResponse } from '@/lib/errorHandler';
 
 export async function GET(req) {
   try {
@@ -13,7 +15,8 @@ export async function GET(req) {
     const bookmarks = await Bookmark.find({ userId: decoded.userId }).sort({ createdAt: -1 });
     return NextResponse.json({ bookmarks });
   } catch (error) {
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    const { error: message, statusCode } = createErrorResponse(error, req);
+    return NextResponse.json({ error: message }, { status: statusCode });
   }
 }
 
@@ -23,7 +26,18 @@ export async function POST(req) {
     const decoded = verifyToken(token);
     if (!decoded) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const { title, url, category } = await req.json();
+    const body = await req.json();
+
+    // Validate input using Zod
+    const validationResult = bookmarkSchema.safeParse(body);
+    if (!validationResult.success) {
+      return NextResponse.json(
+        { error: validationResult.error.errors[0].message },
+        { status: 400 }
+      );
+    }
+
+    const { title, url, category } = validationResult.data;
     await connectDB();
     
     // Simple favicon generator (clearbit)
@@ -38,6 +52,7 @@ export async function POST(req) {
     });
     return NextResponse.json({ bookmark });
   } catch (error) {
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    const { error: message, statusCode } = createErrorResponse(error, req);
+    return NextResponse.json({ error: message }, { status: statusCode });
   }
 }
