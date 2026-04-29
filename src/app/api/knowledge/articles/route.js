@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth/jwt';
 import connectDB from '@/lib/db/mongodb';
 import KnowledgeArticle from '@/lib/db/models/KnowledgeArticle';
+import { log } from '@/lib/logger';
+import { createErrorResponse } from '@/lib/errorHandler';
 
 export async function GET(req) {
   try {
@@ -35,8 +37,9 @@ export async function GET(req) {
     
     return NextResponse.json({ articles });
   } catch (error) {
-    console.error('Get articles error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    log.error('Get articles error', error);
+    const { error: message, statusCode } = createErrorResponse(error, req);
+    return NextResponse.json({ error: message }, { status: statusCode });
   }
 }
 
@@ -69,7 +72,8 @@ export async function POST(req) {
     
     return NextResponse.json({ article });
   } catch (error) {
-    console.error('Create article error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    log.error('Create article error', error);
+    const { error: message, statusCode } = createErrorResponse(error, req);
+    return NextResponse.json({ error: message }, { status: statusCode });
   }
 }
