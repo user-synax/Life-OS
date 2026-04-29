@@ -6,6 +6,8 @@ import LearningStreak from '@/lib/db/models/LearningStreak';
 import SkillMastery from '@/lib/db/models/SkillMastery';
 import KnowledgeArticle from '@/lib/db/models/KnowledgeArticle';
 import Flashcard from '@/lib/db/models/Flashcard';
+import { log } from '@/lib/logger';
+import { createErrorResponse } from '@/lib/errorHandler';
 
 export async function GET(req) {
   try {
@@ -162,7 +164,8 @@ export async function GET(req) {
 
     return NextResponse.json({ overview });
   } catch (error) {
-    console.error('Get overview error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    log.error('Get overview error', error);
+    const { error: message, statusCode } = createErrorResponse(error, req);
+    return NextResponse.json({ error: message }, { status: statusCode });
   }
 }
