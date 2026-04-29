@@ -53,10 +53,11 @@ export async function POST(req) {
 
     response.cookies.set('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: true,
       sameSite: 'lax',
       maxAge: 60 * 60 * 24 * 7, // 7 days
       path: '/',
+      domain: process.env.NODE_ENV === 'production' ? undefined : undefined,
     });
 
     console.log('Login API: Cookie set in response');
