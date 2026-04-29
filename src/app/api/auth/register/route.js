@@ -3,15 +3,35 @@ import bcrypt from 'bcryptjs';
 import connectDB from '@/lib/db/mongodb';
 import User from '@/lib/db/models/User';
 import { signToken } from '@/lib/auth/jwt';
+import { createRateLimiter } from '@/lib/rateLimit';
+import { registerSchema } from '@/lib/validations';
+import { createErrorResponse } from '@/lib/errorHandler';
+
+const rateLimiter = createRateLimiter({ windowMs: 60 * 60 * 1000, max: 3 });
 
 export async function POST(req) {
   try {
-    await connectDB();
-    const { name, email, password } = await req.json();
-
-    if (!name || !email || !password) {
-      return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
+    const rateLimitResult = rateLimiter(req);
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { error: 'Too many registration attempts. Please try again later.' },
+        { status: 429 }
+      );
     }
+
+    await connectDB();
+    const body = await req.json();
+
+    // Validate input using Zod
+    const validationResult = registerSchema.safeParse(body);
+    if (!validationResult.success) {
+      return NextResponse.json(
+        { error: validationResult.error.errors[0].message },
+        { status: 400 }
+      );
+    }
+
+    const { name, email, password } = validationResult.data;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -42,7 +62,7 @@ export async function POST(req) {
 
     return response;
   } catch (error) {
-    console.error('Registration error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    const { error: message, statusCode } = createErrorResponse(error, req);
+    return NextResponse.json({ error: message }, { status: statusCode });
   }
 }
