@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth/jwt';
 import connectDB from '@/lib/db/mongodb';
 import ProjectTemplate from '@/lib/db/models/ProjectTemplate';
+import { log } from '@/lib/logger';
+import { createErrorResponse } from '@/lib/errorHandler';
 
 export async function GET(req) {
   try {
@@ -78,8 +80,9 @@ export async function GET(req) {
       }
     });
   } catch (error) {
-    console.error('Get templates error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    log.error('Get templates error', error);
+    const { error: message, statusCode } = createErrorResponse(error, req);
+    return NextResponse.json({ error: message }, { status: statusCode });
   }
 }
 
@@ -103,7 +106,8 @@ export async function POST(req) {
 
     return NextResponse.json({ template }, { status: 201 });
   } catch (error) {
-    console.error('Create template error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    log.error('Create template error', error);
+    const { error: message, statusCode } = createErrorResponse(error, req);
+    return NextResponse.json({ error: message }, { status: statusCode });
   }
 }
