@@ -4,6 +4,8 @@ import connectDB from '@/lib/db/mongodb';
 import Habit from '@/lib/db/models/Habit';
 import HabitLog from '@/lib/db/models/HabitLog';
 import { startOfDay } from 'date-fns';
+import { log } from '@/lib/logger';
+import { createErrorResponse } from '@/lib/errorHandler';
 
 export async function POST(req, { params }) {
   try {
@@ -45,7 +47,8 @@ export async function POST(req, { params }) {
 
     return NextResponse.json({ log, habit });
   } catch (error) {
-    console.error('Toggle habit error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    log.error('Toggle habit error', error);
+    const { error: message, statusCode } = createErrorResponse(error, req);
+    return NextResponse.json({ error: message }, { status: statusCode });
   }
 }
