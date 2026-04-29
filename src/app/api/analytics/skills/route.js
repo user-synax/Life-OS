@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth/jwt';
 import connectDB from '@/lib/db/mongodb';
 import SkillMastery from '@/lib/db/models/SkillMastery';
+import { log } from '@/lib/logger';
+import { createErrorResponse } from '@/lib/errorHandler';
 
 export async function GET(req) {
   try {
@@ -76,8 +78,9 @@ export async function GET(req) {
       skillsNeedingAttention
     });
   } catch (error) {
-    console.error('Get skills error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    log.error('Get skills error', error);
+    const { error: message, statusCode } = createErrorResponse(error, req);
+    return NextResponse.json({ error: message }, { status: statusCode });
   }
 }
 
@@ -118,8 +121,9 @@ export async function POST(req) {
 
     return NextResponse.json({ skill }, { status: 201 });
   } catch (error) {
-    console.error('Create skill error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    log.error('Create skill error', error);
+    const { error: message, statusCode } = createErrorResponse(error, req);
+    return NextResponse.json({ error: message }, { status: statusCode });
   }
 }
 
@@ -158,7 +162,8 @@ export async function PATCH(req) {
 
     return NextResponse.json({ skill });
   } catch (error) {
-    console.error('Update skill error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    log.error('Update skill error', error);
+    const { error: message, statusCode } = createErrorResponse(error, req);
+    return NextResponse.json({ error: message }, { status: statusCode });
   }
 }
