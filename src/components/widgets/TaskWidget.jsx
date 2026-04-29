@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Plus, CheckCircle2, Circle, Clock } from 'lucide-react';
+import { Plus, CheckCircle2, Circle, Clock, MoreVertical, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -9,10 +9,16 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import useTaskStore from '@/store/useTaskStore';
 import { format } from 'date-fns';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 export default function TaskWidget() {
   const [newTaskTitle, setNewTaskTitle] = useState('');
-  const { tasks, loading, fetchTasks, addTask, toggleTask } = useTaskStore();
+  const { tasks, loading, fetchTasks, addTask, toggleTask, removeTask } = useTaskStore();
 
   useEffect(() => {
     fetchTasks();
@@ -97,9 +103,19 @@ export default function TaskWidget() {
                     )}
                   </div>
                 </div>
-                <Badge variant="outline" className={cn("text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-[2px] shrink-0 ml-3 border-transparent bg-[#0f0f0f]/50", getPriorityColor(task.priority))}>
-                  {task.priority}
-                </Badge>
+                <div className="flex items-center gap-2 shrink-0 ml-3">
+                  <Badge variant="outline" className={cn("text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-[2px] border-transparent bg-[#0f0f0f]/50", getPriorityColor(task.priority))}>
+                    {task.priority}
+                  </Badge>
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    onClick={() => removeTask(task._id)}
+                    className="h-9 w-9 text-destructive/70 hover:text-destructive hover:bg-destructive/10 bg-[#0f0f0f] border border-destructive/30"
+                  >
+                    <Trash2 size={16} />
+                  </Button>
+                </div>
               </div>
             ))}
           </div>
