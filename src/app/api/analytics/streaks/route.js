@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth/jwt';
 import connectDB from '@/lib/db/mongodb';
 import LearningStreak from '@/lib/db/models/LearningStreak';
+import { log } from '@/lib/logger';
+import { createErrorResponse } from '@/lib/errorHandler';
 
 export async function GET(req) {
   try {
@@ -61,8 +63,9 @@ export async function GET(req) {
       }
     });
   } catch (error) {
-    console.error('Get streak error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    log.error('Get streak error', error);
+    const { error: message, statusCode } = createErrorResponse(error, req);
+    return NextResponse.json({ error: message }, { status: statusCode });
   }
 }
 
@@ -84,7 +87,8 @@ export async function PATCH(req) {
 
     return NextResponse.json({ streak });
   } catch (error) {
-    console.error('Update streak error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    log.error('Update streak error', error);
+    const { error: message, statusCode } = createErrorResponse(error, req);
+    return NextResponse.json({ error: message }, { status: statusCode });
   }
 }
