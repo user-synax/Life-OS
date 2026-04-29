@@ -21,11 +21,15 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    console.log('Login attempt:', { email });
     const result = await login(email, password);
+    console.log('Login result:', result);
     setLoading(false);
     if (result.success) {
       toast.success('ACCESS GRANTED');
-      router.push('/dashboard');
+      console.log('Redirecting to dashboard...');
+      // Use window.location for full page reload to ensure middleware runs
+      window.location.href = '/dashboard';
     } else {
       toast.error(result.error || 'ACCESS DENIED');
     }

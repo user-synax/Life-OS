@@ -7,6 +7,8 @@ export async function middleware(req) {
   const hasJWTSecret = !!process.env.JWT_SECRET;
   const isProduction = process.env.NODE_ENV === 'production';
 
+  console.log('Middleware: Request received', { pathname, hasToken: !!token, hasJWTSecret, isProduction });
+
   // Paths that don't require authentication
   const isPublicPath = pathname === '/login' || pathname === '/register';
 
@@ -25,24 +27,29 @@ export async function middleware(req) {
 
   // If path is protected and no token, redirect to login
   if (!isPublicPath && !token && (pathname.startsWith('/dashboard') || pathname === '/')) {
+    console.log('Middleware: No token found, redirecting to login. Path:', pathname);
     return NextResponse.redirect(new URL('/login', req.url));
   }
 
   // If token exists, validate it
   if (token) {
     const decoded = verifyToken(token);
+    console.log('Middleware: Token validation', { decoded: !!decoded });
     
     // If token is invalid/expired and trying to access protected route
     if (!decoded && !isPublicPath && (pathname.startsWith('/dashboard') || pathname === '/')) {
+      console.log('Middleware: Invalid token, redirecting to login. Path:', pathname);
       return NextResponse.redirect(new URL('/login', req.url));
     }
     
     // If token is valid and path is login/register, redirect to dashboard
     if (decoded && isPublicPath) {
+      console.log('Middleware: Valid token on public path, redirecting to dashboard. Path:', pathname);
       return NextResponse.redirect(new URL('/dashboard', req.url));
     }
   }
 
+  console.log('Middleware: Allowing request to proceed');
   return NextResponse.next();
 }
 

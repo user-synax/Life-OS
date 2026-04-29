@@ -1,6 +1,9 @@
 import { create } from 'zustand';
 import axios from 'axios';
 
+// Configure axios to include credentials for cookie handling
+axios.defaults.withCredentials = true;
+
 const useAuthStore = create((set) => ({
   user: null,
   loading: true,
