@@ -82,10 +82,10 @@ export default function NotesWidget() {
                     </div>
                     <span className="text-[16px] font-medium truncate tracking-tight text-foreground/80 group-hover:text-foreground transition-colors uppercase">{note.title}</span>
                   </div>
-                  <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0 shrink-0">
+                  <div className="flex items-center gap-1 shrink-0">
                     <button 
                       className={cn(
-                        "h-6 w-6 flex items-center justify-center rounded-[2px] transition-colors",
+                        "h-7 w-7 flex items-center justify-center rounded-[2px] transition-colors",
                         note.pinned ? "text-primary hover:bg-primary/10" : "text-muted-foreground/30 hover:text-primary hover:bg-primary/5"
                       )}
                       onClick={(e) => {
@@ -93,8 +93,19 @@ export default function NotesWidget() {
                         updateNote(note._id, { pinned: !note.pinned });
                       }}
                     >
-                      {note.pinned ? <Pin size={10} /> : <PinOff size={10} />}
+                      {note.pinned ? <Pin size={12} /> : <PinOff size={12} />}
                     </button>
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        removeNote(note._id);
+                      }}
+                      className="h-7 w-7 text-destructive/70 hover:text-destructive hover:bg-destructive/10"
+                    >
+                      <Trash2 size={14} />
+                    </Button>
                   </div>
                 </div>
                 {note.content && (
