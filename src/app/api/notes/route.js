@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth/jwt';
 import connectDB from '@/lib/db/mongodb';
 import Note from '@/lib/db/models/Note';
+import { noteSchema } from '@/lib/validations';
+import { createErrorResponse } from '@/lib/errorHandler';
 
 export async function GET(req) {
   try {
@@ -13,7 +15,8 @@ export async function GET(req) {
     const notes = await Note.find({ userId: decoded.userId }).sort({ pinned: -1, createdAt: -1 });
     return NextResponse.json({ notes });
   } catch (error) {
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    const { error: message, statusCode } = createErrorResponse(error, req);
+    return NextResponse.json({ error: message }, { status: statusCode });
   }
 }
 
@@ -23,16 +26,28 @@ export async function POST(req) {
     const decoded = verifyToken(token);
     if (!decoded) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const { title, content, tags } = await req.json();
+    const body = await req.json();
+
+    // Validate input using Zod
+    const validationResult = noteSchema.safeParse(body);
+    if (!validationResult.success) {
+      return NextResponse.json(
+        { error: validationResult.error.errors[0].message },
+        { status: 400 }
+      );
+    }
+
+    const { title, content, tags } = validationResult.data;
     await connectDB();
     const note = await Note.create({
       title,
-      content,
-      tags,
+      content: content || '',
+      tags: tags || [],
       userId: decoded.userId,
     });
     return NextResponse.json({ note });
   } catch (error) {
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    const { error: message, statusCode } = createErrorResponse(error, req);
+    return NextResponse.json({ error: message }, { status: statusCode });
   }
 }
