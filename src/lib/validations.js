@@ -49,3 +49,25 @@ export const bookmarkSchema = z.object({
   url: z.string().url('Invalid URL'),
   category: z.string().optional(),
 });
+
+// Mood journal validation schema
+export const moodJournalSchema = z.object({
+  mood: z.enum(['great', 'good', 'okay', 'bad', 'terrible'], 'Invalid mood'),
+  journal: z.string().min(1, 'Journal entry is required').max(5000, 'Journal must be less than 5000 characters'),
+  tags: z.array(z.string()).optional(),
+  date: z.string().optional(),
+});
+
+// Fitness validation schema
+export const fitnessSchema = z.object({
+  type: z.enum(['workout', 'weight', 'nutrition', 'measurement', 'other'], 'Invalid type'),
+  title: z.string().min(1, 'Title is required').max(200, 'Title must be less than 200 characters'),
+  details: z.string().optional(),
+  duration: z.number().optional(),
+  calories: z.number().optional(),
+  value: z.number().optional(),
+  unit: z.string().optional(),
+  tags: z.array(z.string()).optional(),
+  notes: z.string().optional(),
+  date: z.string().optional(),
+});
