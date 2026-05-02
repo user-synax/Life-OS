@@ -27,7 +27,6 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log('Login attempt:', { email });
 
     try {
       const response = await fetch('/api/auth/login', {
@@ -40,12 +39,9 @@ export default function LoginPage() {
       });
 
       const data = await response.json();
-      console.log('Login response:', data);
 
       if (response.ok) {
         toast.success('ACCESS GRANTED');
-        console.log('Login successful, redirecting to dashboard...');
-        console.log('Cookies after login:', document.cookie);
         // Store auth state in localStorage as fallback
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('user', JSON.stringify(data.user));

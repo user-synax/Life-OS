@@ -44,7 +44,6 @@ export async function POST(req) {
     }
 
     const token = signToken({ userId: user._id });
-    console.log('Login API: Token generated for user:', user.email);
 
     const response = NextResponse.json({
       message: 'Logged in successfully',
@@ -59,7 +58,6 @@ export async function POST(req) {
       path: '/',
     });
 
-    console.log('Login API: Cookie set in response');
     return response;
   } catch (error) {
     const { error: message, statusCode } = createErrorResponse(error, req);
