@@ -11,9 +11,12 @@ const useAuthStore = create((set) => ({
 
   fetchUser: async () => {
     try {
+      console.log('AuthStore: Fetching user from /api/auth/me');
       const { data } = await axios.get('/api/auth/me');
+      console.log('AuthStore: User fetched successfully:', data.user?.email);
       set({ user: data.user, loading: false });
     } catch (error) {
+      console.log('AuthStore: Fetch user failed:', error.response?.status, error.response?.data);
       set({ user: null, loading: false });
     }
   },
