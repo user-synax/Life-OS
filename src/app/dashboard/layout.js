@@ -25,10 +25,13 @@ export default function DashboardLayout({ children }) {
     if (!loading && !user) {
       const isAuth = localStorage.getItem('isAuthenticated');
       const storedUser = localStorage.getItem('user');
+      console.log('Dashboard Layout: No user from API, checking localStorage:', { isAuth, hasStoredUser: !!storedUser });
       if (isAuth === 'true' && storedUser) {
         // Restore user from localStorage
+        console.log('Dashboard Layout: Restoring user from localStorage');
         useAuthStore.setState({ user: JSON.parse(storedUser), loading: false });
       } else {
+        console.log('Dashboard Layout: No auth found, redirecting to login');
         router.push('/login');
       }
     }
