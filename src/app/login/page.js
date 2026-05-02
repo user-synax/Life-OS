@@ -45,6 +45,7 @@ export default function LoginPage() {
       if (response.ok) {
         toast.success('ACCESS GRANTED');
         console.log('Login successful, redirecting to dashboard...');
+        console.log('Cookies after login:', document.cookie);
         // Store auth state in localStorage as fallback
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('user', JSON.stringify(data.user));

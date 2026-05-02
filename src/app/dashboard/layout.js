@@ -16,6 +16,7 @@ export default function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
+    console.log('Dashboard Layout: Checking cookies on load:', document.cookie);
     fetchUser();
   }, [fetchUser]);
 
